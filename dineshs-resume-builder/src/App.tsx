@@ -78,7 +78,7 @@ function TemplateGallery({ onSelect, currentData }: { onSelect: () => void; curr
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2">
+      <div className="grid grid-cols-3 gap-2 max-h-[400px] overflow-y-auto pr-2 sm:grid-cols-4">
         {filteredTemplates.map((num) => {
           const Template = getTemplateComponent(num);
           return (
@@ -89,7 +89,7 @@ function TemplateGallery({ onSelect, currentData }: { onSelect: () => void; curr
                 selectedTemplate === num ? "border-indigo-500 ring-2 ring-indigo-100" : "border-gray-200"
               }`}
             >
-              <div className="aspect-[210/297] bg-white overflow-hidden" style={{ transform: "scale(0.22)", transformOrigin: "top left", width: "454%", height: "454%" }}>
+              <div className="aspect-[210/297] bg-white overflow-hidden" style={{ transform: "scale(0.16)", transformOrigin: "top left", width: "625%", height: "625%" }}>
                 <Template data={currentData} />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
@@ -117,7 +117,7 @@ export default function App() {
   const [isLayoutNoticeOpen, setIsLayoutNoticeOpen] = useState(true);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsLayoutNoticeOpen(false), 6000);
+    const timer = window.setTimeout(() => setIsLayoutNoticeOpen(false), 2000);
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -215,6 +215,22 @@ export default function App() {
             </p>
           </div>
         </button>
+
+        <div className="md:hidden flex items-center justify-center gap-2 border-t bg-white px-3 py-2">
+          <Button variant="outline" size="sm" onClick={() => goToTemplate(-1)} disabled={selectedTemplate <= 1} className="h-8 w-8 p-0">
+            <ChevronLeft size={16} />
+          </Button>
+          <button
+            type="button"
+            onClick={() => setShowTemplateDialog(true)}
+            className="min-w-0 flex-1 truncate rounded-md bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700"
+          >
+            {selectedTemplate}/{totalTemplates} · {templateNames[selectedTemplate]}
+          </button>
+          <Button variant="outline" size="sm" onClick={() => goToTemplate(1)} disabled={selectedTemplate >= totalTemplates} className="h-8 w-8 p-0">
+            <ChevronRight size={16} />
+          </Button>
+        </div>
 
         {/* Mobile Tabs */}
         <div className="md:hidden flex border-t">

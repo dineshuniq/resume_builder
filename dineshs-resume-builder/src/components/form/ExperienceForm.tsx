@@ -9,18 +9,23 @@ import { Plus, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 export default function ExperienceForm() {
   const { resumeData, addExperience, removeExperience, updateExperience, addProject, removeProject, updateProject } = useResumeStore();
   const [expandedExp, setExpandedExp] = useState<string | null>(null);
+  const toggleExperience = (id: string) => setExpandedExp((current) => (current === id ? null : id));
 
   return (
     <div className="space-y-4">
       {resumeData.experience.map((exp) => (
         <div key={exp.id} className="border rounded-lg p-3 sm:p-4 bg-gray-50/50">
-          <div className="flex justify-between items-start mb-3">
-            <div className="flex items-center gap-2">
-              <button onClick={() => setExpandedExp(expandedExp === exp.id ? null : exp.id)} className="text-gray-400 hover:text-gray-600">
+          <div className="flex items-start gap-2 mb-3">
+            <button
+              type="button"
+              onClick={() => toggleExperience(exp.id)}
+              className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-md bg-white px-3 py-2 text-left transition-colors hover:bg-gray-100"
+            >
+              <span className="text-gray-400">
                 {expandedExp === exp.id ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-              </button>
-              <span className="font-medium text-sm">{exp.role} at {exp.company}</span>
-            </div>
+              </span>
+              <span className="min-w-0 truncate font-medium text-sm">{exp.role || "Untitled role"} at {exp.company || "Company"}</span>
+            </button>
             <Button variant="ghost" size="sm" onClick={() => removeExperience(exp.id)} className="text-red-400 hover:text-red-600 h-6 w-6 p-0">
               <Trash2 size={14} />
             </Button>
