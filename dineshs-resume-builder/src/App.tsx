@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { useReactToPrint } from "react-to-print";
 import { useResumeStore } from "@/store/resumeStore";
@@ -114,6 +114,12 @@ export default function App() {
   const { resumeData, selectedTemplate, setSelectedTemplate, mobileTab, setMobileTab, resetToDefault } = useResumeStore();
   const resumeRef = useRef<HTMLDivElement>(null);
   const [showTemplateDialog, setShowTemplateDialog] = useState(false);
+  const [isLayoutNoticeOpen, setIsLayoutNoticeOpen] = useState(true);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIsLayoutNoticeOpen(false), 6000);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const handlePrint = useReactToPrint({
     contentRef: resumeRef,
@@ -196,14 +202,19 @@ export default function App() {
           </div>
         </div>
 
-        <div className="border-t bg-amber-50 px-4 py-2 text-amber-950">
+        <button
+          type="button"
+          aria-expanded={isLayoutNoticeOpen}
+          onClick={() => setIsLayoutNoticeOpen((isOpen) => !isOpen)}
+          className="w-full border-t bg-amber-50 px-4 py-2 text-left text-amber-950 transition-colors hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-inset"
+        >
           <div className="flex items-start gap-2 text-[11px] leading-relaxed md:text-xs">
             <Info size={15} className="mt-0.5 shrink-0 text-amber-600" />
-            <p>
+            <p className={isLayoutNoticeOpen ? "" : "line-clamp-1"}>
               If the template looks messy or broken when you first add your info, don't worry - it isn't a glitch. Templates are built with strict spacing, so adding a long job title or an extra sentence can easily push things out of line or accidentally create an empty second page. It just takes a little experimenting to make it look right. Try shortening a few words, cutting down your bullet points, or adjusting the tool's margins to snap the design back into place.
             </p>
           </div>
-        </div>
+        </button>
 
         {/* Mobile Tabs */}
         <div className="md:hidden flex border-t">
