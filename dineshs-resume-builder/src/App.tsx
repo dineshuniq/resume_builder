@@ -154,7 +154,7 @@ export default function App() {
               <Layout size={20} className="text-white" />
             </div>
             <div className="min-w-0">
-              <h1 className="font-bold text-gray-900 text-lg leading-tight">Resume Builder</h1>
+              <h1 className="font-bold text-gray-900 text-lg leading-tight">Dinesh's Resume Builder</h1>
               <p className="text-xs text-gray-500">{templateNames[selectedTemplate]}</p>
             </div>
           </div>
