@@ -28,6 +28,7 @@ import {
   Eye,
   Layout,
   Palette,
+  Info,
   ChevronLeft,
   ChevronRight,
   RotateCcw,
@@ -190,6 +191,15 @@ export default function App() {
             <Button onClick={handlePrint} size="sm" className="gap-2 bg-indigo-600 hover:bg-indigo-700">
               <Download size={14} /> Export PDF
             </Button>
+          </div>
+        </div>
+
+        <div className="border-t bg-amber-50 px-4 py-2 text-amber-950">
+          <div className="flex items-start gap-2 text-[11px] leading-relaxed md:text-xs">
+            <Info size={15} className="mt-0.5 shrink-0 text-amber-600" />
+            <p>
+              If the template looks messy or broken when you first add your info, don't worry - it isn't a glitch. Templates are built with strict spacing, so adding a long job title or an extra sentence can easily push things out of line or accidentally create an empty second page. It just takes a little experimenting to make it look right. Try shortening a few words, cutting down your bullet points, or adjusting the tool's margins to snap the design back into place.
+            </p>
           </div>
         </div>
 

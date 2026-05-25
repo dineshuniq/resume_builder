@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import type { ResumeData } from "@/types/resume";
 import { defaultResumeData } from "@/types/resume";
 
@@ -213,6 +213,14 @@ export const useResumeStore = create<ResumeStore>()(
     }),
     {
       name: "resume-builder-storage",
+      storage: createJSONStorage(() => localStorage),
+      version: 1,
+      partialize: (state) => ({
+        resumeData: state.resumeData,
+        selectedTemplate: state.selectedTemplate,
+        accentColor: state.accentColor,
+        expandedSections: state.expandedSections,
+      }),
     }
   )
 );
