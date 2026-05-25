@@ -133,7 +133,7 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
       const pageHeight = rect.height;
       const pageStep = pageWidth + columnGap;
       const count = Math.max(1, Math.ceil((flow.scrollWidth + columnGap) / pageStep));
-      const availableWidth = Math.max(280, shell.clientWidth - 32);
+      const availableWidth = Math.max(280, shell.clientWidth);
       const scale = Math.min(1, availableWidth / pageWidth);
       const pageSkin = readPageSkin(flow);
 
@@ -188,12 +188,12 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
   } as CSSProperties;
 
   return (
-    <div ref={shellRef} className="resume-preview-shell">
+    <div ref={shellRef} className="resume-preview-shell" style={stageStyle}>
       <div ref={measureRef} className="resume-page-flow resume-page-flow--measure" aria-hidden="true">
         <Template data={data} />
       </div>
 
-      <div className="resume-preview-stage" style={stageStyle}>
+      <div className="resume-preview-stage">
         <div ref={printRef} className="resume-print-pages">
           {pages.map((pageIndex) => (
             <div key={pageIndex} className="resume-page-print-break">

@@ -121,7 +121,8 @@
   align-items: flex-start;
   display: flex;
   justify-content: center;
-  min-height: 100%;
+  min-width: max(100%, var(--resume-stage-width));
+  min-height: max(100%, var(--resume-stage-height));
   position: relative;
   width: 100%;
 }
@@ -137,7 +138,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--resume-page-gap);
-  transform: scale(var(--resume-preview-scale));
+  left: 50%;
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%) scale(var(--resume-preview-scale));
   transform-origin: top center;
   width: var(--resume-a4-width);
 }

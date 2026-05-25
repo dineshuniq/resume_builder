@@ -267,7 +267,7 @@ export default function App() {
         </div>
 
         {/* Preview Panel */}
-        <div className={`${mobileTab === "preview" ? "flex" : "hidden"} md:flex flex-1 bg-gray-200 p-4 md:p-8 overflow-auto`}>
+        <div className={`${mobileTab === "preview" ? "flex" : "hidden"} md:flex flex-1 bg-gray-200 p-3 md:p-4 lg:p-6 overflow-auto`}>
           <PagedResumePreview Template={Template} data={resumeData} printRef={resumeRef} />
         </div>
       </div>
