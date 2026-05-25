@@ -258,6 +258,33 @@
   min-width: 0;
 }
 
+.resume-pdf-export.resume-print-pages {
+  align-items: stretch !important;
+  background: white !important;
+  display: block !important;
+  gap: 0 !important;
+  left: -100000px !important;
+  position: fixed !important;
+  top: 0 !important;
+  transform: none !important;
+  width: var(--resume-a4-width) !important;
+  z-index: -1 !important;
+}
+
+.resume-pdf-export .resume-page-print-break {
+  margin: 0 !important;
+  position: relative !important;
+}
+
+.resume-pdf-export .resume-page-screen-label {
+  display: none !important;
+}
+
+.resume-pdf-export .resume-page-sheet {
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
 @media print {
   body {
     background: white !important;

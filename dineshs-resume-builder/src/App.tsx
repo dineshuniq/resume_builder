@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { useReactToPrint } from "react-to-print";
 import { useResumeStore } from "@/store/resumeStore";
 import { getTemplateComponent, templateNames, templateCategories, totalTemplates } from "@/templates";
 import type { ResumeData } from "@/types/resume";
@@ -46,6 +45,11 @@ function FormSection({ title, icon: Icon, children }: { title: string; icon: Rea
       <Separator className="mt-6" />
     </div>
   );
+}
+
+function getResumeFileName(name: string) {
+  const safeName = name.trim().replace(/[^\w\s-]/g, "").replace(/\s+/g, "_") || "candidate";
+  return `resume_${safeName}.pdf`;
 }
 
 function TemplateGallery({ onSelect, currentData }: { onSelect: () => void; currentData: ResumeData }) {
@@ -117,32 +121,53 @@ export default function App() {
   const resumeRef = useRef<HTMLDivElement>(null);
   const [showTemplateDialog, setShowTemplateDialog] = useState(false);
   const [isLayoutNoticeOpen, setIsLayoutNoticeOpen] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIsLayoutNoticeOpen(false), 2000);
     return () => window.clearTimeout(timer);
   }, []);
 
-  const handlePrint = useReactToPrint({
-    contentRef: resumeRef,
-    documentTitle: `${resumeData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume`,
-    pageStyle: `
-      @page {
-        size: 210mm 297mm;
-        margin: 0;
+  const handleExportPdf = async () => {
+    const source = resumeRef.current;
+    if (!source || isExporting) return;
+
+    setIsExporting(true);
+
+    const exportRoot = source.cloneNode(true) as HTMLDivElement;
+    exportRoot.classList.add("resume-pdf-export");
+    document.body.appendChild(exportRoot);
+
+    try {
+      await document.fonts?.ready;
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+
+      const sheets = Array.from(exportRoot.querySelectorAll<HTMLElement>(".resume-page-sheet"));
+      if (sheets.length === 0) return;
+
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
+
+      for (const [index, sheet] of sheets.entries()) {
+        const canvas = await html2canvas(sheet, {
+          backgroundColor: "#ffffff",
+          scale: 2,
+          useCORS: true,
+        });
+        const image = canvas.toDataURL("image/png");
+
+        if (index > 0) pdf.addPage("a4", "portrait");
+        pdf.addImage(image, "PNG", 0, 0, 210, 297, undefined, "FAST");
       }
-      @media print {
-        body {
-          margin: 0;
-          padding: 0;
-        }
-        * {
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-        }
-      }
-    `,
-  });
+
+      pdf.save(getResumeFileName(resumeData.personalInfo.fullName));
+    } finally {
+      exportRoot.remove();
+      setIsExporting(false);
+    }
+  };
 
   const Template = getTemplateComponent(selectedTemplate);
 
@@ -198,8 +223,8 @@ export default function App() {
             </Dialog>
 
             {/* Export PDF */}
-            <Button onClick={handlePrint} size="sm" className="gap-2 bg-indigo-600 hover:bg-indigo-700">
-              <Download size={14} /> Export PDF
+            <Button onClick={handleExportPdf} disabled={isExporting} size="sm" className="gap-2 bg-indigo-600 hover:bg-indigo-700">
+              <Download size={14} /> {isExporting ? "Exporting..." : "Export PDF"}
             </Button>
           </div>
         </div>
