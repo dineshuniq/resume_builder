@@ -89,8 +89,10 @@ function TemplateGallery({ onSelect, currentData }: { onSelect: () => void; curr
                 selectedTemplate === num ? "border-indigo-500 ring-2 ring-indigo-100" : "border-gray-200"
               }`}
             >
-              <div className="aspect-[210/297] bg-white overflow-hidden" style={{ transform: "scale(0.16)", transformOrigin: "top left", width: "625%", height: "625%" }}>
-                <Template data={currentData} />
+              <div className="aspect-[210/297] bg-white overflow-hidden">
+                <div style={{ transform: "scale(0.16)", transformOrigin: "top left", width: "625%", height: "625%" }}>
+                  <Template data={currentData} />
+                </div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
                 <p className="text-white text-xs font-medium truncate">{num}. {templateNames[num]}</p>
