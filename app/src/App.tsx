@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useResumeStore } from "@/store/resumeStore";
-import { getTemplateComponent, templateNames, templateCategories } from "@/templates";
+import { getTemplateComponent, templateNames, templateCategories, totalTemplates } from "@/templates";
 import type { ResumeData } from "@/types/resume";
 import PersonalInfoForm from "@/components/form/PersonalInfoForm";
 import SummaryForm from "@/components/form/SummaryForm";
@@ -138,7 +138,7 @@ export default function App() {
 
   const goToTemplate = (dir: number) => {
     const next = selectedTemplate + dir;
-    if (next >= 1 && next <= 40) setSelectedTemplate(next);
+    if (next >= 1 && next <= totalTemplates) setSelectedTemplate(next);
   };
 
   return (
@@ -162,8 +162,8 @@ export default function App() {
               <Button variant="ghost" size="sm" onClick={() => goToTemplate(-1)} disabled={selectedTemplate <= 1} className="h-8 w-8 p-0">
                 <ChevronLeft size={16} />
               </Button>
-              <span className="text-xs font-medium px-2">{selectedTemplate}/40</span>
-              <Button variant="ghost" size="sm" onClick={() => goToTemplate(1)} disabled={selectedTemplate >= 40} className="h-8 w-8 p-0">
+              <span className="text-xs font-medium px-2">{selectedTemplate}/{totalTemplates}</span>
+              <Button variant="ghost" size="sm" onClick={() => goToTemplate(1)} disabled={selectedTemplate >= totalTemplates} className="h-8 w-8 p-0">
                 <ChevronRight size={16} />
               </Button>
             </div>
