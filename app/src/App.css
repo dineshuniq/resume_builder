@@ -1,0 +1,38 @@
+/* A4 Resume Print Styles */
+.resume-print-container {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+}
+
+@media print {
+  .resume-print-container {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  
+  /* Ensure page breaks don't split content */
+  .resume-print-container > div {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+/* Preview scaling */
+.preview-scale-wrapper {
+  transform-origin: top center;
+  transition: transform 0.2s ease;
+}
+
+/* Template-specific print fixes */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+}

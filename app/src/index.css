@@ -1,0 +1,293 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.625rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* A4 Print Styles */
+@media print {
+  @page {
+    size: 210mm 297mm;
+    margin: 0;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Resume sheet stack */
+:root {
+  --resume-a4-width: 210mm;
+  --resume-a4-height: 297mm;
+  --resume-page-gap: 24px;
+}
+
+.resume-preview-shell {
+  align-items: flex-start;
+  display: flex;
+  justify-content: center;
+  min-height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.resume-preview-stage {
+  height: var(--resume-stage-height);
+  position: relative;
+  width: var(--resume-stage-width);
+}
+
+.resume-print-pages {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-page-gap);
+  transform: scale(var(--resume-preview-scale));
+  transform-origin: top center;
+  width: var(--resume-a4-width);
+}
+
+.resume-page-print-break {
+  position: relative;
+}
+
+.resume-page-screen-label {
+  background: rgba(17, 24, 39, 0.86);
+  border-radius: 999px;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  left: 12px;
+  letter-spacing: 0;
+  line-height: 1;
+  padding: 6px 10px;
+  position: absolute;
+  top: 12px;
+  z-index: 2;
+}
+
+.resume-page-sheet {
+  background-color: var(--resume-page-bg-color, white);
+  background-image: var(--resume-page-bg-image, none);
+  background-position: var(--resume-page-bg-position, 0% 0%);
+  background-repeat: var(--resume-page-bg-repeat, repeat);
+  background-size: var(--resume-page-bg-size, auto);
+  box-shadow: 0 24px 60px rgb(15 23 42 / 0.25);
+  height: var(--resume-a4-height);
+  overflow: hidden;
+  position: relative;
+  width: var(--resume-a4-width);
+}
+
+.resume-page-window {
+  height: var(--resume-a4-height);
+  overflow: hidden;
+  position: relative;
+  width: var(--resume-a4-width);
+}
+
+.resume-page-flow {
+  column-fill: auto;
+  column-gap: var(--resume-page-gap);
+  column-width: var(--resume-a4-width);
+  height: var(--resume-a4-height);
+  overflow: visible;
+  width: var(--resume-a4-width);
+}
+
+.resume-page-flow--measure {
+  left: -100000px;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  z-index: -1;
+}
+
+.resume-page-flow--page {
+  left: 0;
+  position: absolute;
+  top: 0;
+  will-change: transform;
+}
+
+.resume-page-flow > div {
+  box-decoration-break: clone;
+  box-sizing: border-box;
+  height: auto !important;
+  min-height: var(--resume-a4-height);
+  overflow: visible !important;
+  width: var(--resume-a4-width) !important;
+  -webkit-box-decoration-break: clone;
+}
+
+.resume-page-flow * {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.resume-page-flow :is([class*="overflow-hidden"]) {
+  overflow: visible !important;
+}
+
+.resume-page-flow :is(h1, h2, h3, h4, h5, h6, p, ul, ol, li) {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.resume-page-flow :is(h1, h2, h3, h4, h5, h6) {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.resume-page-flow :is(.resume-atomic-block, [class*="border-l"], [class*="rounded-lg"], [class*="shadow"], [class*="timeline"]) {
+  box-decoration-break: clone;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-box-decoration-break: clone;
+}
+
+.resume-page-flow :is([class*="mb-2"], [class*="mb-3"], [class*="mb-4"], [class*="mb-5"], [class*="mb-6"]) {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.resume-page-flow :is([class*="flex"], [class*="grid"]) {
+  min-height: 0;
+  min-width: 0;
+}
+
+@media print {
+  body {
+    background: white !important;
+  }
+
+  .resume-print-pages {
+    display: block !important;
+    gap: 0 !important;
+    transform: none !important;
+    width: var(--resume-a4-width) !important;
+  }
+
+  .resume-page-print-break {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .resume-page-print-break:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .resume-page-screen-label {
+    display: none !important;
+  }
+
+  .resume-page-sheet {
+    box-shadow: none !important;
+    height: var(--resume-a4-height) !important;
+    width: var(--resume-a4-width) !important;
+  }
+
+  .resume-page-window {
+    height: var(--resume-a4-height) !important;
+    width: var(--resume-a4-width) !important;
+  }
+}
