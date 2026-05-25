@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { useReactToPrint } from "react-to-print";
 import { useResumeStore } from "@/store/resumeStore";
 import { getTemplateComponent, templateNames, templateCategories, totalTemplates } from "@/templates";
@@ -144,6 +145,7 @@ export default function App() {
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
+      <Analytics />
       {/* Header */}
       <header className="bg-white border-b shadow-sm z-50 shrink-0">
         <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
