@@ -209,6 +209,7 @@ export default function App() {
 
     try {
       await document.fonts?.ready;
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
       const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
         import("html2canvas"),
         import("jspdf"),
@@ -219,8 +220,10 @@ export default function App() {
       for (const [index, sheet] of sheets.entries()) {
         const canvas = await html2canvas(sheet, {
           backgroundColor: null,
+          height: sheet.offsetHeight,
           scale: 2,
           useCORS: true,
+          width: sheet.offsetWidth,
           windowWidth: sheet.scrollWidth,
           windowHeight: sheet.scrollHeight,
         });
