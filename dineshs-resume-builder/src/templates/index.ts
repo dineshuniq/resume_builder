@@ -80,7 +80,7 @@ export const templateCategories: Record<string, number[]> = {
   "Modern": [6, 7, 22, 26, 27, 28, 32, 38, 42, 50, 51, 52, 57, 63, 64, 65],
   "Dark": [2, 12, 16, 25, 37, 60],
   "Minimal": [10, 11, 15, 17, 24, 29, 31, 33, 34, 56, 66],
-  "New": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66],
+  "New": Object.keys(templateNames).map(Number),
 };
 
 export const totalTemplates = Object.keys(templateNames).length;
