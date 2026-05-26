@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { useReactToPrint } from "react-to-print";
 import { useResumeStore } from "@/store/resumeStore";
 import { getTemplateComponent, templateNames, templateCategories, totalTemplates } from "@/templates";
 import type { ResumeData } from "@/types/resume";
@@ -46,6 +45,83 @@ function FormSection({ title, icon: Icon, children }: { title: string; icon: Rea
       <Separator className="mt-6" />
     </div>
   );
+}
+
+function getResumeBaseName(name: string) {
+  const safeName = name.trim().replace(/[^\w\s-]/g, "").replace(/\s+/g, "_") || "candidate";
+  return `resume_${safeName}`;
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function buildWordDocument(data: ResumeData) {
+  const personal = data.personalInfo;
+  const contact = [personal.email, personal.phone, personal.location, personal.linkedin, personal.website]
+    .filter(Boolean)
+    .map(escapeHtml)
+    .join(" | ");
+
+  const sections = [
+    `<h1>${escapeHtml(personal.fullName || "Resume")}</h1>`,
+    personal.title ? `<h2>${escapeHtml(personal.title)}</h2>` : "",
+    contact ? `<p class="contact">${contact}</p>` : "",
+    data.summary ? `<h3>Professional Summary</h3><p>${escapeHtml(data.summary)}</p>` : "",
+    data.experience.length
+      ? `<h3>Experience</h3>${data.experience.map((exp) => `
+          <div class="item">
+            <h4>${escapeHtml(exp.role)} - ${escapeHtml(exp.company)}</h4>
+            <p><strong>${escapeHtml(exp.from)} - ${escapeHtml(exp.current ? "Present" : exp.to)}</strong>${exp.location ? ` | ${escapeHtml(exp.location)}` : ""}</p>
+            ${exp.projects.map((project) => `
+              <p><strong>${escapeHtml(project.title)}</strong></p>
+              <ul>${project.bullets.filter(Boolean).map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}</ul>
+            `).join("")}
+          </div>
+        `).join("")}`
+      : "",
+    data.education.length
+      ? `<h3>Education</h3>${data.education.map((edu) => `
+          <div class="item">
+            <h4>${escapeHtml(edu.degree)}</h4>
+            <p>${escapeHtml(edu.institution)}${edu.year ? ` | ${escapeHtml(edu.year)}` : ""}${edu.score ? ` | ${escapeHtml(edu.score)}` : ""}</p>
+          </div>
+        `).join("")}`
+      : "",
+    data.skills.length
+      ? `<h3>Skills</h3><p>${data.skills.map((skill) => escapeHtml(skill.name)).join(", ")}</p>`
+      : "",
+    data.languages.length
+      ? `<h3>Languages</h3><p>${data.languages.map((language) => `${escapeHtml(language.name)} (${escapeHtml(language.proficiency)})`).join(", ")}</p>`
+      : "",
+    data.certifications.length
+      ? `<h3>Certifications</h3><ul>${data.certifications.map((cert) => `<li>${escapeHtml(cert.name)} - ${escapeHtml(cert.organization)}${cert.year ? `, ${escapeHtml(cert.year)}` : ""}</li>`).join("")}</ul>`
+      : "",
+  ].join("");
+
+  return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>${escapeHtml(getResumeBaseName(personal.fullName))}</title>
+  <style>
+    body { color: #111827; font-family: Arial, sans-serif; line-height: 1.45; margin: 36pt; }
+    h1 { font-size: 24pt; margin: 0; }
+    h2 { color: #4b5563; font-size: 13pt; font-weight: normal; margin: 4pt 0 8pt; }
+    h3 { border-bottom: 1px solid #d1d5db; font-size: 12pt; margin: 18pt 0 8pt; padding-bottom: 3pt; text-transform: uppercase; }
+    h4 { font-size: 11pt; margin: 8pt 0 2pt; }
+    p { margin: 3pt 0; }
+    ul { margin: 3pt 0 8pt 18pt; padding: 0; }
+    .contact { color: #4b5563; }
+    .item { margin-bottom: 10pt; }
+  </style>
+</head>
+<body>${sections}</body>
+</html>`;
 }
 
 function TemplateGallery({ onSelect, currentData }: { onSelect: () => void; currentData: ResumeData }) {
@@ -117,32 +193,61 @@ export default function App() {
   const resumeRef = useRef<HTMLDivElement>(null);
   const [showTemplateDialog, setShowTemplateDialog] = useState(false);
   const [isLayoutNoticeOpen, setIsLayoutNoticeOpen] = useState(true);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIsLayoutNoticeOpen(false), 2000);
     return () => window.clearTimeout(timer);
   }, []);
 
-  const handlePrint = useReactToPrint({
-    contentRef: resumeRef,
-    documentTitle: `${resumeData.personalInfo.fullName.replace(/\s+/g, "_")}_Resume`,
-    pageStyle: `
-      @page {
-        size: 210mm 297mm;
-        margin: 0;
+  const handleDownloadPdf = async () => {
+    const source = resumeRef.current;
+    if (!source || isExportingPdf) return;
+
+    setIsExportingPdf(true);
+    source.classList.add("resume-pdf-capture");
+
+    try {
+      await document.fonts?.ready;
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+      const sheets = Array.from(source.querySelectorAll<HTMLElement>(".resume-page-sheet"));
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
+
+      for (const [index, sheet] of sheets.entries()) {
+        const canvas = await html2canvas(sheet, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true,
+          windowWidth: sheet.scrollWidth,
+          windowHeight: sheet.scrollHeight,
+        });
+
+        if (index > 0) pdf.addPage("a4", "portrait");
+        pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, 210, 297, undefined, "FAST");
       }
-      @media print {
-        body {
-          margin: 0;
-          padding: 0;
-        }
-        * {
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-        }
-      }
-    `,
-  });
+
+      pdf.save(`${getResumeBaseName(resumeData.personalInfo.fullName)}.pdf`);
+    } finally {
+      source.classList.remove("resume-pdf-capture");
+      setIsExportingPdf(false);
+    }
+  };
+
+  const handleDownloadWord = () => {
+    const html = buildWordDocument(resumeData);
+    const blob = new Blob([html], { type: "application/msword;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${getResumeBaseName(resumeData.personalInfo.fullName)}.doc`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
 
   const Template = getTemplateComponent(selectedTemplate);
 
@@ -197,10 +302,14 @@ export default function App() {
               </DialogContent>
             </Dialog>
 
-            {/* Export PDF */}
-            <Button onClick={handlePrint} size="sm" className="gap-2 bg-indigo-600 hover:bg-indigo-700">
-              <Download size={14} /> Export PDF
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button onClick={handleDownloadPdf} disabled={isExportingPdf} size="sm" title="Download PDF" aria-label="Download PDF" className="gap-1 bg-indigo-600 px-2 hover:bg-indigo-700">
+                <Download size={14} /> {isExportingPdf ? "..." : "PDF"}
+              </Button>
+              <Button onClick={handleDownloadWord} size="sm" variant="outline" title="Download Word" aria-label="Download Word" className="gap-1 px-2">
+                <FileText size={14} /> DOC
+              </Button>
+            </div>
           </div>
         </div>
 

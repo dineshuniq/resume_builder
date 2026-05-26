@@ -258,6 +258,14 @@
   min-width: 0;
 }
 
+.resume-pdf-capture .resume-page-screen-label {
+  display: none !important;
+}
+
+.resume-pdf-capture .resume-page-sheet {
+  box-shadow: none !important;
+}
+
 @media print {
   body {
     background: white !important;
