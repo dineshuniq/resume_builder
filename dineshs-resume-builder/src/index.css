@@ -185,6 +185,10 @@
   width: var(--resume-a4-width);
 }
 
+.resume-page-print-break--continued .resume-page-window {
+  padding-top: 12mm;
+}
+
 .resume-page-flow {
   column-fill: auto;
   column-gap: var(--resume-page-gap);
@@ -218,6 +222,18 @@
   overflow: visible !important;
   width: var(--resume-a4-width) !important;
   -webkit-box-decoration-break: clone;
+}
+
+.resume-page-flow > div:is([class*="flex"], [class*="grid"]) {
+  align-items: stretch;
+}
+
+.resume-page-flow > div:is([class*="flex"], [class*="grid"]) > :is(div, aside, main, section) {
+  min-height: var(--resume-a4-height);
+}
+
+.resume-page-flow > div :is([class*="border-4"], [class*="border-8"], [class*="border-[6px]"]) {
+  min-height: calc(var(--resume-a4-height) - 24mm);
 }
 
 .resume-page-flow * {
