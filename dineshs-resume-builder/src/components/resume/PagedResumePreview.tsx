@@ -2,7 +2,6 @@ import { type ComponentType, type CSSProperties, type RefObject, useCallback, us
 import type { ResumeData } from "@/types/resume";
 
 const PAGE_GAP_FALLBACK = 24;
-const CONTINUED_PAGE_TOP_INSET = 48;
 const ATOMIC_SELECTOR = "article,section,div,li,ul,ol,p";
 
 interface PagedResumePreviewProps {
@@ -133,8 +132,7 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
       const pageWidth = rect.width;
       const pageHeight = rect.height;
       const pageStep = pageWidth + columnGap;
-      const continuationWidth = Math.max(0, Math.ceil((flow.scrollWidth + columnGap) / pageStep) - 1) * CONTINUED_PAGE_TOP_INSET;
-      const count = Math.max(1, Math.ceil((flow.scrollWidth + continuationWidth + columnGap) / pageStep));
+      const count = Math.max(1, Math.ceil((flow.scrollWidth + columnGap) / pageStep));
       const availableWidth = Math.max(280, shell.clientWidth);
       const scale = Math.min(1, availableWidth / pageWidth);
       const pageSkin = readPageSkin(flow);
@@ -198,7 +196,7 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
       <div className="resume-preview-stage">
         <div ref={printRef} className="resume-print-pages">
           {pages.map((pageIndex) => (
-            <div key={pageIndex} className={pageIndex > 0 ? "resume-page-print-break resume-page-print-break--continued" : "resume-page-print-break"}>
+            <div key={pageIndex} className="resume-page-print-break">
               <div className="resume-page-screen-label">Page {pageIndex + 1}</div>
               <div className="resume-page-sheet" style={pageSkinStyle}>
                 <div className="resume-page-window">
