@@ -266,6 +266,42 @@
   box-shadow: none !important;
 }
 
+.pdf-render-page {
+  background: white;
+  margin: 0;
+  min-height: var(--resume-a4-height);
+  overflow: visible;
+  width: var(--resume-a4-width);
+}
+
+.pdf-render-page .resume-preview-shell {
+  display: block;
+  min-height: auto;
+  min-width: var(--resume-a4-width);
+  width: var(--resume-a4-width);
+}
+
+.pdf-render-page .resume-preview-stage {
+  height: auto !important;
+  width: var(--resume-a4-width) !important;
+}
+
+.pdf-render-page .resume-print-pages {
+  gap: 0 !important;
+  left: auto !important;
+  position: static !important;
+  transform: none !important;
+  width: var(--resume-a4-width) !important;
+}
+
+.pdf-render-page .resume-page-screen-label {
+  display: none !important;
+}
+
+.pdf-render-page .resume-page-sheet {
+  box-shadow: none !important;
+}
+
 @media print {
   body {
     background: white !important;

@@ -34,6 +34,18 @@ import {
   RotateCcw,
 } from "lucide-react";
 
+interface PdfRenderPayload {
+  data: ResumeData;
+  template: number;
+}
+
+declare global {
+  interface Window {
+    renderResumeForPdf?: (payload: PdfRenderPayload) => Promise<void>;
+    resumePdfReady?: boolean;
+  }
+}
+
 function FormSection({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
     <div className="mb-6">
@@ -124,6 +136,77 @@ function buildWordDocument(data: ResumeData) {
 </html>`;
 }
 
+function collectDocumentCss() {
+  return Array.from(document.styleSheets)
+    .map((sheet) => {
+      try {
+        return Array.from(sheet.cssRules).map((rule) => rule.cssText).join("\n");
+      } catch {
+        return "";
+      }
+    })
+    .filter(Boolean)
+    .join("\n");
+}
+
+function buildTemplateWordDocument(data: ResumeData, templateName: string, source: HTMLElement | null) {
+  if (!source) return buildWordDocument(data);
+
+  const clone = source.cloneNode(true) as HTMLElement;
+  clone.querySelectorAll(".resume-page-screen-label").forEach((element) => element.remove());
+  clone.querySelectorAll<HTMLElement>(".resume-print-pages").forEach((element) => {
+    element.style.position = "static";
+    element.style.transform = "none";
+    element.style.left = "auto";
+    element.style.top = "auto";
+    element.style.gap = "0";
+  });
+  clone.querySelectorAll<HTMLElement>(".resume-page-sheet").forEach((element) => {
+    element.style.boxShadow = "none";
+    element.style.margin = "0";
+  });
+
+  return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>${escapeHtml(getResumeBaseName(data.personalInfo.fullName))}</title>
+  <style>
+    @page WordSection1 {
+      size: 210mm 297mm;
+      margin: 0;
+    }
+
+    html,
+    body {
+      background: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    div.WordSection1 {
+      page: WordSection1;
+    }
+
+    .resume-page-print-break {
+      page-break-after: always;
+    }
+
+    .resume-page-print-break:last-child {
+      page-break-after: auto;
+    }
+
+    ${collectDocumentCss()}
+  </style>
+</head>
+<body>
+  <div class="WordSection1" data-template="${escapeHtml(templateName)}">
+    ${clone.innerHTML}
+  </div>
+</body>
+</html>`;
+}
+
 function TemplateGallery({ onSelect, currentData }: { onSelect: () => void; currentData: ResumeData }) {
   const { selectedTemplate, setSelectedTemplate } = useResumeStore();
   const [activeCategory, setActiveCategory] = useState<string | "all">("all");
@@ -188,6 +271,37 @@ function TemplateGallery({ onSelect, currentData }: { onSelect: () => void; curr
   );
 }
 
+function PdfRenderPage() {
+  const [payload, setPayload] = useState<PdfRenderPayload | null>(null);
+  const printRef = useRef<HTMLDivElement>(null);
+
+  window.renderResumeForPdf = (nextPayload: PdfRenderPayload) =>
+    new Promise((resolve) => {
+      window.resumePdfReady = false;
+      setPayload(nextPayload);
+      window.setTimeout(() => {
+        window.resumePdfReady = true;
+        resolve();
+      }, 900);
+    });
+
+  useEffect(() => {
+    window.resumePdfReady = false;
+  }, []);
+
+  if (!payload) {
+    return <div className="pdf-render-page" data-pdf-status="waiting" />;
+  }
+
+  const Template = getTemplateComponent(payload.template);
+
+  return (
+    <main className="pdf-render-page" data-pdf-status="ready">
+      <PagedResumePreview Template={Template} data={payload.data} printRef={printRef} />
+    </main>
+  );
+}
+
 export default function App() {
   const { resumeData, selectedTemplate, setSelectedTemplate, mobileTab, setMobileTab, resetToDefault } = useResumeStore();
   const resumeRef = useRef<HTMLDivElement>(null);
@@ -201,43 +315,44 @@ export default function App() {
   }, []);
 
   const handleDownloadPdf = async () => {
-    const source = resumeRef.current;
-    if (!source || isExportingPdf) return;
+    if (isExportingPdf) return;
 
     setIsExportingPdf(true);
-    source.classList.add("resume-pdf-capture");
 
     try {
-      await document.fonts?.ready;
-      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
-        import("html2canvas"),
-        import("jspdf"),
-      ]);
-      const sheets = Array.from(source.querySelectorAll<HTMLElement>(".resume-page-sheet"));
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
+      const response = await fetch("/api/export-pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          data: resumeData,
+          template: selectedTemplate,
+          filename: getResumeBaseName(resumeData.personalInfo.fullName),
+        }),
+      });
 
-      for (const [index, sheet] of sheets.entries()) {
-        const canvas = await html2canvas(sheet, {
-          backgroundColor: null,
-          scale: 2,
-          useCORS: true,
-          windowWidth: sheet.scrollWidth,
-          windowHeight: sheet.scrollHeight,
-        });
-
-        if (index > 0) pdf.addPage("a4", "portrait");
-        pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, 210, 297, undefined, "FAST");
+      if (!response.ok) {
+        throw new Error(await response.text());
       }
 
-      pdf.save(`${getResumeBaseName(resumeData.personalInfo.fullName)}.pdf`);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${getResumeBaseName(resumeData.personalInfo.fullName)}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("PDF export failed", error);
+      window.alert("PDF export failed. Please try again.");
     } finally {
-      source.classList.remove("resume-pdf-capture");
       setIsExportingPdf(false);
     }
   };
 
   const handleDownloadWord = () => {
-    const html = buildWordDocument(resumeData);
+    const html = buildTemplateWordDocument(resumeData, templateNames[selectedTemplate], resumeRef.current);
     const blob = new Blob([html], { type: "application/msword;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -250,6 +365,10 @@ export default function App() {
   };
 
   const Template = getTemplateComponent(selectedTemplate);
+
+  if (window.location.pathname === "/pdf-render") {
+    return <PdfRenderPage />;
+  }
 
   const goToTemplate = (dir: number) => {
     const next = selectedTemplate + dir;
