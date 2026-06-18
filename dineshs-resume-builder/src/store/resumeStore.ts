@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { ResumeData } from "@/types/resume";
-import { defaultResumeData } from "@/types/resume";
+import type { ResumeData, SectionTitles } from "@/types/resume";
+import { defaultResumeData, defaultSectionTitles } from "@/types/resume";
 
 interface ResumeStore {
   resumeData: ResumeData;
@@ -11,6 +11,7 @@ interface ResumeStore {
   expandedSections: string[];
   setResumeData: (data: ResumeData) => void;
   updatePersonalInfo: (field: string, value: string) => void;
+  updateSectionTitle: (field: keyof SectionTitles, value: string) => void;
   updateSummary: (summary: string) => void;
   setSelectedTemplate: (template: number) => void;
   setAccentColor: (color: string) => void;
@@ -50,6 +51,18 @@ export const useResumeStore = create<ResumeStore>()(
             ...state.resumeData,
             personalInfo: {
               ...state.resumeData.personalInfo,
+              [field]: value,
+            },
+          },
+        })),
+
+      updateSectionTitle: (field, value) =>
+        set((state) => ({
+          resumeData: {
+            ...state.resumeData,
+            sectionTitles: {
+              ...defaultSectionTitles,
+              ...state.resumeData.sectionTitles,
               [field]: value,
             },
           },

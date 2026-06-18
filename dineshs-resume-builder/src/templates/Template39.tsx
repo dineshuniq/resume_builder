@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 
 export default function Template39({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -43,7 +44,7 @@ export default function Template39({ data }: { data: ResumeData }) {
 
         {skills.length > 0 && (
           <div className="bg-indigo-500 p-4 rounded-lg shadow-sm mb-3 break-inside-avoid text-white">
-            <h2 className="text-sm font-bold mb-3">Skills</h2>
+            <h2 className="text-sm font-bold mb-3">{getSectionTitle(data, "skills", "Skills")}</h2>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
                 <span key={skill.id} className="text-xs bg-white/20 px-2 py-1 rounded">{skill.name}</span>
@@ -62,7 +63,7 @@ export default function Template39({ data }: { data: ResumeData }) {
 
         {languages.length > 0 && (
           <div className="bg-teal-500 p-4 rounded-lg shadow-sm mb-3 break-inside-avoid text-white mt-5">
-            <h2 className="text-sm font-bold mb-2">Languages</h2>
+            <h2 className="text-sm font-bold mb-2">{getSectionTitle(data, "languages", "Languages")}</h2>
             {languages.map((lang) => (
               <p key={lang.id} className="text-xs mb-1">{lang.name}</p>
             ))}

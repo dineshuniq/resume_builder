@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 
 export default function Template18({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -31,7 +32,7 @@ export default function Template18({ data }: { data: ResumeData }) {
         <div className="flex-1">
           {experience.length > 0 && (
             <div className="mb-10">
-              <h2 className="text-xs font-bold uppercase tracking-[0.5em] text-gray-400 mb-6">Experience</h2>
+              <h2 className="text-xs font-bold uppercase tracking-[0.5em] text-gray-400 mb-6">{getSectionTitle(data, "experience", "Experience")}</h2>
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-8 flex gap-6">
                   <div className="w-[25mm] text-right shrink-0">
@@ -60,7 +61,7 @@ export default function Template18({ data }: { data: ResumeData }) {
           <div className="grid grid-cols-2 gap-8">
             {skills.length > 0 && (
               <div>
-                <h2 className="text-xs font-bold uppercase tracking-[0.5em] text-gray-400 mb-4">Skills</h2>
+                <h2 className="text-xs font-bold uppercase tracking-[0.5em] text-gray-400 mb-4">{getSectionTitle(data, "skills", "Skills")}</h2>
                 <div className="space-y-1">
                   {skills.map((skill) => (
                     <p key={skill.id} className="text-sm text-gray-600">{skill.name}</p>
@@ -71,7 +72,7 @@ export default function Template18({ data }: { data: ResumeData }) {
 
             {education.length > 0 && (
               <div>
-                <h2 className="text-xs font-bold uppercase tracking-[0.5em] text-gray-400 mb-4">Education</h2>
+                <h2 className="text-xs font-bold uppercase tracking-[0.5em] text-gray-400 mb-4">{getSectionTitle(data, "education", "Education")}</h2>
                 {education.map((edu) => (
                   <div key={edu.id} className="mb-2">
                     <p className="text-sm font-semibold text-gray-700">{edu.degree}</p>
@@ -83,7 +84,7 @@ export default function Template18({ data }: { data: ResumeData }) {
 
             {languages.length > 0 && (
               <div>
-                <h2 className="text-xs font-bold uppercase tracking-[0.5em] text-gray-400 mb-4">Languages</h2>
+                <h2 className="text-xs font-bold uppercase tracking-[0.5em] text-gray-400 mb-4">{getSectionTitle(data, "languages", "Languages")}</h2>
                 {languages.map((lang) => (
                   <p key={lang.id} className="text-sm text-gray-600">{lang.name}</p>
                 ))}

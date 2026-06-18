@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 export default function Template03({ data }: { data: ResumeData }) {
@@ -32,7 +33,7 @@ export default function Template03({ data }: { data: ResumeData }) {
           <div className="mb-8">
             <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
               <span className="w-8 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded"></span>
-              Experience
+              {getSectionTitle(data, "experience", "Experience")}
             </h2>
             {experience.map((exp) => (
               <div key={exp.id} className="mb-6 border-l-4 border-purple-400 pl-4">
@@ -61,7 +62,7 @@ export default function Template03({ data }: { data: ResumeData }) {
           <div className="mb-8">
             <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
               <span className="w-8 h-1 bg-gradient-to-r from-pink-500 to-orange-400 rounded"></span>
-              Education
+              {getSectionTitle(data, "education", "Education")}
             </h2>
             {education.map((edu) => (
               <div key={edu.id} className="mb-3 flex justify-between items-baseline">
@@ -81,7 +82,7 @@ export default function Template03({ data }: { data: ResumeData }) {
             <div className="flex-1">
               <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <span className="w-8 h-1 bg-gradient-to-r from-orange-400 to-purple-500 rounded"></span>
-                Skills
+                {getSectionTitle(data, "skills", "Skills")}
               </h2>
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
@@ -96,7 +97,7 @@ export default function Template03({ data }: { data: ResumeData }) {
             <div className="w-[60mm]">
               <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <span className="w-8 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded"></span>
-                Languages
+                {getSectionTitle(data, "languages", "Languages")}
               </h2>
               {languages.map((lang) => (
                 <div key={lang.id} className="text-sm text-gray-600 mb-1">{lang.name} - {lang.proficiency}</div>
@@ -110,7 +111,7 @@ export default function Template03({ data }: { data: ResumeData }) {
           <div className="mt-8">
             <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
               <span className="w-8 h-1 bg-gradient-to-r from-pink-500 to-orange-400 rounded"></span>
-              Certifications
+              {getSectionTitle(data, "certifications", "Certifications")}
             </h2>
             {certifications.map((cert) => (
               <div key={cert.id} className="text-sm text-gray-600 mb-1">

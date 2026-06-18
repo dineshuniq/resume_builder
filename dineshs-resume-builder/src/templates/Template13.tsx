@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 
 export default function Template13({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -21,7 +22,7 @@ export default function Template13({ data }: { data: ResumeData }) {
       {summary && (
         <div className="grid grid-cols-4 gap-4 mb-8">
           <div className="col-span-1">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-red-600">Profile</h2>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-red-600">{getSectionTitle(data, "summary", "Profile")}</h2>
           </div>
           <div className="col-span-3">
             <p className="text-sm leading-relaxed">{summary}</p>
@@ -33,7 +34,7 @@ export default function Template13({ data }: { data: ResumeData }) {
         <div className="mb-8">
           <div className="grid grid-cols-4 gap-4 mb-4 border-t border-gray-200 pt-4">
             <div className="col-span-1">
-              <h2 className="text-xs font-bold uppercase tracking-widest text-red-600">Experience</h2>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-red-600">{getSectionTitle(data, "experience", "Experience")}</h2>
             </div>
             <div className="col-span-3"></div>
           </div>
@@ -65,7 +66,7 @@ export default function Template13({ data }: { data: ResumeData }) {
       <div className="grid grid-cols-2 gap-8 border-t border-gray-200 pt-6">
         {skills.length > 0 && (
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">Skills</h2>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{getSectionTitle(data, "skills", "Skills")}</h2>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
                 <span key={skill.id} className="text-xs bg-black text-white px-2 py-1">{skill.name}</span>
@@ -76,7 +77,7 @@ export default function Template13({ data }: { data: ResumeData }) {
 
         {education.length > 0 && (
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">Education</h2>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{getSectionTitle(data, "education", "Education")}</h2>
             {education.map((edu) => (
               <div key={edu.id} className="mb-2">
                 <p className="text-xs font-bold">{edu.degree}</p>
@@ -88,7 +89,7 @@ export default function Template13({ data }: { data: ResumeData }) {
 
         {languages.length > 0 && (
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">Languages</h2>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{getSectionTitle(data, "languages", "Languages")}</h2>
             {languages.map((lang) => (
               <p key={lang.id} className="text-xs mb-1">{lang.name} ({lang.proficiency})</p>
             ))}

@@ -52,8 +52,20 @@ export interface Certification {
   year: string;
 }
 
+export interface SectionTitles {
+  contact: string;
+  summary: string;
+  experience: string;
+  education: string;
+  skills: string;
+  languages: string;
+  certifications: string;
+  projects: string;
+}
+
 export interface ResumeData {
   personalInfo: PersonalInfo;
+  sectionTitles?: SectionTitles;
   summary: string;
   skills: Skill[];
   experience: Experience[];
@@ -61,6 +73,17 @@ export interface ResumeData {
   languages: Language[];
   certifications: Certification[];
 }
+
+export const defaultSectionTitles: SectionTitles = {
+  contact: "Contact",
+  summary: "Professional Summary",
+  experience: "Experience",
+  education: "Education",
+  skills: "Skills",
+  languages: "Languages",
+  certifications: "Certifications",
+  projects: "Projects",
+};
 
 export const defaultResumeData: ResumeData = {
   personalInfo: {
@@ -72,6 +95,7 @@ export const defaultResumeData: ResumeData = {
     linkedin: "linkedin.com/in/alexandrachen",
     website: "alexandrachen.design",
   },
+  sectionTitles: defaultSectionTitles,
   summary:
     "Creative and strategic product designer with 8+ years of experience crafting user-centered digital experiences. Passionate about solving complex problems through elegant design solutions. Proven track record of leading design teams and delivering products that increase user engagement by 40%.",
   skills: [

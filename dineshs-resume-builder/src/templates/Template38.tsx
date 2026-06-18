@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 
 export default function Template38({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -29,7 +30,7 @@ export default function Template38({ data }: { data: ResumeData }) {
           {experience.length > 0 && (
             <div className="mb-8">
               <div className="relative bg-blue-600 text-white px-4 py-2 inline-block mb-4">
-                <span className="text-sm font-bold uppercase tracking-wider">Experience</span>
+                <span className="text-sm font-bold uppercase tracking-wider">{getSectionTitle(data, "experience", "Experience")}</span>
                 <div className="absolute bottom-0 right-0 w-0 h-0 border-b-[10px] border-b-transparent border-r-[10px] border-r-blue-800"></div>
               </div>
               {experience.map((exp) => (
@@ -57,7 +58,7 @@ export default function Template38({ data }: { data: ResumeData }) {
           {skills.length > 0 && (
             <div className="mb-6">
               <div className="relative bg-green-600 text-white px-4 py-2 inline-block mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider">Skills</span>
+                <span className="text-xs font-bold uppercase tracking-wider">{getSectionTitle(data, "skills", "Skills")}</span>
                 <div className="absolute bottom-0 right-0 w-0 h-0 border-b-[8px] border-b-transparent border-r-[8px] border-r-green-800"></div>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -71,7 +72,7 @@ export default function Template38({ data }: { data: ResumeData }) {
           {education.length > 0 && (
             <div className="mb-6">
               <div className="relative bg-purple-600 text-white px-4 py-2 inline-block mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider">Education</span>
+                <span className="text-xs font-bold uppercase tracking-wider">{getSectionTitle(data, "education", "Education")}</span>
                 <div className="absolute bottom-0 right-0 w-0 h-0 border-b-[8px] border-b-transparent border-r-[8px] border-r-purple-800"></div>
               </div>
               {education.map((edu) => (
@@ -86,7 +87,7 @@ export default function Template38({ data }: { data: ResumeData }) {
           {languages.length > 0 && (
             <div>
               <div className="relative bg-orange-600 text-white px-4 py-2 inline-block mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider">Languages</span>
+                <span className="text-xs font-bold uppercase tracking-wider">{getSectionTitle(data, "languages", "Languages")}</span>
                 <div className="absolute bottom-0 right-0 w-0 h-0 border-b-[8px] border-b-transparent border-r-[8px] border-r-orange-800"></div>
               </div>
               {languages.map((lang) => (

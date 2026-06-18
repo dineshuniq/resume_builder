@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 
 export default function Template31({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -27,7 +28,7 @@ export default function Template31({ data }: { data: ResumeData }) {
         <div className="flex-1">
           {experience.length > 0 && (
             <div className="bg-white p-6 shadow-sm mb-6 border border-dashed border-gray-300">
-              <h2 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-dashed border-gray-300 pb-2">Experience</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-4 border-b border-dashed border-gray-300 pb-2">{getSectionTitle(data, "experience", "Experience")}</h2>
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-5">
                   <div className="flex justify-between items-baseline mb-1">
@@ -52,7 +53,7 @@ export default function Template31({ data }: { data: ResumeData }) {
 
           {education.length > 0 && (
             <div className="bg-white p-6 shadow-sm border border-dashed border-gray-300">
-              <h2 className="text-sm font-bold uppercase tracking-widest mb-3 border-b border-dashed border-gray-300 pb-2">Education</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-3 border-b border-dashed border-gray-300 pb-2">{getSectionTitle(data, "education", "Education")}</h2>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-2">
                   <p className="text-sm font-semibold">{edu.degree}</p>
@@ -66,7 +67,7 @@ export default function Template31({ data }: { data: ResumeData }) {
         <div className="w-[55mm]">
           {skills.length > 0 && (
             <div className="bg-white p-5 shadow-sm mb-4 border border-dashed border-gray-300">
-              <h2 className="text-sm font-bold uppercase tracking-widest mb-3 border-b border-dashed border-gray-300 pb-2">Skills</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-3 border-b border-dashed border-gray-300 pb-2">{getSectionTitle(data, "skills", "Skills")}</h2>
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
                   <span key={skill.id} className="text-xs border border-dashed border-gray-400 px-2 py-1">{skill.name}</span>
@@ -77,7 +78,7 @@ export default function Template31({ data }: { data: ResumeData }) {
 
           {languages.length > 0 && (
             <div className="bg-white p-5 shadow-sm border border-dashed border-gray-300">
-              <h2 className="text-sm font-bold uppercase tracking-widest mb-3 border-b border-dashed border-gray-300 pb-2">Languages</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-3 border-b border-dashed border-gray-300 pb-2">{getSectionTitle(data, "languages", "Languages")}</h2>
               {languages.map((lang) => (
                 <p key={lang.id} className="text-xs mb-1">{lang.name}</p>
               ))}

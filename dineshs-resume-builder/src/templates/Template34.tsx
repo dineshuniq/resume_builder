@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 
 export default function Template34({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education } = data;
@@ -25,7 +26,7 @@ export default function Template34({ data }: { data: ResumeData }) {
         <div className="flex-1">
           {experience.length > 0 && (
             <div className="bg-white p-6 shadow-lg mb-4" style={{ transform: "rotateY(-2deg)", transformStyle: "preserve-3d" }}>
-              <h2 className="text-sm font-bold uppercase tracking-widest mb-4">Experience</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-4">{getSectionTitle(data, "experience", "Experience")}</h2>
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-5">
                   <div className="flex justify-between items-baseline mb-1">
@@ -52,7 +53,7 @@ export default function Template34({ data }: { data: ResumeData }) {
         <div className="w-[55mm]">
           {skills.length > 0 && (
             <div className="bg-white p-5 shadow-lg mb-4" style={{ transform: "rotateY(3deg)", transformStyle: "preserve-3d" }}>
-              <h2 className="text-sm font-bold uppercase tracking-widest mb-3">Skills</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-3">{getSectionTitle(data, "skills", "Skills")}</h2>
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
                   <span key={skill.id} className="text-xs bg-gray-100 px-2 py-1">{skill.name}</span>
@@ -63,7 +64,7 @@ export default function Template34({ data }: { data: ResumeData }) {
 
           {education.length > 0 && (
             <div className="bg-white p-5 shadow-lg" style={{ transform: "rotateY(2deg)", transformStyle: "preserve-3d" }}>
-              <h2 className="text-sm font-bold uppercase tracking-widest mb-3">Education</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widest mb-3">{getSectionTitle(data, "education", "Education")}</h2>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-2">
                   <p className="text-xs font-semibold">{edu.degree}</p>

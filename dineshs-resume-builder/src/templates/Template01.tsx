@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 export default function Template01({ data }: { data: ResumeData }) {
@@ -24,7 +25,7 @@ export default function Template01({ data }: { data: ResumeData }) {
       {/* Summary */}
       {summary && (
         <div className="mb-8">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">Professional Summary</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">{getSectionTitle(data, "summary", "Professional Summary")}</h2>
           <p className="text-sm leading-relaxed text-gray-600">{summary}</p>
         </div>
       )}
@@ -32,7 +33,7 @@ export default function Template01({ data }: { data: ResumeData }) {
       {/* Experience */}
       {experience.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">Experience</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">{getSectionTitle(data, "experience", "Experience")}</h2>
           {experience.map((exp) => (
             <div key={exp.id} className="mb-6">
               <div className="flex justify-between items-baseline mb-1">
@@ -58,7 +59,7 @@ export default function Template01({ data }: { data: ResumeData }) {
       {/* Education */}
       {education.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">Education</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">{getSectionTitle(data, "education", "Education")}</h2>
           {education.map((edu) => (
             <div key={edu.id} className="mb-3">
               <div className="flex justify-between items-baseline">
@@ -74,7 +75,7 @@ export default function Template01({ data }: { data: ResumeData }) {
       {/* Skills */}
       {skills.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">Skills</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">{getSectionTitle(data, "skills", "Skills")}</h2>
           <div className="flex flex-wrap gap-2">
             {skills.map((skill) => (
               <span key={skill.id} className="text-xs bg-gray-50 text-gray-600 px-3 py-1 rounded-full">{skill.name}</span>
@@ -86,7 +87,7 @@ export default function Template01({ data }: { data: ResumeData }) {
       {/* Languages */}
       {languages.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">Languages</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">{getSectionTitle(data, "languages", "Languages")}</h2>
           <div className="flex flex-wrap gap-4 text-sm">
             {languages.map((lang) => (
               <span key={lang.id} className="text-gray-600">{lang.name} <span className="text-gray-400">({lang.proficiency})</span></span>
@@ -98,7 +99,7 @@ export default function Template01({ data }: { data: ResumeData }) {
       {/* Certifications */}
       {certifications.length > 0 && (
         <div>
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">Certifications</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">{getSectionTitle(data, "certifications", "Certifications")}</h2>
           {certifications.map((cert) => (
             <div key={cert.id} className="text-sm text-gray-600 mb-1">
               {cert.name} <span className="text-gray-400">- {cert.organization}, {cert.year}</span>

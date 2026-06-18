@@ -10,7 +10,9 @@ import EducationForm from "@/components/form/EducationForm";
 import SkillsForm from "@/components/form/SkillsForm";
 import LanguagesForm from "@/components/form/LanguagesForm";
 import CertificationsForm from "@/components/form/CertificationsForm";
+import SectionTitlesForm from "@/components/form/SectionTitlesForm";
 import PagedResumePreview from "@/components/resume/PagedResumePreview";
+import { getSectionTitle } from "@/lib/sectionTitles";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -83,9 +85,9 @@ function buildWordDocument(data: ResumeData) {
     `<h1>${escapeHtml(personal.fullName || "Resume")}</h1>`,
     personal.title ? `<h2>${escapeHtml(personal.title)}</h2>` : "",
     contact ? `<p class="contact">${contact}</p>` : "",
-    data.summary ? `<h3>Professional Summary</h3><p>${escapeHtml(data.summary)}</p>` : "",
+    data.summary ? `<h3>${escapeHtml(getSectionTitle(data, "summary", "Professional Summary"))}</h3><p>${escapeHtml(data.summary)}</p>` : "",
     data.experience.length
-      ? `<h3>Experience</h3>${data.experience.map((exp) => `
+      ? `<h3>${escapeHtml(getSectionTitle(data, "experience", "Experience"))}</h3>${data.experience.map((exp) => `
           <div class="item">
             <h4>${escapeHtml(exp.role)} - ${escapeHtml(exp.company)}</h4>
             <p><strong>${escapeHtml(exp.from)} - ${escapeHtml(exp.current ? "Present" : exp.to)}</strong>${exp.location ? ` | ${escapeHtml(exp.location)}` : ""}</p>
@@ -97,7 +99,7 @@ function buildWordDocument(data: ResumeData) {
         `).join("")}`
       : "",
     data.education.length
-      ? `<h3>Education</h3>${data.education.map((edu) => `
+      ? `<h3>${escapeHtml(getSectionTitle(data, "education", "Education"))}</h3>${data.education.map((edu) => `
           <div class="item">
             <h4>${escapeHtml(edu.degree)}</h4>
             <p>${escapeHtml(edu.institution)}${edu.year ? ` | ${escapeHtml(edu.year)}` : ""}${edu.score ? ` | ${escapeHtml(edu.score)}` : ""}</p>
@@ -105,13 +107,13 @@ function buildWordDocument(data: ResumeData) {
         `).join("")}`
       : "",
     data.skills.length
-      ? `<h3>Skills</h3><p>${data.skills.map((skill) => escapeHtml(skill.name)).join(", ")}</p>`
+      ? `<h3>${escapeHtml(getSectionTitle(data, "skills", "Skills"))}</h3><p>${data.skills.map((skill) => escapeHtml(skill.name)).join(", ")}</p>`
       : "",
     data.languages.length
-      ? `<h3>Languages</h3><p>${data.languages.map((language) => `${escapeHtml(language.name)} (${escapeHtml(language.proficiency)})`).join(", ")}</p>`
+      ? `<h3>${escapeHtml(getSectionTitle(data, "languages", "Languages"))}</h3><p>${data.languages.map((language) => `${escapeHtml(language.name)} (${escapeHtml(language.proficiency)})`).join(", ")}</p>`
       : "",
     data.certifications.length
-      ? `<h3>Certifications</h3><ul>${data.certifications.map((cert) => `<li>${escapeHtml(cert.name)} - ${escapeHtml(cert.organization)}${cert.year ? `, ${escapeHtml(cert.year)}` : ""}</li>`).join("")}</ul>`
+      ? `<h3>${escapeHtml(getSectionTitle(data, "certifications", "Certifications"))}</h3><ul>${data.certifications.map((cert) => `<li>${escapeHtml(cert.name)} - ${escapeHtml(cert.organization)}${cert.year ? `, ${escapeHtml(cert.year)}` : ""}</li>`).join("")}</ul>`
       : "",
   ].join("");
 
@@ -494,6 +496,10 @@ export default function App() {
 
               <FormSection title="Personal Information" icon={User}>
                 <PersonalInfoForm />
+              </FormSection>
+
+              <FormSection title="Template Headings" icon={FileText}>
+                <SectionTitlesForm />
               </FormSection>
 
               <FormSection title="Professional Summary" icon={FileText}>

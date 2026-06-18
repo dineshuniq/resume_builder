@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 
 export default function Template15({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -25,7 +26,7 @@ export default function Template15({ data }: { data: ResumeData }) {
 
           {skills.length > 0 && (
             <div className="mb-8">
-              <h3 className="text-sm font-bold text-[#7a6a5a] mb-3 uppercase tracking-wider">Skills</h3>
+              <h3 className="text-sm font-bold text-[#7a6a5a] mb-3 uppercase tracking-wider">{getSectionTitle(data, "skills", "Skills")}</h3>
               <div className="space-y-2">
                 {skills.map((skill) => (
                   <div key={skill.id} className="text-sm text-[#5a4a3a] flex items-center gap-2">
@@ -39,7 +40,7 @@ export default function Template15({ data }: { data: ResumeData }) {
 
           {education.length > 0 && (
             <div className="mb-8">
-              <h3 className="text-sm font-bold text-[#7a6a5a] mb-3 uppercase tracking-wider">Education</h3>
+              <h3 className="text-sm font-bold text-[#7a6a5a] mb-3 uppercase tracking-wider">{getSectionTitle(data, "education", "Education")}</h3>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-3">
                   <p className="text-sm font-semibold">{edu.degree}</p>
@@ -52,7 +53,7 @@ export default function Template15({ data }: { data: ResumeData }) {
 
           {languages.length > 0 && (
             <div>
-              <h3 className="text-sm font-bold text-[#7a6a5a] mb-3 uppercase tracking-wider">Languages</h3>
+              <h3 className="text-sm font-bold text-[#7a6a5a] mb-3 uppercase tracking-wider">{getSectionTitle(data, "languages", "Languages")}</h3>
               {languages.map((lang) => (
                 <p key={lang.id} className="text-sm text-[#5a4a3a] mb-1">{lang.name} - {lang.proficiency}</p>
               ))}

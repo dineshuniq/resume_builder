@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 
 export default function Template21({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -32,7 +33,7 @@ export default function Template21({ data }: { data: ResumeData }) {
           {experience.length > 0 && (
             <div className="mb-8">
               <h2 className="text-center text-lg font-bold text-[#5a3010] mb-4">
-                <span className="text-[#8b4513]">&#10047;</span> Experience <span className="text-[#8b4513]">&#10047;</span>
+                <span className="text-[#8b4513]">&#10047;</span> {getSectionTitle(data, "experience", "Experience")} <span className="text-[#8b4513]">&#10047;</span>
               </h2>
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-6 border-l-2 border-[#d4a574] pl-4">
@@ -57,7 +58,7 @@ export default function Template21({ data }: { data: ResumeData }) {
         <div className="w-[50mm]">
           {skills.length > 0 && (
             <div className="mb-6">
-              <h2 className="text-center text-sm font-bold text-[#5a3010] mb-3">Skills</h2>
+              <h2 className="text-center text-sm font-bold text-[#5a3010] mb-3">{getSectionTitle(data, "skills", "Skills")}</h2>
               <div className="flex flex-wrap gap-2 justify-center">
                 {skills.map((skill) => (
                   <span key={skill.id} className="text-xs border border-[#8b4513] text-[#5a3010] px-2 py-1">{skill.name}</span>
@@ -68,7 +69,7 @@ export default function Template21({ data }: { data: ResumeData }) {
 
           {education.length > 0 && (
             <div className="mb-6 text-center">
-              <h2 className="text-sm font-bold text-[#5a3010] mb-3">Education</h2>
+              <h2 className="text-sm font-bold text-[#5a3010] mb-3">{getSectionTitle(data, "education", "Education")}</h2>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-2">
                   <p className="text-xs font-semibold">{edu.degree}</p>
@@ -81,7 +82,7 @@ export default function Template21({ data }: { data: ResumeData }) {
 
           {languages.length > 0 && (
             <div className="text-center">
-              <h2 className="text-sm font-bold text-[#5a3010] mb-3">Languages</h2>
+              <h2 className="text-sm font-bold text-[#5a3010] mb-3">{getSectionTitle(data, "languages", "Languages")}</h2>
               {languages.map((lang) => (
                 <p key={lang.id} className="text-xs text-[#6a5030] mb-1">{lang.name}</p>
               ))}

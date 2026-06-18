@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 
 export default function Template10({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -24,7 +25,7 @@ export default function Template10({ data }: { data: ResumeData }) {
 
       {summary && (
         <div className="mb-8 border-2 border-black p-4">
-          <h2 className="text-sm font-bold uppercase tracking-widest mb-3 bg-black text-white inline-block px-2 py-1">Summary</h2>
+          <h2 className="text-sm font-bold uppercase tracking-widest mb-3 bg-black text-white inline-block px-2 py-1">{getSectionTitle(data, "summary", "Summary")}</h2>
           <p className="text-sm leading-relaxed">{summary}</p>
         </div>
       )}
@@ -32,7 +33,7 @@ export default function Template10({ data }: { data: ResumeData }) {
       {/* Experience */}
       {experience.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-bold uppercase tracking-widest mb-4 border-b-4 border-black pb-2">Experience</h2>
+          <h2 className="text-xl font-bold uppercase tracking-widest mb-4 border-b-4 border-black pb-2">{getSectionTitle(data, "experience", "Experience")}</h2>
           {experience.map((exp) => (
             <div key={exp.id} className="mb-6 border-2 border-black p-4">
               <div className="flex justify-between items-baseline mb-2">
@@ -58,7 +59,7 @@ export default function Template10({ data }: { data: ResumeData }) {
       <div className="grid grid-cols-2 gap-4">
         {skills.length > 0 && (
           <div className="border-2 border-black p-4">
-            <h2 className="text-sm font-bold uppercase tracking-widest mb-3">Skills</h2>
+            <h2 className="text-sm font-bold uppercase tracking-widest mb-3">{getSectionTitle(data, "skills", "Skills")}</h2>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
                 <span key={skill.id} className="text-xs border-2 border-black px-2 py-1">{skill.name}</span>
@@ -69,7 +70,7 @@ export default function Template10({ data }: { data: ResumeData }) {
 
         {education.length > 0 && (
           <div className="border-2 border-black p-4">
-            <h2 className="text-sm font-bold uppercase tracking-widest mb-3">Education</h2>
+            <h2 className="text-sm font-bold uppercase tracking-widest mb-3">{getSectionTitle(data, "education", "Education")}</h2>
             {education.map((edu) => (
               <div key={edu.id} className="mb-2">
                 <p className="text-xs font-bold">{edu.degree}</p>
@@ -81,7 +82,7 @@ export default function Template10({ data }: { data: ResumeData }) {
 
         {languages.length > 0 && (
           <div className="border-2 border-black p-4">
-            <h2 className="text-sm font-bold uppercase tracking-widest mb-3">Languages</h2>
+            <h2 className="text-sm font-bold uppercase tracking-widest mb-3">{getSectionTitle(data, "languages", "Languages")}</h2>
             {languages.map((lang) => (
               <p key={lang.id} className="text-xs mb-1">{lang.name} [{lang.proficiency}]</p>
             ))}

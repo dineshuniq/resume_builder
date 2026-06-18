@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 export default function Template04({ data }: { data: ResumeData }) {
@@ -23,7 +24,7 @@ export default function Template04({ data }: { data: ResumeData }) {
 
         {skills.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-blue-300 mb-3 border-b border-blue-400/30 pb-2">Skills</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-blue-300 mb-3 border-b border-blue-400/30 pb-2">{getSectionTitle(data, "skills", "Skills")}</h3>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
                 <span key={skill.id} className="text-xs bg-white/10 px-2 py-1 rounded">{skill.name}</span>
@@ -34,7 +35,7 @@ export default function Template04({ data }: { data: ResumeData }) {
 
         {education.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-blue-300 mb-3 border-b border-blue-400/30 pb-2">Education</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-blue-300 mb-3 border-b border-blue-400/30 pb-2">{getSectionTitle(data, "education", "Education")}</h3>
             {education.map((edu) => (
               <div key={edu.id} className="mb-3">
                 <p className="text-sm font-medium">{edu.degree}</p>
@@ -47,7 +48,7 @@ export default function Template04({ data }: { data: ResumeData }) {
 
         {languages.length > 0 && (
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-blue-300 mb-3 border-b border-blue-400/30 pb-2">Languages</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-blue-300 mb-3 border-b border-blue-400/30 pb-2">{getSectionTitle(data, "languages", "Languages")}</h3>
             {languages.map((lang) => (
               <div key={lang.id} className="text-sm mb-1">{lang.name} <span className="text-blue-300">({lang.proficiency})</span></div>
             ))}
@@ -59,14 +60,14 @@ export default function Template04({ data }: { data: ResumeData }) {
       <div className="flex-1 p-[15mm] bg-white">
         {summary && (
           <div className="mb-8">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3a5f] mb-3">Professional Summary</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3a5f] mb-3">{getSectionTitle(data, "summary", "Professional Summary")}</h2>
             <p className="text-sm leading-relaxed text-gray-600">{summary}</p>
           </div>
         )}
 
         {experience.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3a5f] mb-4">Experience</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3a5f] mb-4">{getSectionTitle(data, "experience", "Experience")}</h2>
             {experience.map((exp) => (
               <div key={exp.id} className="mb-6">
                 <div className="flex justify-between items-baseline mb-1">
@@ -91,7 +92,7 @@ export default function Template04({ data }: { data: ResumeData }) {
 
         {certifications.length > 0 && (
           <div>
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3a5f] mb-3">Certifications</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3a5f] mb-3">{getSectionTitle(data, "certifications", "Certifications")}</h2>
             {certifications.map((cert) => (
               <div key={cert.id} className="text-sm text-gray-600 mb-1">
                 <span className="font-semibold text-[#1e3a5f]">{cert.name}</span> - {cert.organization}, {cert.year}

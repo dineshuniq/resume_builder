@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 import type React from "react";
 
 type Layout =
@@ -125,19 +126,19 @@ function SideMeta({ data, accent, dark = false }: { data: ResumeData; accent: st
   return (
     <div className="space-y-6">
       <div>
-        <SectionTitle accent={accent}>Contact</SectionTitle>
+        <SectionTitle accent={accent}>{getSectionTitle(data, "contact", "Contact")}</SectionTitle>
         <div className={`mt-3 space-y-2 text-[11px] ${tone}`}>
           {contactLine(data).map((item) => <p key={item}>{item}</p>)}
         </div>
       </div>
       <div>
-        <SectionTitle accent={accent}>Skills</SectionTitle>
+        <SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle>
         <div className="mt-3">
           <Skills data={data} accent={accent} boxed />
         </div>
       </div>
       <div>
-        <SectionTitle accent={accent}>Education</SectionTitle>
+        <SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle>
         <div className={`mt-3 ${tone}`}>
           <Education data={data} />
         </div>
@@ -163,7 +164,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
             <div className="mt-8"><SideMeta data={data} accent={accent} /></div>
           </aside>
           <main className="flex-1 p-[15mm]">
-            <SectionTitle accent={accent}>Professional Experience</SectionTitle>
+            <SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Professional Experience")}</SectionTitle>
             <div className="mt-5"><ExperienceList data={data} accent={accent} /></div>
           </main>
         </div>
@@ -179,9 +180,9 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
           <p className="text-xs font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>{personalInfo.title}</p>
         </header>
         <div className="grid grid-cols-3 gap-5 text-xs">
-          <section><SectionTitle accent={accent}>Profile</SectionTitle><p className="mt-3 leading-relaxed text-gray-600">{summary}</p><div className="mt-6"><SectionTitle accent={accent}>Education</SectionTitle><div className="mt-3"><Education data={data} /></div></div></section>
-          <section><SectionTitle accent={accent}>Core Stack</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div><div className="mt-6"><SectionTitle accent={accent}>Languages</SectionTitle>{languages.map((lang) => <p key={lang.id} className="mt-2 text-gray-600">{lang.name} - {lang.proficiency}</p>)}</div></section>
-          <section><SectionTitle accent={accent}>Experience</SectionTitle><div className="mt-3"><ExperienceList data={data} accent={accent} compact /></div></section>
+          <section><SectionTitle accent={accent}>{getSectionTitle(data, "summary", "Profile")}</SectionTitle><p className="mt-3 leading-relaxed text-gray-600">{summary}</p><div className="mt-6"><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></section>
+          <section><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Core Stack")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div><div className="mt-6"><SectionTitle accent={accent}>{getSectionTitle(data, "languages", "Languages")}</SectionTitle>{languages.map((lang) => <p key={lang.id} className="mt-2 text-gray-600">{lang.name} - {lang.proficiency}</p>)}</div></section>
+          <section><SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-3"><ExperienceList data={data} accent={accent} compact /></div></section>
         </div>
       </div>
     );
@@ -195,8 +196,8 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
           <div className="border bg-white p-5 text-[11px] text-gray-600">{contactLine(data).map((item) => <p key={item}>{item}</p>)}</div>
         </header>
         <div className="grid grid-cols-4 gap-4">
-          <section className="col-span-3 border bg-white p-5"><SectionTitle accent={accent}>Experience</SectionTitle><div className="mt-4"><ExperienceList data={data} accent={accent} compact={config.layout === "quad"} /></div></section>
-          <aside className="space-y-4"><section className="border bg-white p-4"><SectionTitle accent={accent}>Skills</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></section><section className="border bg-white p-4"><SectionTitle accent={accent}>Education</SectionTitle><div className="mt-3"><Education data={data} /></div></section><section className="border bg-white p-4"><SectionTitle accent={accent}>Certs</SectionTitle>{certifications.map((cert) => <p key={cert.id} className="mt-2 text-[11px]">{cert.name}</p>)}</section></aside>
+          <section className="col-span-3 border bg-white p-5"><SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-4"><ExperienceList data={data} accent={accent} compact={config.layout === "quad"} /></div></section>
+          <aside className="space-y-4"><section className="border bg-white p-4"><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></section><section className="border bg-white p-4"><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></section><section className="border bg-white p-4"><SectionTitle accent={accent}>{getSectionTitle(data, "certifications", "Certs")}</SectionTitle>{certifications.map((cert) => <p key={cert.id} className="mt-2 text-[11px]">{cert.name}</p>)}</section></aside>
         </div>
       </div>
     );
@@ -208,7 +209,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
         <header className="border-b-4 pb-6" style={{ borderColor: accent }}><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p className="mt-1 text-sm uppercase tracking-[0.22em]">{personalInfo.title}</p></header>
         <div className="grid grid-cols-[48mm_1fr] gap-8 pt-8">
           <aside className="border-r pr-6" style={{ borderColor: `${accent}55` }}><SideMeta data={data} accent={accent} /></aside>
-          <main><SectionTitle accent={accent}>Experience</SectionTitle><div className="mt-5"><ExperienceList data={data} accent={accent} /></div></main>
+          <main><SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-5"><ExperienceList data={data} accent={accent} /></div></main>
         </div>
       </div>
     );
@@ -224,12 +225,12 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
         </header>
         <div className={wideLeft ? "grid grid-cols-[65mm_1fr] gap-8" : "grid grid-cols-[38mm_1fr] gap-8"}>
           <aside className="text-[11px] uppercase tracking-[0.18em]" style={{ color: accent }}>
-            <p>Profile</p><p className="mt-28">Experience</p><p className="mt-36">Details</p>
+            <p>{getSectionTitle(data, "summary", "Profile")}</p><p className="mt-28">{getSectionTitle(data, "experience", "Experience")}</p><p className="mt-36">{getSectionTitle(data, "projects", "Details")}</p>
           </aside>
           <main>
             <p className="mb-8 text-sm leading-relaxed text-gray-600">{summary}</p>
             <ExperienceList data={data} accent={accent} />
-            <div className="mt-8 grid grid-cols-2 gap-6"><div><SectionTitle accent={accent}>Skills</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} /></div></div><div><SectionTitle accent={accent}>Education</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div>
+            <div className="mt-8 grid grid-cols-2 gap-6"><div><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} /></div></div><div><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div>
           </main>
         </div>
       </div>
@@ -245,14 +246,14 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
           <div className="mt-4 flex flex-wrap gap-4 text-[11px] text-gray-500">{contactLine(data).map((item) => <span key={item}>{item}</span>)}</div>
         </header>
         <section className="mb-8">
-          <SectionTitle accent={accent}>Summary</SectionTitle>
+          <SectionTitle accent={accent}>{getSectionTitle(data, "summary", "Summary")}</SectionTitle>
           <p className="mt-3 text-sm leading-relaxed text-gray-600">{summary}</p>
         </section>
-        <SectionTitle accent={accent}>Experience</SectionTitle>
+        <SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle>
         <div className="mt-5"><ExperienceList data={data} accent={accent} /></div>
         <div className="mt-8 grid grid-cols-2 gap-8">
-          <section><SectionTitle accent={accent}>Skills</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></section>
-          <section><SectionTitle accent={accent}>Education</SectionTitle><div className="mt-3"><Education data={data} /></div></section>
+          <section><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></section>
+          <section><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></section>
         </div>
       </div>
     );
@@ -273,7 +274,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
           <div><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p className="mt-2 text-sm uppercase tracking-[0.2em]" style={{ color: config.layout === "topBanner" ? accent : dark }}>{personalInfo.title}</p></div>
           <div className="text-xs leading-relaxed text-right">{contactLine(data).map((item) => <p key={item}>{item}</p>)}</div>
         </header>
-        <main className="p-[15mm]"><p className="mb-8 text-sm leading-relaxed text-gray-600">{summary}</p><ExperienceList data={data} accent={accent} /><div className="mt-8 grid grid-cols-2 gap-8"><div><SectionTitle accent={accent}>Skills</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></div><div><SectionTitle accent={accent}>Education</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div></main>
+        <main className="p-[15mm]"><p className="mb-8 text-sm leading-relaxed text-gray-600">{summary}</p><ExperienceList data={data} accent={accent} /><div className="mt-8 grid grid-cols-2 gap-8"><div><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></div><div><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div></main>
       </div>
     );
   }
@@ -301,7 +302,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
       <div className={`w-[210mm] min-h-[297mm] ${config.layout === "mono" ? "font-sans" : "font-serif"} bg-white p-[16mm] text-gray-900`}>
         <header className="text-center"><h1 className={config.layout === "mono" ? "text-5xl font-black uppercase" : "text-4xl font-bold"}>{personalInfo.fullName}</h1><p className="mt-2 text-xs uppercase tracking-[0.22em]">{contactLine(data).join(" | ")}</p></header>
         <div className={config.layout === "mono" ? "my-8 h-2 bg-black" : "my-8 border-t border-b py-4"}><p className="text-sm leading-relaxed">{summary}</p></div>
-        <div className={config.layout === "summaryFirst" ? "grid grid-cols-2 gap-8" : ""}><div><SectionTitle accent={config.layout === "mono" ? "#000" : accent}>Experience</SectionTitle><div className="mt-5"><ExperienceList data={data} accent={accent} /></div></div><aside className={config.layout === "summaryFirst" ? "" : "mt-8 grid grid-cols-2 gap-8"}><div><SectionTitle accent={accent}>Skills</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} /></div></div><div><SectionTitle accent={accent}>Education</SectionTitle><div className="mt-3"><Education data={data} /></div></div></aside></div>
+        <div className={config.layout === "summaryFirst" ? "grid grid-cols-2 gap-8" : ""}><div><SectionTitle accent={config.layout === "mono" ? "#000" : accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-5"><ExperienceList data={data} accent={accent} /></div></div><aside className={config.layout === "summaryFirst" ? "" : "mt-8 grid grid-cols-2 gap-8"}><div><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} /></div></div><div><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></aside></div>
       </div>
     );
   }
@@ -339,7 +340,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[15mm] text-gray-800`}>
         <header className="mb-6"><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p style={{ color: accent }}>{personalInfo.title}</p></header>
-        <section className="mb-8 border p-6" style={{ borderColor: accent }}><SectionTitle accent={accent}>Featured Project</SectionTitle><h2 className="mt-3 text-2xl font-black">{featured?.title}</h2><p className="mt-3 text-sm leading-relaxed">{featured?.bullets.join(" ")}</p></section>
+        <section className="mb-8 border p-6" style={{ borderColor: accent }}><SectionTitle accent={accent}>{getSectionTitle(data, "projects", "Featured Project")}</SectionTitle><h2 className="mt-3 text-2xl font-black">{featured?.title}</h2><p className="mt-3 text-sm leading-relaxed">{featured?.bullets.join(" ")}</p></section>
         <ExperienceList data={data} accent={accent} compact />
       </div>
     );
@@ -360,7 +361,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
       <header className="mb-10 flex items-center gap-6"><div className="flex h-20 w-20 items-center justify-center border-4 text-3xl font-black" style={{ borderColor: accent, color: accent }}>{initials(personalInfo.fullName)}</div><div><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p style={{ color: accent }}>{personalInfo.title}</p></div></header>
       <p className="mb-8 text-sm leading-relaxed text-gray-600">{summary}</p>
       <ExperienceList data={data} accent={accent} />
-      <div className="mt-8 grid grid-cols-2 gap-8"><div><SectionTitle accent={accent}>Skills</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></div><div><SectionTitle accent={accent}>Education</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div>
+      <div className="mt-8 grid grid-cols-2 gap-8"><div><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></div><div><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div>
     </div>
   );
 }

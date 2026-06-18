@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 export default function Template08({ data }: { data: ResumeData }) {
@@ -33,7 +34,7 @@ export default function Template08({ data }: { data: ResumeData }) {
             <div className="mb-8">
               <h2 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
                 <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
-                About
+                {getSectionTitle(data, "summary", "About")}
               </h2>
               <p className="text-sm leading-relaxed text-gray-600">{summary}</p>
             </div>
@@ -43,7 +44,7 @@ export default function Template08({ data }: { data: ResumeData }) {
             <div className="mb-8">
               <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <span className="w-3 h-3 bg-blue-400 rounded-full"></span>
-                Experience
+                {getSectionTitle(data, "experience", "Experience")}
               </h2>
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-6 bg-gray-50 p-4 rounded-lg">
@@ -74,7 +75,7 @@ export default function Template08({ data }: { data: ResumeData }) {
             <div className="mb-8">
               <h2 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
                 <span className="w-2 h-2 bg-red-400 rounded-full"></span>
-                Skills
+                {getSectionTitle(data, "skills", "Skills")}
               </h2>
               <div className="space-y-2">
                 {skills.map((skill) => (
@@ -90,7 +91,7 @@ export default function Template08({ data }: { data: ResumeData }) {
             <div className="mb-8">
               <h2 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                Education
+                {getSectionTitle(data, "education", "Education")}
               </h2>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-3">
@@ -106,7 +107,7 @@ export default function Template08({ data }: { data: ResumeData }) {
             <div>
               <h2 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
                 <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-                Languages
+                {getSectionTitle(data, "languages", "Languages")}
               </h2>
               {languages.map((lang) => (
                 <p key={lang.id} className="text-xs text-gray-600 mb-1">{lang.name} - {lang.proficiency}</p>

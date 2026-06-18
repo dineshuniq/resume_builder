@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { getSectionTitle } from "@/lib/sectionTitles";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 export default function Template06({ data }: { data: ResumeData }) {
@@ -28,7 +29,7 @@ export default function Template06({ data }: { data: ResumeData }) {
       {/* Timeline */}
       {experience.length > 0 && (
         <div className="mb-10">
-          <h2 className="text-center text-lg font-bold text-gray-800 mb-8">Experience</h2>
+          <h2 className="text-center text-lg font-bold text-gray-800 mb-8">{getSectionTitle(data, "experience", "Experience")}</h2>
           <div className="relative">
             <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-200"></div>
             {experience.map((exp, idx) => (
@@ -61,7 +62,7 @@ export default function Template06({ data }: { data: ResumeData }) {
       {/* Skills */}
       {skills.length > 0 && (
         <div className="mb-8 text-center">
-          <h2 className="text-lg font-bold text-gray-800 mb-4">Skills</h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-4">{getSectionTitle(data, "skills", "Skills")}</h2>
           <div className="flex flex-wrap justify-center gap-2">
             {skills.map((skill) => (
               <span key={skill.id} className="text-xs bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full">{skill.name}</span>
@@ -74,7 +75,7 @@ export default function Template06({ data }: { data: ResumeData }) {
       <div className="flex gap-8 justify-center">
         {education.length > 0 && (
           <div className="text-center">
-            <h2 className="text-sm font-bold text-gray-800 mb-3">Education</h2>
+            <h2 className="text-sm font-bold text-gray-800 mb-3">{getSectionTitle(data, "education", "Education")}</h2>
             {education.map((edu) => (
               <div key={edu.id} className="mb-2">
                 <p className="text-sm font-medium">{edu.degree}</p>
@@ -85,7 +86,7 @@ export default function Template06({ data }: { data: ResumeData }) {
         )}
         {languages.length > 0 && (
           <div className="text-center">
-            <h2 className="text-sm font-bold text-gray-800 mb-3">Languages</h2>
+            <h2 className="text-sm font-bold text-gray-800 mb-3">{getSectionTitle(data, "languages", "Languages")}</h2>
             {languages.map((lang) => (
               <p key={lang.id} className="text-sm text-gray-600">{lang.name}</p>
             ))}
