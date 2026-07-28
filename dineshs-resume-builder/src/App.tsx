@@ -381,26 +381,26 @@ export default function App() {
     <div className="h-screen flex flex-col bg-gray-100">
       <Analytics />
       {/* Header */}
-      <header className="bg-white border-b shadow-sm z-50 shrink-0">
+      <header className="bg-black border-b border-red-900 shadow-sm z-50 shrink-0">
         <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center">
+            <div className="w-9 h-9 bg-red-600 rounded-lg flex items-center justify-center">
               <Layout size={20} className="text-white" />
             </div>
             <div className="min-w-0">
-              <h1 className="font-bold text-gray-900 text-lg leading-tight">UNIQ RESUME BUILDER</h1>
-              <p className="text-xs text-gray-500">{templateNames[selectedTemplate]}</p>
+              <h1 className="font-bold text-white text-lg leading-tight">UNIQ RESUME BUILDER</h1>
+              <p className="text-xs text-gray-400">{templateNames[selectedTemplate]}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2 ml-auto">
             {/* Template Navigation */}
-            <div className="hidden md:flex items-center gap-1 bg-gray-100 rounded-lg p-1">
-              <Button variant="ghost" size="sm" onClick={() => goToTemplate(-1)} disabled={selectedTemplate <= 1} className="h-8 w-8 p-0">
+            <div className="hidden md:flex items-center gap-1 bg-gray-900 rounded-lg p-1">
+              <Button variant="ghost" size="sm" onClick={() => goToTemplate(-1)} disabled={selectedTemplate <= 1} className="h-8 w-8 p-0 text-white hover:bg-gray-800 hover:text-white">
                 <ChevronLeft size={16} />
               </Button>
-              <span className="text-xs font-medium px-2">{selectedTemplate}/{totalTemplates}</span>
-              <Button variant="ghost" size="sm" onClick={() => goToTemplate(1)} disabled={selectedTemplate >= totalTemplates} className="h-8 w-8 p-0">
+              <span className="text-xs font-medium px-2 text-white">{selectedTemplate}/{totalTemplates}</span>
+              <Button variant="ghost" size="sm" onClick={() => goToTemplate(1)} disabled={selectedTemplate >= totalTemplates} className="h-8 w-8 p-0 text-white hover:bg-gray-800 hover:text-white">
                 <ChevronRight size={16} />
               </Button>
             </div>
@@ -408,7 +408,7 @@ export default function App() {
             {/* Template Gallery */}
             <Dialog open={showTemplateDialog} onOpenChange={setShowTemplateDialog}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2">
+                <Button variant="outline" size="sm" className="gap-2 border-gray-700 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
                   <Palette size={14} /> Templates
                 </Button>
               </DialogTrigger>
@@ -424,10 +424,10 @@ export default function App() {
             </Dialog>
 
             <div className="flex items-center gap-1">
-              <Button onClick={handleDownloadPdf} disabled={isExportingPdf} size="sm" title="Download PDF" aria-label="Download PDF" className="gap-1 bg-indigo-600 px-2 hover:bg-indigo-700">
+              <Button onClick={handleDownloadPdf} disabled={isExportingPdf} size="sm" title="Download PDF" aria-label="Download PDF" className="gap-1 bg-red-600 px-2 hover:bg-red-700 text-white">
                 <Download size={14} /> {isExportingPdf ? "..." : "PDF"}
               </Button>
-              <Button onClick={handleDownloadWord} size="sm" variant="outline" title="Download Word" aria-label="Download Word" className="gap-1 px-2">
+              <Button onClick={handleDownloadWord} size="sm" variant="outline" title="Download Word" aria-label="Download Word" className="gap-1 px-2 border-gray-700 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
                 <FileText size={14} /> DOC
               </Button>
             </div>
@@ -448,33 +448,33 @@ export default function App() {
           </div>
         </button>
 
-        <div className="md:hidden flex items-center justify-center gap-2 border-t bg-white px-3 py-2">
-          <Button variant="outline" size="sm" onClick={() => goToTemplate(-1)} disabled={selectedTemplate <= 1} className="h-8 w-8 p-0">
+        <div className="md:hidden flex items-center justify-center gap-2 border-t border-red-900 bg-black px-3 py-2">
+          <Button variant="outline" size="sm" onClick={() => goToTemplate(-1)} disabled={selectedTemplate <= 1} className="h-8 w-8 p-0 border-gray-700 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
             <ChevronLeft size={16} />
           </Button>
           <button
             type="button"
             onClick={() => setShowTemplateDialog(true)}
-            className="min-w-0 flex-1 truncate rounded-md bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700"
+            className="min-w-0 flex-1 truncate rounded-md bg-gray-900 px-3 py-1.5 text-xs font-medium text-white"
           >
             {selectedTemplate}/{totalTemplates} · {templateNames[selectedTemplate]}
           </button>
-          <Button variant="outline" size="sm" onClick={() => goToTemplate(1)} disabled={selectedTemplate >= totalTemplates} className="h-8 w-8 p-0">
+          <Button variant="outline" size="sm" onClick={() => goToTemplate(1)} disabled={selectedTemplate >= totalTemplates} className="h-8 w-8 p-0 border-gray-700 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
             <ChevronRight size={16} />
           </Button>
         </div>
 
         {/* Mobile Tabs */}
-        <div className="md:hidden flex border-t">
+        <div className="md:hidden flex border-t border-red-900 bg-black">
           <button
             onClick={() => setMobileTab("form")}
-            className={`flex-1 py-2 text-sm font-medium flex items-center justify-center gap-2 ${mobileTab === "form" ? "text-indigo-600 border-b-2 border-indigo-600" : "text-gray-500"}`}
+            className={`flex-1 py-2 text-sm font-medium flex items-center justify-center gap-2 ${mobileTab === "form" ? "text-red-500 border-b-2 border-red-500" : "text-gray-400"}`}
           >
             <User size={14} /> Form
           </button>
           <button
             onClick={() => setMobileTab("preview")}
-            className={`flex-1 py-2 text-sm font-medium flex items-center justify-center gap-2 ${mobileTab === "preview" ? "text-indigo-600 border-b-2 border-indigo-600" : "text-gray-500"}`}
+            className={`flex-1 py-2 text-sm font-medium flex items-center justify-center gap-2 ${mobileTab === "preview" ? "text-red-500 border-b-2 border-red-500" : "text-gray-400"}`}
           >
             <Eye size={14} /> Preview
           </button>
