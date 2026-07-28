@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/types/resume";
 import { getSectionTitle } from "@/lib/sectionTitles";
+import { renderBoldText } from "@/lib/richText";
 
 export default function Template13({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -9,13 +10,13 @@ export default function Template13({ data }: { data: ResumeData }) {
       {/* Swiss Grid Header */}
       <div className="grid grid-cols-4 gap-4 mb-8 border-b-2 border-black pb-4">
         <div className="col-span-3">
-          <h1 className="text-3xl font-bold uppercase tracking-tight">{personalInfo.fullName}</h1>
-          <p className="text-sm uppercase tracking-widest text-red-600 mt-1">{personalInfo.title}</p>
+          <h1 className="text-3xl font-bold uppercase tracking-tight">{renderBoldText(personalInfo.fullName)}</h1>
+          <p className="text-sm uppercase tracking-widest text-red-600 mt-1">{renderBoldText(personalInfo.title)}</p>
         </div>
         <div className="text-xs text-right space-y-1">
-          {personalInfo.email && <div>{personalInfo.email}</div>}
-          {personalInfo.phone && <div>{personalInfo.phone}</div>}
-          {personalInfo.location && <div>{personalInfo.location}</div>}
+          {personalInfo.email && <div>{renderBoldText(personalInfo.email)}</div>}
+          {personalInfo.phone && <div>{renderBoldText(personalInfo.phone)}</div>}
+          {personalInfo.location && <div>{renderBoldText(personalInfo.location)}</div>}
         </div>
       </div>
 
@@ -25,7 +26,7 @@ export default function Template13({ data }: { data: ResumeData }) {
             <h2 className="text-xs font-bold uppercase tracking-widest text-red-600">{getSectionTitle(data, "summary", "Profile")}</h2>
           </div>
           <div className="col-span-3">
-            <p className="text-sm leading-relaxed">{summary}</p>
+            <p className="text-sm leading-relaxed">{renderBoldText(summary)}</p>
           </div>
         </div>
       )}
@@ -42,17 +43,17 @@ export default function Template13({ data }: { data: ResumeData }) {
             <div key={exp.id} className="grid grid-cols-4 gap-4 mb-6">
               <div className="col-span-1">
                 <p className="text-xs font-medium">{exp.from} - {exp.to}</p>
-                <p className="text-xs text-gray-500">{exp.company}</p>
+                <p className="text-xs text-gray-500">{renderBoldText(exp.company)}</p>
               </div>
               <div className="col-span-3">
-                <h3 className="font-bold text-sm mb-1">{exp.role}</h3>
-                <p className="text-xs text-gray-500 mb-2">{exp.location}</p>
+                <h3 className="font-bold text-sm mb-1">{renderBoldText(exp.role)}</h3>
+                <p className="text-xs text-gray-500 mb-2">{renderBoldText(exp.location)}</p>
                 {exp.projects.map((project) => (
                   <div key={project.id} className="mb-2">
-                    <p className="text-xs font-semibold">{project.title}</p>
+                    <p className="text-xs font-semibold">{renderBoldText(project.title)}</p>
                     <ul className="text-xs text-gray-600 space-y-0.5">
                       {project.bullets.map((bullet, idx) => (
-                        <li key={idx}>{bullet}</li>
+                        <li key={idx}>{renderBoldText(bullet)}</li>
                       ))}
                     </ul>
                   </div>
@@ -69,7 +70,7 @@ export default function Template13({ data }: { data: ResumeData }) {
             <h2 className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{getSectionTitle(data, "skills", "Skills")}</h2>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
-                <span key={skill.id} className="text-xs bg-black text-white px-2 py-1">{skill.name}</span>
+                <span key={skill.id} className="text-xs bg-black text-white px-2 py-1">{renderBoldText(skill.name)}</span>
               ))}
             </div>
           </div>
@@ -80,8 +81,8 @@ export default function Template13({ data }: { data: ResumeData }) {
             <h2 className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{getSectionTitle(data, "education", "Education")}</h2>
             {education.map((edu) => (
               <div key={edu.id} className="mb-2">
-                <p className="text-xs font-bold">{edu.degree}</p>
-                <p className="text-xs text-gray-600">{edu.institution}, {edu.year}</p>
+                <p className="text-xs font-bold">{renderBoldText(edu.degree)}</p>
+                <p className="text-xs text-gray-600">{renderBoldText(edu.institution)}, {edu.year}</p>
               </div>
             ))}
           </div>
@@ -91,7 +92,7 @@ export default function Template13({ data }: { data: ResumeData }) {
           <div>
             <h2 className="text-xs font-bold uppercase tracking-widest text-red-600 mb-3">{getSectionTitle(data, "languages", "Languages")}</h2>
             {languages.map((lang) => (
-              <p key={lang.id} className="text-xs mb-1">{lang.name} ({lang.proficiency})</p>
+              <p key={lang.id} className="text-xs mb-1">{renderBoldText(lang.name)} ({lang.proficiency})</p>
             ))}
           </div>
         )}

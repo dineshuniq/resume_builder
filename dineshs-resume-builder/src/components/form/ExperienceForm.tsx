@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import FieldHint from "@/components/form/FieldHint";
+import BoldableInput from "@/components/form/BoldableInput";
+import BoldableTextarea from "@/components/form/BoldableTextarea";
 
 export default function ExperienceForm() {
   const { resumeData, addExperience, removeExperience, updateExperience, addProject, removeProject, updateProject } = useResumeStore();
@@ -37,17 +39,17 @@ export default function ExperienceForm() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <Label className="text-xs">Role</Label>
-                  <Input value={exp.role} onChange={(e) => updateExperience(exp.id, "role", e.target.value)} className="h-8 text-sm" />
+                  <BoldableInput value={exp.role} onChange={(e) => updateExperience(exp.id, "role", e.target.value)} className="h-8 text-sm" />
                 </div>
                 <div className="space-y-1">
                   <Label className="text-xs">Company</Label>
-                  <Input value={exp.company} onChange={(e) => updateExperience(exp.id, "company", e.target.value)} className="h-8 text-sm" />
+                  <BoldableInput value={exp.company} onChange={(e) => updateExperience(exp.id, "company", e.target.value)} className="h-8 text-sm" />
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1">
                   <Label className="text-xs">Location</Label>
-                  <Input value={exp.location} onChange={(e) => updateExperience(exp.id, "location", e.target.value)} className="h-8 text-sm" />
+                  <BoldableInput value={exp.location} onChange={(e) => updateExperience(exp.id, "location", e.target.value)} className="h-8 text-sm" />
                 </div>
                 <div className="space-y-1">
                   <Label className="text-xs">From</Label>
@@ -68,17 +70,19 @@ export default function ExperienceForm() {
                 <p className="text-xs font-semibold text-gray-500">Projects</p>
                 {exp.projects.map((project) => (
                   <div key={project.id} className="space-y-2 bg-white p-3 rounded">
-                    <div className="flex justify-between">
-                      <Input value={project.title} onChange={(e) => updateProject(exp.id, project.id, "title", e.target.value)} className="h-7 text-sm" placeholder="Project title" />
+                    <div className="flex justify-between gap-2">
+                      <div className="flex-1">
+                        <BoldableInput value={project.title} onChange={(e) => updateProject(exp.id, project.id, "title", e.target.value)} className="h-7 text-sm" placeholder="Project title" />
+                      </div>
                       <Button variant="ghost" size="sm" onClick={() => removeProject(exp.id, project.id)} className="text-red-400 hover:text-red-600 h-6 w-6 p-0">
                         <Trash2 size={12} />
                       </Button>
                     </div>
-                    <textarea
+                    <BoldableTextarea
                       value={project.bullets.join("\n")}
                       onChange={(e) => updateProject(exp.id, project.id, "bullets", e.target.value.split("\n").filter(Boolean))}
                       placeholder="Bullet points (one per line)"
-                      className="w-full min-h-[60px] p-2 text-xs rounded-md border border-input bg-background resize-y"
+                      className="min-h-[60px] p-2 text-xs"
                     />
                     <FieldHint>Start each line with an action verb and quantify the result (%, $, time, scale) — vague duties get filtered out by both ATS and recruiters.</FieldHint>
                   </div>

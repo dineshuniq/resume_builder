@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/types/resume";
 import { getSectionTitle } from "@/lib/sectionTitles";
+import { renderBoldText } from "@/lib/richText";
 
 export default function Template25({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -17,17 +18,17 @@ export default function Template25({ data }: { data: ResumeData }) {
             <span className="w-2 h-2 bg-[#c9a96e] rotate-45"></span>
           </div>
         </div>
-        <h1 className="text-4xl font-bold text-[#c9a96e] uppercase tracking-[0.2em] mb-2">{personalInfo.fullName}</h1>
+        <h1 className="text-4xl font-bold text-[#c9a96e] uppercase tracking-[0.2em] mb-2">{renderBoldText(personalInfo.fullName)}</h1>
         <div className="w-[40mm] h-[1px] bg-[#c9a96e] mx-auto mb-3"></div>
-        <p className="text-sm text-[#c9a96e] uppercase tracking-[0.3em]">{personalInfo.title}</p>
+        <p className="text-sm text-[#c9a96e] uppercase tracking-[0.3em]">{renderBoldText(personalInfo.title)}</p>
       </div>
 
       <div className="flex gap-8">
         <div className="w-[55mm]">
           <div className="mb-6 space-y-2 text-xs text-[#888]">
-            {personalInfo.email && <div className="border-b border-[#333] pb-2">{personalInfo.email}</div>}
-            {personalInfo.phone && <div className="border-b border-[#333] pb-2">{personalInfo.phone}</div>}
-            {personalInfo.location && <div className="border-b border-[#333] pb-2">{personalInfo.location}</div>}
+            {personalInfo.email && <div className="border-b border-[#333] pb-2">{renderBoldText(personalInfo.email)}</div>}
+            {personalInfo.phone && <div className="border-b border-[#333] pb-2">{renderBoldText(personalInfo.phone)}</div>}
+            {personalInfo.location && <div className="border-b border-[#333] pb-2">{renderBoldText(personalInfo.location)}</div>}
           </div>
 
           {skills.length > 0 && (
@@ -35,7 +36,7 @@ export default function Template25({ data }: { data: ResumeData }) {
               <h2 className="text-xs font-bold text-[#c9a96e] uppercase tracking-[0.3em] mb-3 text-center">&#9670; {getSectionTitle(data, "skills", "Skills")} &#9670;</h2>
               <div className="space-y-2">
                 {skills.map((skill) => (
-                  <div key={skill.id} className="text-xs text-[#aaa] text-center border border-[#333] py-1">{skill.name}</div>
+                  <div key={skill.id} className="text-xs text-[#aaa] text-center border border-[#333] py-1">{renderBoldText(skill.name)}</div>
                 ))}
               </div>
             </div>
@@ -46,8 +47,8 @@ export default function Template25({ data }: { data: ResumeData }) {
               <h2 className="text-xs font-bold text-[#c9a96e] uppercase tracking-[0.3em] mb-3 text-center">&#9670; {getSectionTitle(data, "education", "Education")} &#9670;</h2>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-2 text-center">
-                  <p className="text-xs text-[#ccc]">{edu.degree}</p>
-                  <p className="text-xs text-[#888]">{edu.institution}</p>
+                  <p className="text-xs text-[#ccc]">{renderBoldText(edu.degree)}</p>
+                  <p className="text-xs text-[#888]">{renderBoldText(edu.institution)}</p>
                   <p className="text-xs text-[#666]">{edu.year}</p>
                 </div>
               ))}
@@ -58,7 +59,7 @@ export default function Template25({ data }: { data: ResumeData }) {
             <div>
               <h2 className="text-xs font-bold text-[#c9a96e] uppercase tracking-[0.3em] mb-3 text-center">&#9670; {getSectionTitle(data, "languages", "Languages")} &#9670;</h2>
               {languages.map((lang) => (
-                <p key={lang.id} className="text-xs text-[#aaa] text-center">{lang.name}</p>
+                <p key={lang.id} className="text-xs text-[#aaa] text-center">{renderBoldText(lang.name)}</p>
               ))}
             </div>
           )}
@@ -68,7 +69,7 @@ export default function Template25({ data }: { data: ResumeData }) {
           {summary && (
             <div className="mb-8">
               <h2 className="text-xs font-bold text-[#c9a96e] uppercase tracking-[0.3em] mb-3">&#9670; {getSectionTitle(data, "summary", "Profile")} &#9670;</h2>
-              <p className="text-sm leading-relaxed text-[#bbb]">{summary}</p>
+              <p className="text-sm leading-relaxed text-[#bbb]">{renderBoldText(summary)}</p>
             </div>
           )}
 
@@ -77,15 +78,15 @@ export default function Template25({ data }: { data: ResumeData }) {
               <h2 className="text-xs font-bold text-[#c9a96e] uppercase tracking-[0.3em] mb-4">&#9670; {getSectionTitle(data, "experience", "Experience")} &#9670;</h2>
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-6">
-                  <h3 className="font-bold text-[#ddd] mb-1">{exp.role}</h3>
-                  <p className="text-xs text-[#c9a96e] mb-1">{exp.company} | {exp.from} - {exp.to}</p>
-                  <p className="text-xs text-[#666] mb-2">{exp.location}</p>
+                  <h3 className="font-bold text-[#ddd] mb-1">{renderBoldText(exp.role)}</h3>
+                  <p className="text-xs text-[#c9a96e] mb-1">{renderBoldText(exp.company)} | {exp.from} - {exp.to}</p>
+                  <p className="text-xs text-[#666] mb-2">{renderBoldText(exp.location)}</p>
                   {exp.projects.map((project) => (
                     <div key={project.id} className="mb-2">
-                      <p className="text-xs font-semibold text-[#999]">{project.title}</p>
+                      <p className="text-xs font-semibold text-[#999]">{renderBoldText(project.title)}</p>
                       <ul className="text-xs text-[#777] space-y-0.5">
                         {project.bullets.map((bullet, idx) => (
-                          <li key={idx}>{bullet}</li>
+                          <li key={idx}>{renderBoldText(bullet)}</li>
                         ))}
                       </ul>
                     </div>

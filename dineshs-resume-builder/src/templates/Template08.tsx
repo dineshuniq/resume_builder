@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/types/resume";
 import { getSectionTitle } from "@/lib/sectionTitles";
+import { renderBoldText } from "@/lib/richText";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 export default function Template08({ data }: { data: ResumeData }) {
@@ -15,14 +16,14 @@ export default function Template08({ data }: { data: ResumeData }) {
 
       {/* Header */}
       <div className="relative mb-10">
-        <h1 className="text-5xl font-bold text-gray-900 mb-2">{personalInfo.fullName}</h1>
-        <p className="text-lg text-gray-600 mb-4">{personalInfo.title}</p>
+        <h1 className="text-5xl font-bold text-gray-900 mb-2">{renderBoldText(personalInfo.fullName)}</h1>
+        <p className="text-lg text-gray-600 mb-4">{renderBoldText(personalInfo.title)}</p>
         <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-          {personalInfo.email && <span className="flex items-center gap-1"><Mail size={13} /> {personalInfo.email}</span>}
-          {personalInfo.phone && <span className="flex items-center gap-1"><Phone size={13} /> {personalInfo.phone}</span>}
-          {personalInfo.location && <span className="flex items-center gap-1"><MapPin size={13} /> {personalInfo.location}</span>}
-          {personalInfo.linkedin && <span className="flex items-center gap-1"><Linkedin size={13} /> {personalInfo.linkedin}</span>}
-          {personalInfo.website && <span className="flex items-center gap-1"><Globe size={13} /> {personalInfo.website}</span>}
+          {personalInfo.email && <span className="flex items-center gap-1"><Mail size={13} /> {renderBoldText(personalInfo.email)}</span>}
+          {personalInfo.phone && <span className="flex items-center gap-1"><Phone size={13} /> {renderBoldText(personalInfo.phone)}</span>}
+          {personalInfo.location && <span className="flex items-center gap-1"><MapPin size={13} /> {renderBoldText(personalInfo.location)}</span>}
+          {personalInfo.linkedin && <span className="flex items-center gap-1"><Linkedin size={13} /> {renderBoldText(personalInfo.linkedin)}</span>}
+          {personalInfo.website && <span className="flex items-center gap-1"><Globe size={13} /> {renderBoldText(personalInfo.website)}</span>}
         </div>
       </div>
 
@@ -36,7 +37,7 @@ export default function Template08({ data }: { data: ResumeData }) {
                 <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
                 {getSectionTitle(data, "summary", "About")}
               </h2>
-              <p className="text-sm leading-relaxed text-gray-600">{summary}</p>
+              <p className="text-sm leading-relaxed text-gray-600">{renderBoldText(summary)}</p>
             </div>
           )}
 
@@ -49,16 +50,16 @@ export default function Template08({ data }: { data: ResumeData }) {
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-6 bg-gray-50 p-4 rounded-lg">
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-gray-800">{exp.role}</h3>
+                    <h3 className="font-bold text-gray-800">{renderBoldText(exp.role)}</h3>
                     <span className="text-xs text-gray-400">{exp.from} - {exp.to}</span>
                   </div>
-                  <p className="text-sm text-gray-500 mb-2">{exp.company} | {exp.location}</p>
+                  <p className="text-sm text-gray-500 mb-2">{renderBoldText(exp.company)} | {renderBoldText(exp.location)}</p>
                   {exp.projects.map((project) => (
                     <div key={project.id} className="mb-2">
-                      <p className="text-sm font-medium text-gray-700">{project.title}</p>
+                      <p className="text-sm font-medium text-gray-700">{renderBoldText(project.title)}</p>
                       <ul className="list-disc list-inside text-xs text-gray-600 space-y-0.5">
                         {project.bullets.map((bullet, idx) => (
-                          <li key={idx}>{bullet}</li>
+                          <li key={idx}>{renderBoldText(bullet)}</li>
                         ))}
                       </ul>
                     </div>
@@ -80,7 +81,7 @@ export default function Template08({ data }: { data: ResumeData }) {
               <div className="space-y-2">
                 {skills.map((skill) => (
                   <div key={skill.id} className="flex items-center gap-2">
-                    <span className="text-xs text-gray-600">{skill.name}</span>
+                    <span className="text-xs text-gray-600">{renderBoldText(skill.name)}</span>
                   </div>
                 ))}
               </div>
@@ -95,8 +96,8 @@ export default function Template08({ data }: { data: ResumeData }) {
               </h2>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-3">
-                  <p className="text-xs font-semibold text-gray-700">{edu.degree}</p>
-                  <p className="text-xs text-gray-500">{edu.institution}</p>
+                  <p className="text-xs font-semibold text-gray-700">{renderBoldText(edu.degree)}</p>
+                  <p className="text-xs text-gray-500">{renderBoldText(edu.institution)}</p>
                   <p className="text-xs text-gray-400">{edu.year}</p>
                 </div>
               ))}
@@ -110,7 +111,7 @@ export default function Template08({ data }: { data: ResumeData }) {
                 {getSectionTitle(data, "languages", "Languages")}
               </h2>
               {languages.map((lang) => (
-                <p key={lang.id} className="text-xs text-gray-600 mb-1">{lang.name} - {lang.proficiency}</p>
+                <p key={lang.id} className="text-xs text-gray-600 mb-1">{renderBoldText(lang.name)} - {lang.proficiency}</p>
               ))}
             </div>
           )}

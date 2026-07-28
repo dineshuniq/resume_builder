@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/types/resume";
 import { getSectionTitle } from "@/lib/sectionTitles";
+import { renderBoldText } from "@/lib/richText";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 export default function Template11({ data }: { data: ResumeData }) {
@@ -9,20 +10,20 @@ export default function Template11({ data }: { data: ResumeData }) {
     <div className="w-[210mm] min-h-[297mm] bg-[#fef9f3] p-[15mm] font-sans text-gray-800">
       {/* Soft Header */}
       <div className="bg-[#e8f4f0] rounded-3xl p-8 mb-6">
-        <h1 className="text-4xl font-bold text-[#2d5a4c] mb-2">{personalInfo.fullName}</h1>
-        <p className="text-lg text-[#5a8a7a]">{personalInfo.title}</p>
+        <h1 className="text-4xl font-bold text-[#2d5a4c] mb-2">{renderBoldText(personalInfo.fullName)}</h1>
+        <p className="text-lg text-[#5a8a7a]">{renderBoldText(personalInfo.title)}</p>
         <div className="flex flex-wrap gap-3 mt-4 text-sm text-[#7aaa9a]">
-          {personalInfo.email && <span className="flex items-center gap-1"><Mail size={13} /> {personalInfo.email}</span>}
-          {personalInfo.phone && <span className="flex items-center gap-1"><Phone size={13} /> {personalInfo.phone}</span>}
-          {personalInfo.location && <span className="flex items-center gap-1"><MapPin size={13} /> {personalInfo.location}</span>}
-          {personalInfo.linkedin && <span className="flex items-center gap-1"><Linkedin size={13} /> {personalInfo.linkedin}</span>}
-          {personalInfo.website && <span className="flex items-center gap-1"><Globe size={13} /> {personalInfo.website}</span>}
+          {personalInfo.email && <span className="flex items-center gap-1"><Mail size={13} /> {renderBoldText(personalInfo.email)}</span>}
+          {personalInfo.phone && <span className="flex items-center gap-1"><Phone size={13} /> {renderBoldText(personalInfo.phone)}</span>}
+          {personalInfo.location && <span className="flex items-center gap-1"><MapPin size={13} /> {renderBoldText(personalInfo.location)}</span>}
+          {personalInfo.linkedin && <span className="flex items-center gap-1"><Linkedin size={13} /> {renderBoldText(personalInfo.linkedin)}</span>}
+          {personalInfo.website && <span className="flex items-center gap-1"><Globe size={13} /> {renderBoldText(personalInfo.website)}</span>}
         </div>
       </div>
 
       {summary && (
         <div className="bg-[#fdf2f0] rounded-2xl p-6 mb-6">
-          <p className="text-sm leading-relaxed text-[#8a6a5a]">{summary}</p>
+          <p className="text-sm leading-relaxed text-[#8a6a5a]">{renderBoldText(summary)}</p>
         </div>
       )}
 
@@ -34,16 +35,16 @@ export default function Template11({ data }: { data: ResumeData }) {
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-5">
                   <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-bold text-gray-800">{exp.role}</h3>
+                    <h3 className="font-bold text-gray-800">{renderBoldText(exp.role)}</h3>
                     <span className="text-xs text-gray-400">{exp.from} - {exp.to}</span>
                   </div>
-                  <p className="text-sm text-[#7a6aaa] mb-2">{exp.company}</p>
+                  <p className="text-sm text-[#7a6aaa] mb-2">{renderBoldText(exp.company)}</p>
                   {exp.projects.map((project) => (
                     <div key={project.id} className="mb-2">
-                      <p className="text-xs font-semibold text-gray-600">{project.title}</p>
+                      <p className="text-xs font-semibold text-gray-600">{renderBoldText(project.title)}</p>
                       <ul className="list-disc list-inside text-xs text-gray-500 space-y-0.5">
                         {project.bullets.map((bullet, idx) => (
-                          <li key={idx}>{bullet}</li>
+                          <li key={idx}>{renderBoldText(bullet)}</li>
                         ))}
                       </ul>
                     </div>
@@ -58,8 +59,8 @@ export default function Template11({ data }: { data: ResumeData }) {
               <h2 className="text-sm font-bold text-[#5a4a8a] mb-3 uppercase tracking-wider">{getSectionTitle(data, "education", "Education")}</h2>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-2">
-                  <p className="text-sm font-semibold text-gray-700">{edu.degree}</p>
-                  <p className="text-xs text-gray-500">{edu.institution}, {edu.year}</p>
+                  <p className="text-sm font-semibold text-gray-700">{renderBoldText(edu.degree)}</p>
+                  <p className="text-xs text-gray-500">{renderBoldText(edu.institution)}, {edu.year}</p>
                 </div>
               ))}
             </div>
@@ -72,7 +73,7 @@ export default function Template11({ data }: { data: ResumeData }) {
               <h2 className="text-sm font-bold text-[#4a5a8a] mb-3 uppercase tracking-wider">{getSectionTitle(data, "skills", "Skills")}</h2>
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
-                  <span key={skill.id} className="text-xs bg-white text-[#5a6aaa] px-3 py-1.5 rounded-xl shadow-sm">{skill.name}</span>
+                  <span key={skill.id} className="text-xs bg-white text-[#5a6aaa] px-3 py-1.5 rounded-xl shadow-sm">{renderBoldText(skill.name)}</span>
                 ))}
               </div>
             </div>
@@ -82,7 +83,7 @@ export default function Template11({ data }: { data: ResumeData }) {
             <div className="bg-[#fff5f5] rounded-2xl p-5">
               <h2 className="text-sm font-bold text-[#8a4a5a] mb-3 uppercase tracking-wider">{getSectionTitle(data, "languages", "Languages")}</h2>
               {languages.map((lang) => (
-                <p key={lang.id} className="text-xs text-[#9a6a7a] mb-1">{lang.name} - {lang.proficiency}</p>
+                <p key={lang.id} className="text-xs text-[#9a6a7a] mb-1">{renderBoldText(lang.name)} - {lang.proficiency}</p>
               ))}
             </div>
           )}

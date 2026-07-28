@@ -75,6 +75,16 @@ function escapeHtml(value: string) {
     .replace(/"/g, "&quot;");
 }
 
+function escapeHtmlWithBold(value: string) {
+  return value
+    .split(/(\*\*[^*]+\*\*)/g)
+    .map((part) => {
+      const match = /^\*\*([^*]+)\*\*$/.exec(part);
+      return match ? `<strong>${escapeHtml(match[1])}</strong>` : escapeHtml(part);
+    })
+    .join("");
+}
+
 function buildWordDocument(data: ResumeData) {
   const personal = data.personalInfo;
   const contact = [personal.email, personal.phone, personal.location, personal.linkedin, personal.website]
@@ -83,18 +93,18 @@ function buildWordDocument(data: ResumeData) {
     .join(" | ");
 
   const sections = [
-    `<h1>${escapeHtml(personal.fullName || "Resume")}</h1>`,
-    personal.title ? `<h2>${escapeHtml(personal.title)}</h2>` : "",
+    `<h1>${escapeHtmlWithBold(personal.fullName || "Resume")}</h1>`,
+    personal.title ? `<h2>${escapeHtmlWithBold(personal.title)}</h2>` : "",
     contact ? `<p class="contact">${contact}</p>` : "",
-    data.summary ? `<h3>${escapeHtml(getSectionTitle(data, "summary", "Professional Summary"))}</h3><p>${escapeHtml(data.summary)}</p>` : "",
+    data.summary ? `<h3>${escapeHtml(getSectionTitle(data, "summary", "Professional Summary"))}</h3><p>${escapeHtmlWithBold(data.summary)}</p>` : "",
     data.experience.length
       ? `<h3>${escapeHtml(getSectionTitle(data, "experience", "Experience"))}</h3>${data.experience.map((exp) => `
           <div class="item">
-            <h4>${escapeHtml(exp.role)} - ${escapeHtml(exp.company)}</h4>
-            <p><strong>${escapeHtml(exp.from)} - ${escapeHtml(exp.current ? "Present" : exp.to)}</strong>${exp.location ? ` | ${escapeHtml(exp.location)}` : ""}</p>
+            <h4>${escapeHtmlWithBold(exp.role)} - ${escapeHtmlWithBold(exp.company)}</h4>
+            <p><strong>${escapeHtml(exp.from)} - ${escapeHtml(exp.current ? "Present" : exp.to)}</strong>${exp.location ? ` | ${escapeHtmlWithBold(exp.location)}` : ""}</p>
             ${exp.projects.map((project) => `
-              <p><strong>${escapeHtml(project.title)}</strong></p>
-              <ul>${project.bullets.filter(Boolean).map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}</ul>
+              <p><strong>${escapeHtmlWithBold(project.title)}</strong></p>
+              <ul>${project.bullets.filter(Boolean).map((bullet) => `<li>${escapeHtmlWithBold(bullet)}</li>`).join("")}</ul>
             `).join("")}
           </div>
         `).join("")}`
@@ -102,19 +112,19 @@ function buildWordDocument(data: ResumeData) {
     data.education.length
       ? `<h3>${escapeHtml(getSectionTitle(data, "education", "Education"))}</h3>${data.education.map((edu) => `
           <div class="item">
-            <h4>${escapeHtml(edu.degree)}</h4>
-            <p>${escapeHtml(edu.institution)}${edu.year ? ` | ${escapeHtml(edu.year)}` : ""}${edu.score ? ` | ${escapeHtml(edu.score)}` : ""}</p>
+            <h4>${escapeHtmlWithBold(edu.degree)}</h4>
+            <p>${escapeHtmlWithBold(edu.institution)}${edu.year ? ` | ${escapeHtml(edu.year)}` : ""}${edu.score ? ` | ${escapeHtmlWithBold(edu.score)}` : ""}</p>
           </div>
         `).join("")}`
       : "",
     data.skills.length
-      ? `<h3>${escapeHtml(getSectionTitle(data, "skills", "Skills"))}</h3><p>${data.skills.map((skill) => escapeHtml(skill.name)).join(", ")}</p>`
+      ? `<h3>${escapeHtml(getSectionTitle(data, "skills", "Skills"))}</h3><p>${data.skills.map((skill) => escapeHtmlWithBold(skill.name)).join(", ")}</p>`
       : "",
     data.languages.length
-      ? `<h3>${escapeHtml(getSectionTitle(data, "languages", "Languages"))}</h3><p>${data.languages.map((language) => `${escapeHtml(language.name)} (${escapeHtml(language.proficiency)})`).join(", ")}</p>`
+      ? `<h3>${escapeHtml(getSectionTitle(data, "languages", "Languages"))}</h3><p>${data.languages.map((language) => `${escapeHtmlWithBold(language.name)} (${escapeHtml(language.proficiency)})`).join(", ")}</p>`
       : "",
     data.certifications.length
-      ? `<h3>${escapeHtml(getSectionTitle(data, "certifications", "Certifications"))}</h3><ul>${data.certifications.map((cert) => `<li>${escapeHtml(cert.name)} - ${escapeHtml(cert.organization)}${cert.year ? `, ${escapeHtml(cert.year)}` : ""}</li>`).join("")}</ul>`
+      ? `<h3>${escapeHtml(getSectionTitle(data, "certifications", "Certifications"))}</h3><ul>${data.certifications.map((cert) => `<li>${escapeHtmlWithBold(cert.name)} - ${escapeHtmlWithBold(cert.organization)}${cert.year ? `, ${escapeHtml(cert.year)}` : ""}</li>`).join("")}</ul>`
       : "",
   ].join("");
 

@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import FieldHint from "@/components/form/FieldHint";
+import BoldableInput from "@/components/form/BoldableInput";
 
 export default function CertificationsForm() {
   const { resumeData, addCertification, removeCertification, setResumeData } = useResumeStore();
@@ -33,11 +34,11 @@ export default function CertificationsForm() {
         <div key={cert.id} className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end border rounded-lg p-3 bg-gray-50/50">
           <div className="col-span-1 sm:col-span-5 space-y-1">
             <Label className="text-xs">Certification</Label>
-            <Input value={cert.name} onChange={(e) => updateCert(cert.id, "name", e.target.value)} className="h-8 text-sm" />
+            <BoldableInput value={cert.name} onChange={(e) => updateCert(cert.id, "name", e.target.value)} className="h-8 text-sm" />
           </div>
           <div className="col-span-1 sm:col-span-4 space-y-1">
             <Label className="text-xs">Organization</Label>
-            <Input value={cert.organization} onChange={(e) => updateCert(cert.id, "organization", e.target.value)} className="h-8 text-sm" />
+            <BoldableInput value={cert.organization} onChange={(e) => updateCert(cert.id, "organization", e.target.value)} className="h-8 text-sm" />
           </div>
           <div className="col-span-1 sm:col-span-2 space-y-1">
             <Label className="text-xs">Year</Label>

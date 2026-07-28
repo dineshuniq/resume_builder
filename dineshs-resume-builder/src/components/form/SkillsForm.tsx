@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
 import FieldHint from "@/components/form/FieldHint";
+import BoldableInput from "@/components/form/BoldableInput";
 
 export default function SkillsForm() {
   const { resumeData, addSkill, removeSkill } = useResumeStore();
@@ -20,7 +21,7 @@ export default function SkillsForm() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-2">
-        <Input value={newSkill} onChange={(e) => setNewSkill(e.target.value)} placeholder="Add a skill..." className="h-8 text-sm" onKeyDown={(e) => e.key === "Enter" && handleAdd()} />
+        <BoldableInput value={newSkill} onChange={(e) => setNewSkill(e.target.value)} placeholder="Add a skill..." className="h-8 text-sm" onKeyDown={(e) => e.key === "Enter" && handleAdd()} />
         <Input value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder="Category" className="h-8 text-sm w-full sm:w-[120px]" />
         <Button variant="outline" size="sm" onClick={handleAdd} className="h-8 px-3 self-start sm:self-auto">
           <Plus size={14} />

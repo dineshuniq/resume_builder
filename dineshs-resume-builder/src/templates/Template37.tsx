@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/types/resume";
 import { getSectionTitle } from "@/lib/sectionTitles";
+import { renderBoldText } from "@/lib/richText";
 
 export default function Template37({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -12,19 +13,19 @@ export default function Template37({ data }: { data: ResumeData }) {
         <div className="w-[50mm] h-[55mm] bg-gradient-to-b from-cyan-400 to-blue-600" style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}>
         </div>
         <div>
-          <h1 className="text-4xl font-bold mb-2">{personalInfo.fullName}</h1>
-          <p className="text-lg text-cyan-400">{personalInfo.title}</p>
+          <h1 className="text-4xl font-bold mb-2">{renderBoldText(personalInfo.fullName)}</h1>
+          <p className="text-lg text-cyan-400">{renderBoldText(personalInfo.title)}</p>
           <div className="flex flex-wrap gap-3 mt-3 text-sm text-gray-400">
-            {personalInfo.email && <span>{personalInfo.email}</span>}
-            {personalInfo.phone && <span>{personalInfo.phone}</span>}
-            {personalInfo.location && <span>{personalInfo.location}</span>}
+            {personalInfo.email && <span>{renderBoldText(personalInfo.email)}</span>}
+            {personalInfo.phone && <span>{renderBoldText(personalInfo.phone)}</span>}
+            {personalInfo.location && <span>{renderBoldText(personalInfo.location)}</span>}
           </div>
         </div>
       </div>
 
       {summary && (
         <div className="mb-8 border-l-4 border-cyan-400 pl-4">
-          <p className="text-sm leading-relaxed text-gray-300">{summary}</p>
+          <p className="text-sm leading-relaxed text-gray-300">{renderBoldText(summary)}</p>
         </div>
       )}
 
@@ -35,14 +36,14 @@ export default function Template37({ data }: { data: ResumeData }) {
               <h2 className="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-4">{getSectionTitle(data, "experience", "Experience")}</h2>
               {experience.map((exp) => (
                 <div key={exp.id} className="mb-6">
-                  <h3 className="font-bold text-white mb-1">{exp.role}</h3>
-                  <p className="text-xs text-cyan-400 mb-2">{exp.company} | {exp.from} - {exp.to}</p>
+                  <h3 className="font-bold text-white mb-1">{renderBoldText(exp.role)}</h3>
+                  <p className="text-xs text-cyan-400 mb-2">{renderBoldText(exp.company)} | {exp.from} - {exp.to}</p>
                   {exp.projects.map((project) => (
                     <div key={project.id} className="mb-2">
-                      <p className="text-xs font-semibold text-gray-300">{project.title}</p>
+                      <p className="text-xs font-semibold text-gray-300">{renderBoldText(project.title)}</p>
                       <ul className="text-xs text-gray-500 space-y-0.5">
                         {project.bullets.map((bullet, idx) => (
-                          <li key={idx}>{bullet}</li>
+                          <li key={idx}>{renderBoldText(bullet)}</li>
                         ))}
                       </ul>
                     </div>
@@ -59,7 +60,7 @@ export default function Template37({ data }: { data: ResumeData }) {
               <h2 className="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-3">{getSectionTitle(data, "skills", "Skills")}</h2>
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
-                  <span key={skill.id} className="text-xs border border-cyan-400 text-cyan-400 px-2 py-1" style={{ clipPath: "polygon(15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%, 0% 50%)" }}>{skill.name}</span>
+                  <span key={skill.id} className="text-xs border border-cyan-400 text-cyan-400 px-2 py-1" style={{ clipPath: "polygon(15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%, 0% 50%)" }}>{renderBoldText(skill.name)}</span>
                 ))}
               </div>
             </div>
@@ -70,8 +71,8 @@ export default function Template37({ data }: { data: ResumeData }) {
               <h2 className="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-3">{getSectionTitle(data, "education", "Education")}</h2>
               {education.map((edu) => (
                 <div key={edu.id} className="mb-2">
-                  <p className="text-xs font-semibold text-gray-300">{edu.degree}</p>
-                  <p className="text-xs text-gray-500">{edu.institution}, {edu.year}</p>
+                  <p className="text-xs font-semibold text-gray-300">{renderBoldText(edu.degree)}</p>
+                  <p className="text-xs text-gray-500">{renderBoldText(edu.institution)}, {edu.year}</p>
                 </div>
               ))}
             </div>
@@ -81,7 +82,7 @@ export default function Template37({ data }: { data: ResumeData }) {
             <div>
               <h2 className="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-3">{getSectionTitle(data, "languages", "Languages")}</h2>
               {languages.map((lang) => (
-                <p key={lang.id} className="text-xs text-gray-400 mb-1">{lang.name}</p>
+                <p key={lang.id} className="text-xs text-gray-400 mb-1">{renderBoldText(lang.name)}</p>
               ))}
             </div>
           )}

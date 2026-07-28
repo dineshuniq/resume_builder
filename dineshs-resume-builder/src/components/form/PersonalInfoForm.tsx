@@ -1,7 +1,7 @@
 import { useResumeStore } from "@/store/resumeStore";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import FieldHint from "@/components/form/FieldHint";
+import BoldableInput from "@/components/form/BoldableInput";
 
 export default function PersonalInfoForm() {
   const { resumeData, updatePersonalInfo } = useResumeStore();
@@ -12,7 +12,7 @@ export default function PersonalInfoForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="fullName">Full Name</Label>
-          <Input
+          <BoldableInput
             id="fullName"
             value={personalInfo.fullName}
             onChange={(e) => updatePersonalInfo("fullName", e.target.value)}
@@ -21,7 +21,7 @@ export default function PersonalInfoForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="title">Professional Title</Label>
-          <Input
+          <BoldableInput
             id="title"
             value={personalInfo.title}
             onChange={(e) => updatePersonalInfo("title", e.target.value)}
@@ -33,7 +33,7 @@ export default function PersonalInfoForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
-          <Input
+          <BoldableInput
             id="email"
             type="email"
             value={personalInfo.email}
@@ -44,7 +44,7 @@ export default function PersonalInfoForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="phone">Phone</Label>
-          <Input
+          <BoldableInput
             id="phone"
             value={personalInfo.phone}
             onChange={(e) => updatePersonalInfo("phone", e.target.value)}
@@ -55,7 +55,7 @@ export default function PersonalInfoForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="location">Location</Label>
-          <Input
+          <BoldableInput
             id="location"
             value={personalInfo.location}
             onChange={(e) => updatePersonalInfo("location", e.target.value)}
@@ -64,7 +64,7 @@ export default function PersonalInfoForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="linkedin">LinkedIn</Label>
-          <Input
+          <BoldableInput
             id="linkedin"
             value={personalInfo.linkedin}
             onChange={(e) => updatePersonalInfo("linkedin", e.target.value)}
@@ -75,7 +75,7 @@ export default function PersonalInfoForm() {
       </div>
       <div className="space-y-2">
         <Label htmlFor="website">Website / Portfolio</Label>
-        <Input
+        <BoldableInput
           id="website"
           value={personalInfo.website}
           onChange={(e) => updatePersonalInfo("website", e.target.value)}

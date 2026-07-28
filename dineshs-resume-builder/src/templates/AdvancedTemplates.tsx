@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/types/resume";
 import { getSectionTitle } from "@/lib/sectionTitles";
+import { renderBoldText, stripBoldMarkers } from "@/lib/richText";
 import type React from "react";
 
 type Layout =
@@ -42,7 +43,7 @@ const contactLine = (data: ResumeData) =>
   [data.personalInfo.email, data.personalInfo.phone, data.personalInfo.location, data.personalInfo.linkedin, data.personalInfo.website].filter(Boolean);
 
 const initials = (name: string) =>
-  name
+  stripBoldMarkers(name)
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
@@ -72,15 +73,15 @@ function ExperienceList({ data, accent, timeline = false, compact = false }: { d
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em]" style={{ color: accent }}>
               {exp.from} - {exp.to}
             </p>
-            <h3 className={compact ? "text-sm font-bold" : "text-base font-bold"}>{exp.role}</h3>
-            <p className="text-xs text-gray-500">{exp.company} | {exp.location}</p>
+            <h3 className={compact ? "text-sm font-bold" : "text-base font-bold"}>{renderBoldText(exp.role)}</h3>
+            <p className="text-xs text-gray-500">{renderBoldText(exp.company)} | {renderBoldText(exp.location)}</p>
           </div>
           {exp.projects.map((project) => (
             <div key={project.id} className={compact ? "mb-2" : "mb-3"}>
-              <p className="text-xs font-bold" style={{ color: accent }}>{project.title}</p>
+              <p className="text-xs font-bold" style={{ color: accent }}>{renderBoldText(project.title)}</p>
               <ul className="mt-1 list-disc pl-4 text-[11px] leading-relaxed text-gray-600">
                 {project.bullets.map((bullet, index) => (
-                  <li key={index}>{bullet}</li>
+                  <li key={index}>{renderBoldText(bullet)}</li>
                 ))}
               </ul>
             </div>
@@ -100,7 +101,7 @@ function Skills({ data, accent, boxed = false }: { data: ResumeData; accent: str
           className={boxed ? "border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide" : "text-[11px] font-medium"}
           style={boxed ? { borderColor: accent, color: accent } : undefined}
         >
-          {skill.name}
+          {renderBoldText(skill.name)}
         </span>
       ))}
     </div>
@@ -112,8 +113,8 @@ function Education({ data }: { data: ResumeData }) {
     <div className="space-y-3">
       {data.education.map((edu) => (
         <article key={edu.id}>
-          <p className="text-xs font-bold">{edu.degree}</p>
-          <p className="text-[11px] text-gray-500">{edu.institution}</p>
+          <p className="text-xs font-bold">{renderBoldText(edu.degree)}</p>
+          <p className="text-[11px] text-gray-500">{renderBoldText(edu.institution)}</p>
           <p className="text-[10px] text-gray-400">{edu.year} | {edu.score}</p>
         </article>
       ))}
@@ -128,7 +129,7 @@ function SideMeta({ data, accent, dark = false }: { data: ResumeData; accent: st
       <div>
         <SectionTitle accent={accent}>{getSectionTitle(data, "contact", "Contact")}</SectionTitle>
         <div className={`mt-3 space-y-2 text-[11px] ${tone}`}>
-          {contactLine(data).map((item) => <p key={item}>{item}</p>)}
+          {contactLine(data).map((item) => <p key={item}>{renderBoldText(item)}</p>)}
         </div>
       </div>
       <div>
@@ -161,8 +162,8 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
         style={{ backgroundImage: `linear-gradient(to right, #f8fafc 58mm, ${accent}55 58mm, ${accent}55 calc(58mm + 1px), #ffffff calc(58mm + 1px))` }}
       >
         <aside className="float-left w-[58mm] p-[13mm]">
-          <h1 className="text-2xl font-black leading-tight">{personalInfo.fullName}</h1>
-          <p className="mt-2 text-xs font-bold uppercase tracking-[0.22em]" style={{ color: accent }}>{personalInfo.title}</p>
+          <h1 className="text-2xl font-black leading-tight">{renderBoldText(personalInfo.fullName)}</h1>
+          <p className="mt-2 text-xs font-bold uppercase tracking-[0.22em]" style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p>
           <div className="mt-8"><SideMeta data={data} accent={accent} /></div>
         </aside>
         <main className="p-[15mm]" style={{ marginLeft: "58mm" }}>
@@ -177,12 +178,12 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[11mm] text-gray-800`}>
         <header className="mb-6 border-b pb-5">
-          <h1 className="text-3xl font-black">{personalInfo.fullName}</h1>
-          <p className="text-xs font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>{personalInfo.title}</p>
+          <h1 className="text-3xl font-black">{renderBoldText(personalInfo.fullName)}</h1>
+          <p className="text-xs font-bold uppercase tracking-[0.25em]" style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p>
         </header>
         <div className="grid grid-cols-3 gap-5 text-xs">
-          <section><SectionTitle accent={accent}>{getSectionTitle(data, "summary", "Profile")}</SectionTitle><p className="mt-3 leading-relaxed text-gray-600">{summary}</p><div className="mt-6"><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></section>
-          <section><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Core Stack")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div><div className="mt-6"><SectionTitle accent={accent}>{getSectionTitle(data, "languages", "Languages")}</SectionTitle>{languages.map((lang) => <p key={lang.id} className="mt-2 text-gray-600">{lang.name} - {lang.proficiency}</p>)}</div></section>
+          <section><SectionTitle accent={accent}>{getSectionTitle(data, "summary", "Profile")}</SectionTitle><p className="mt-3 leading-relaxed text-gray-600">{renderBoldText(summary)}</p><div className="mt-6"><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></section>
+          <section><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Core Stack")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div><div className="mt-6"><SectionTitle accent={accent}>{getSectionTitle(data, "languages", "Languages")}</SectionTitle>{languages.map((lang) => <p key={lang.id} className="mt-2 text-gray-600">{renderBoldText(lang.name)} - {lang.proficiency}</p>)}</div></section>
           <section><SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-3"><ExperienceList data={data} accent={accent} compact /></div></section>
         </div>
       </div>
@@ -193,12 +194,12 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-[#f7f7f5] p-[12mm] text-gray-800`}>
         <header className="mb-5 grid grid-cols-[1.5fr_1fr] gap-4">
-          <div className="border bg-white p-5"><h1 className="text-3xl font-black">{personalInfo.fullName}</h1><p style={{ color: accent }}>{personalInfo.title}</p></div>
-          <div className="border bg-white p-5 text-[11px] text-gray-600">{contactLine(data).map((item) => <p key={item}>{item}</p>)}</div>
+          <div className="border bg-white p-5"><h1 className="text-3xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p></div>
+          <div className="border bg-white p-5 text-[11px] text-gray-600">{contactLine(data).map((item) => <p key={item}>{renderBoldText(item)}</p>)}</div>
         </header>
         <div className="grid grid-cols-4 gap-4">
           <section className="col-span-3 border bg-white p-5"><SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-4"><ExperienceList data={data} accent={accent} compact={config.layout === "quad"} /></div></section>
-          <aside className="space-y-4"><section className="border bg-white p-4"><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></section><section className="border bg-white p-4"><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></section><section className="border bg-white p-4"><SectionTitle accent={accent}>{getSectionTitle(data, "certifications", "Certs")}</SectionTitle>{certifications.map((cert) => <p key={cert.id} className="mt-2 text-[11px]">{cert.name}</p>)}</section></aside>
+          <aside className="space-y-4"><section className="border bg-white p-4"><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></section><section className="border bg-white p-4"><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></section><section className="border bg-white p-4"><SectionTitle accent={accent}>{getSectionTitle(data, "certifications", "Certs")}</SectionTitle>{certifications.map((cert) => <p key={cert.id} className="mt-2 text-[11px]">{renderBoldText(cert.name)}</p>)}</section></aside>
         </div>
       </div>
     );
@@ -207,7 +208,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
   if (config.layout === "tshape") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[13mm] text-gray-800`}>
-        <header className="border-b-4 pb-6" style={{ borderColor: accent }}><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p className="mt-1 text-sm uppercase tracking-[0.22em]">{personalInfo.title}</p></header>
+        <header className="border-b-4 pb-6" style={{ borderColor: accent }}><h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p className="mt-1 text-sm uppercase tracking-[0.22em]">{renderBoldText(personalInfo.title)}</p></header>
         <div className="flow-root pt-8">
           <aside className="float-left border-r pr-6" style={{ width: "48mm", borderColor: `${accent}55` }}><SideMeta data={data} accent={accent} /></aside>
           <main style={{ marginLeft: "calc(48mm + 2rem)" }}><SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-5"><ExperienceList data={data} accent={accent} /></div></main>
@@ -221,15 +222,15 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} p-[15mm] text-gray-800`} style={{ background: paper }}>
         <header className={config.layout === "leftAligned" ? "mb-12 max-w-[120mm]" : "mb-10"}>
-          <h1 className={config.layout === "typographic" ? "text-6xl font-black leading-none tracking-tight" : "text-5xl font-black leading-tight"} style={{ color: dark }}>{personalInfo.fullName}</h1>
-          <p className="mt-3 text-sm uppercase tracking-[0.24em]" style={{ color: accent }}>{personalInfo.title}</p>
+          <h1 className={config.layout === "typographic" ? "text-6xl font-black leading-none tracking-tight" : "text-5xl font-black leading-tight"} style={{ color: dark }}>{renderBoldText(personalInfo.fullName)}</h1>
+          <p className="mt-3 text-sm uppercase tracking-[0.24em]" style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p>
         </header>
         <div className={wideLeft ? "grid grid-cols-[65mm_1fr] gap-8" : "grid grid-cols-[38mm_1fr] gap-8"}>
           <aside className="text-[11px] uppercase tracking-[0.18em]" style={{ color: accent }}>
             <p>{getSectionTitle(data, "summary", "Profile")}</p><p className="mt-28">{getSectionTitle(data, "experience", "Experience")}</p><p className="mt-36">{getSectionTitle(data, "projects", "Details")}</p>
           </aside>
           <main>
-            <p className="mb-8 text-sm leading-relaxed text-gray-600">{summary}</p>
+            <p className="mb-8 text-sm leading-relaxed text-gray-600">{renderBoldText(summary)}</p>
             <ExperienceList data={data} accent={accent} />
             <div className="mt-8 grid grid-cols-2 gap-6"><div><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} /></div></div><div><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div>
           </main>
@@ -242,13 +243,13 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[15mm] text-gray-800`}>
         <header className="mb-8 border-t-[8px] pt-6" style={{ borderColor: accent }}>
-          <h1 className="text-4xl font-black">{personalInfo.fullName}</h1>
-          <p className="mt-2 text-sm font-bold uppercase tracking-[0.22em]" style={{ color: accent }}>{personalInfo.title}</p>
-          <div className="mt-4 flex flex-wrap gap-4 text-[11px] text-gray-500">{contactLine(data).map((item) => <span key={item}>{item}</span>)}</div>
+          <h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1>
+          <p className="mt-2 text-sm font-bold uppercase tracking-[0.22em]" style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p>
+          <div className="mt-4 flex flex-wrap gap-4 text-[11px] text-gray-500">{contactLine(data).map((item) => <span key={item}>{renderBoldText(item)}</span>)}</div>
         </header>
         <section className="mb-8">
           <SectionTitle accent={accent}>{getSectionTitle(data, "summary", "Summary")}</SectionTitle>
-          <p className="mt-3 text-sm leading-relaxed text-gray-600">{summary}</p>
+          <p className="mt-3 text-sm leading-relaxed text-gray-600">{renderBoldText(summary)}</p>
         </section>
         <SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle>
         <div className="mt-5"><ExperienceList data={data} accent={accent} /></div>
@@ -262,7 +263,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
 
   if (config.layout === "boldSidebar") {
     return (
-      <div className={`w-[210mm] min-h-[297mm] flow-root ${font} text-gray-800`} style={{ backgroundImage: `linear-gradient(to right, ${dark} 70mm, #ffffff 70mm)` }}><aside className="float-left w-[70mm] p-[14mm] text-white"><h1 className="text-3xl font-black">{personalInfo.fullName}</h1><p className="mt-3 text-xs uppercase tracking-[0.22em]" style={{ color: accent }}>{personalInfo.title}</p><div className="mt-10"><SideMeta data={data} accent={accent} dark /></div></aside><main className="p-[15mm]" style={{ marginLeft: "70mm" }}><p className="mb-8 text-sm leading-relaxed">{summary}</p><ExperienceList data={data} accent={accent} /></main></div>
+      <div className={`w-[210mm] min-h-[297mm] flow-root ${font} text-gray-800`} style={{ backgroundImage: `linear-gradient(to right, ${dark} 70mm, #ffffff 70mm)` }}><aside className="float-left w-[70mm] p-[14mm] text-white"><h1 className="text-3xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p className="mt-3 text-xs uppercase tracking-[0.22em]" style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p><div className="mt-10"><SideMeta data={data} accent={accent} dark /></div></aside><main className="p-[15mm]" style={{ marginLeft: "70mm" }}><p className="mb-8 text-sm leading-relaxed">{renderBoldText(summary)}</p><ExperienceList data={data} accent={accent} /></main></div>
     );
   }
 
@@ -270,25 +271,25 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white text-gray-800`}>
         <header className={config.layout === "splitHeader" ? "grid grid-cols-2 gap-8 p-[15mm]" : "p-[15mm] text-white"} style={config.layout === "topBanner" ? { background: dark } : { borderBottom: `6px solid ${accent}` }}>
-          <div><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p className="mt-2 text-sm uppercase tracking-[0.2em]" style={{ color: config.layout === "topBanner" ? accent : dark }}>{personalInfo.title}</p></div>
-          <div className="text-xs leading-relaxed text-right">{contactLine(data).map((item) => <p key={item}>{item}</p>)}</div>
+          <div><h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p className="mt-2 text-sm uppercase tracking-[0.2em]" style={{ color: config.layout === "topBanner" ? accent : dark }}>{renderBoldText(personalInfo.title)}</p></div>
+          <div className="text-xs leading-relaxed text-right">{contactLine(data).map((item) => <p key={item}>{renderBoldText(item)}</p>)}</div>
         </header>
-        <main className="p-[15mm]"><p className="mb-8 text-sm leading-relaxed text-gray-600">{summary}</p><ExperienceList data={data} accent={accent} /><div className="mt-8 grid grid-cols-2 gap-8"><div><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></div><div><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div></main>
+        <main className="p-[15mm]"><p className="mb-8 text-sm leading-relaxed text-gray-600">{renderBoldText(summary)}</p><ExperienceList data={data} accent={accent} /><div className="mt-8 grid grid-cols-2 gap-8"><div><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></div><div><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div></main>
       </div>
     );
   }
 
   if (config.layout === "ribbon") {
     return (
-      <div className={`w-[210mm] min-h-[297mm] flow-root ${font} text-gray-800`} style={{ backgroundImage: `linear-gradient(to right, ${accent} 26mm, #ffffff 26mm)` }}><aside className="float-left flex w-[26mm] items-start justify-center pt-[18mm] text-white"><p className="origin-center rotate-90 whitespace-nowrap text-xs font-bold uppercase tracking-[0.35em]">Resume</p></aside><main className="p-[15mm]" style={{ marginLeft: "26mm" }}><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p className="mt-1 text-sm uppercase tracking-[0.2em]">{personalInfo.title}</p><p className="mt-8 text-sm leading-relaxed text-gray-600">{summary}</p><div className="mt-8"><ExperienceList data={data} accent={accent} /></div></main></div>
+      <div className={`w-[210mm] min-h-[297mm] flow-root ${font} text-gray-800`} style={{ backgroundImage: `linear-gradient(to right, ${accent} 26mm, #ffffff 26mm)` }}><aside className="float-left flex w-[26mm] items-start justify-center pt-[18mm] text-white"><p className="origin-center rotate-90 whitespace-nowrap text-xs font-bold uppercase tracking-[0.35em]">Resume</p></aside><main className="p-[15mm]" style={{ marginLeft: "26mm" }}><h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p className="mt-1 text-sm uppercase tracking-[0.2em]">{renderBoldText(personalInfo.title)}</p><p className="mt-8 text-sm leading-relaxed text-gray-600">{renderBoldText(summary)}</p><div className="mt-8"><ExperienceList data={data} accent={accent} /></div></main></div>
     );
   }
 
   if (config.layout === "chevron") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[14mm] text-gray-800`}>
-        <header className="mb-8"><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p style={{ color: accent }}>{personalInfo.title}</p></header>
-        <section className="mb-8 border-l-[14px] p-4" style={{ borderColor: accent, clipPath: "polygon(0 0, 98% 0, 100% 50%, 98% 100%, 0 100%)" }}><p className="text-sm leading-relaxed">{summary}</p></section>
+        <header className="mb-8"><h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p></header>
+        <section className="mb-8 border-l-[14px] p-4" style={{ borderColor: accent, clipPath: "polygon(0 0, 98% 0, 100% 50%, 98% 100%, 0 100%)" }}><p className="text-sm leading-relaxed">{renderBoldText(summary)}</p></section>
         <ExperienceList data={data} accent={accent} />
       </div>
     );
@@ -297,8 +298,8 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
   if (config.layout === "classic" || config.layout === "summaryFirst" || config.layout === "mono") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${config.layout === "mono" ? "font-sans" : "font-serif"} bg-white p-[16mm] text-gray-900`}>
-        <header className="text-center"><h1 className={config.layout === "mono" ? "text-5xl font-black uppercase" : "text-4xl font-bold"}>{personalInfo.fullName}</h1><p className="mt-2 text-xs uppercase tracking-[0.22em]">{contactLine(data).join(" | ")}</p></header>
-        <div className={config.layout === "mono" ? "my-8 h-2 bg-black" : "my-8 border-t border-b py-4"}><p className="text-sm leading-relaxed">{summary}</p></div>
+        <header className="text-center"><h1 className={config.layout === "mono" ? "text-5xl font-black uppercase" : "text-4xl font-bold"}>{renderBoldText(personalInfo.fullName)}</h1><p className="mt-2 text-xs uppercase tracking-[0.22em]">{contactLine(data).map((item, index) => <span key={item}>{index > 0 && " | "}{renderBoldText(item)}</span>)}</p></header>
+        <div className={config.layout === "mono" ? "my-8 h-2 bg-black" : "my-8 border-t border-b py-4"}><p className="text-sm leading-relaxed">{renderBoldText(summary)}</p></div>
         <div className={config.layout === "summaryFirst" ? "grid grid-cols-2 gap-8" : ""}><div><SectionTitle accent={config.layout === "mono" ? "#000" : accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-5"><ExperienceList data={data} accent={accent} /></div></div><aside className={config.layout === "summaryFirst" ? "" : "mt-8 grid grid-cols-2 gap-8"}><div><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} /></div></div><div><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></aside></div>
       </div>
     );
@@ -307,7 +308,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
   if (config.layout === "timeline") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[15mm] text-gray-800`}>
-        <header className="mb-10"><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p style={{ color: accent }}>{personalInfo.title}</p></header>
+        <header className="mb-10"><h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p></header>
         <ExperienceList data={data} accent={accent} timeline />
       </div>
     );
@@ -316,8 +317,8 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
   if (config.layout === "dark") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} p-[15mm] text-white`} style={{ background: dark }}>
-        <header className="mb-8 border p-6" style={{ borderColor: accent }}><h1 className="text-4xl font-black" style={{ color: accent }}>{personalInfo.fullName}</h1><p>{personalInfo.title}</p></header>
-        <p className="mb-8 text-sm leading-relaxed text-white/70">{summary}</p>
+        <header className="mb-8 border p-6" style={{ borderColor: accent }}><h1 className="text-4xl font-black" style={{ color: accent }}>{renderBoldText(personalInfo.fullName)}</h1><p>{renderBoldText(personalInfo.title)}</p></header>
+        <p className="mb-8 text-sm leading-relaxed text-white/70">{renderBoldText(summary)}</p>
         <div className="grid grid-cols-[1fr_55mm] gap-8"><main><ExperienceList data={data} accent={accent} /></main><aside><SideMeta data={data} accent={accent} dark /></aside></div>
       </div>
     );
@@ -326,7 +327,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
   if (config.layout === "startup" || config.layout === "organic") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} p-[15mm] text-gray-800`} style={{ background: paper }}>
-        <header className="rounded-2xl p-6" style={{ background: "#ffffffaa" }}><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p style={{ color: accent }}>{personalInfo.title}</p><p className="mt-5 text-sm leading-relaxed">{summary}</p></header>
+        <header className="rounded-2xl p-6" style={{ background: "#ffffffaa" }}><h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p><p className="mt-5 text-sm leading-relaxed">{renderBoldText(summary)}</p></header>
         <main className="mt-8 grid grid-cols-[1fr_55mm] gap-8"><section><ExperienceList data={data} accent={accent} /></section><aside className="space-y-6 rounded-2xl bg-white/70 p-5"><SideMeta data={data} accent={accent} /></aside></main>
       </div>
     );
@@ -336,8 +337,8 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
     const featured = data.experience[0]?.projects[0];
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[15mm] text-gray-800`}>
-        <header className="mb-6"><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p style={{ color: accent }}>{personalInfo.title}</p></header>
-        <section className="mb-8 border p-6" style={{ borderColor: accent }}><SectionTitle accent={accent}>{getSectionTitle(data, "projects", "Featured Project")}</SectionTitle><h2 className="mt-3 text-2xl font-black">{featured?.title}</h2><p className="mt-3 text-sm leading-relaxed">{featured?.bullets.join(" ")}</p></section>
+        <header className="mb-6"><h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p></header>
+        <section className="mb-8 border p-6" style={{ borderColor: accent }}><SectionTitle accent={accent}>{getSectionTitle(data, "projects", "Featured Project")}</SectionTitle><h2 className="mt-3 text-2xl font-black">{renderBoldText(featured?.title)}</h2><p className="mt-3 text-sm leading-relaxed">{renderBoldText(featured?.bullets.join(" "))}</p></section>
         <ExperienceList data={data} accent={accent} compact />
       </div>
     );
@@ -346,8 +347,8 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
   if (config.layout === "infographic" || config.layout === "tSkills") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[14mm] text-gray-800`}>
-        <header className="mb-8"><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p style={{ color: accent }}>{personalInfo.title}</p></header>
-        <section className="mb-8 grid grid-cols-4 gap-3">{data.skills.slice(0, 8).map((skill, index) => <div key={skill.id} className="border p-3 text-center"><p className="text-2xl font-black" style={{ color: accent }}>{index < 3 ? "Deep" : "Broad"}</p><p className="text-[10px] uppercase tracking-wide">{skill.name}</p></div>)}</section>
+        <header className="mb-8"><h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p></header>
+        <section className="mb-8 grid grid-cols-4 gap-3">{data.skills.slice(0, 8).map((skill, index) => <div key={skill.id} className="border p-3 text-center"><p className="text-2xl font-black" style={{ color: accent }}>{index < 3 ? "Deep" : "Broad"}</p><p className="text-[10px] uppercase tracking-wide">{renderBoldText(skill.name)}</p></div>)}</section>
         <ExperienceList data={data} accent={accent} />
       </div>
     );
@@ -355,8 +356,8 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
 
   return (
     <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[16mm] text-gray-800`}>
-      <header className="mb-10 flex items-center gap-6"><div className="flex h-20 w-20 items-center justify-center border-4 text-3xl font-black" style={{ borderColor: accent, color: accent }}>{initials(personalInfo.fullName)}</div><div><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p style={{ color: accent }}>{personalInfo.title}</p></div></header>
-      <p className="mb-8 text-sm leading-relaxed text-gray-600">{summary}</p>
+      <header className="mb-10 flex items-center gap-6"><div className="flex h-20 w-20 items-center justify-center border-4 text-3xl font-black" style={{ borderColor: accent, color: accent }}>{initials(personalInfo.fullName)}</div><div><h1 className="text-4xl font-black">{renderBoldText(personalInfo.fullName)}</h1><p style={{ color: accent }}>{renderBoldText(personalInfo.title)}</p></div></header>
+      <p className="mb-8 text-sm leading-relaxed text-gray-600">{renderBoldText(summary)}</p>
       <ExperienceList data={data} accent={accent} />
       <div className="mt-8 grid grid-cols-2 gap-8"><div><SectionTitle accent={accent}>{getSectionTitle(data, "skills", "Skills")}</SectionTitle><div className="mt-3"><Skills data={data} accent={accent} boxed /></div></div><div><SectionTitle accent={accent}>{getSectionTitle(data, "education", "Education")}</SectionTitle><div className="mt-3"><Education data={data} /></div></div></div>
     </div>

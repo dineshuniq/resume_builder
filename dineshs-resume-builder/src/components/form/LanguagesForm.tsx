@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useResumeStore } from "@/store/resumeStore";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import FieldHint from "@/components/form/FieldHint";
+import BoldableInput from "@/components/form/BoldableInput";
 
 export default function LanguagesForm() {
   const { resumeData, addLanguage, removeLanguage } = useResumeStore();
@@ -21,7 +21,7 @@ export default function LanguagesForm() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-2">
-        <Input value={newLang} onChange={(e) => setNewLang(e.target.value)} placeholder="Language..." className="h-8 text-sm" onKeyDown={(e) => e.key === "Enter" && handleAdd()} />
+        <BoldableInput value={newLang} onChange={(e) => setNewLang(e.target.value)} placeholder="Language..." className="h-8 text-sm" onKeyDown={(e) => e.key === "Enter" && handleAdd()} />
         <Select value={newProf} onValueChange={setNewProf}>
           <SelectTrigger className="h-8 text-sm w-full sm:w-[130px]">
             <SelectValue />

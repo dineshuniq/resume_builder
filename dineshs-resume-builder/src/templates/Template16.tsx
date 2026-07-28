@@ -1,4 +1,5 @@
 import type { ResumeData } from "@/types/resume";
+import { renderBoldText } from "@/lib/richText";
 
 export default function Template16({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages } = data;
@@ -14,24 +15,24 @@ export default function Template16({ data }: { data: ResumeData }) {
           <span className="text-xs text-[#666] ml-2">resume.exe</span>
         </div>
         <p className="text-xs mb-1"><span className="text-[#4af626]">$</span> whoami</p>
-        <h1 className="text-2xl font-bold text-white mb-1">{personalInfo.fullName}</h1>
-        <p className="text-xs text-[#888]">{personalInfo.title}</p>
+        <h1 className="text-2xl font-bold text-white mb-1">{renderBoldText(personalInfo.fullName)}</h1>
+        <p className="text-xs text-[#888]">{renderBoldText(personalInfo.title)}</p>
       </div>
 
       <div className="mb-4">
         <p className="text-xs"><span className="text-[#4af626]">$</span> cat contact.info</p>
         <div className="pl-4 text-xs text-[#888] space-y-1 mt-2">
-          {personalInfo.email && <div>email: {personalInfo.email}</div>}
-          {personalInfo.phone && <div>phone: {personalInfo.phone}</div>}
-          {personalInfo.location && <div>location: {personalInfo.location}</div>}
-          {personalInfo.linkedin && <div>linkedin: {personalInfo.linkedin}</div>}
+          {personalInfo.email && <div>email: {renderBoldText(personalInfo.email)}</div>}
+          {personalInfo.phone && <div>phone: {renderBoldText(personalInfo.phone)}</div>}
+          {personalInfo.location && <div>location: {renderBoldText(personalInfo.location)}</div>}
+          {personalInfo.linkedin && <div>linkedin: {renderBoldText(personalInfo.linkedin)}</div>}
         </div>
       </div>
 
       {summary && (
         <div className="mb-4">
           <p className="text-xs"><span className="text-[#4af626]">$</span> cat summary.txt</p>
-          <p className="pl-4 text-xs text-[#aaa] mt-2 leading-relaxed">{summary}</p>
+          <p className="pl-4 text-xs text-[#aaa] mt-2 leading-relaxed">{renderBoldText(summary)}</p>
         </div>
       )}
 
@@ -40,7 +41,7 @@ export default function Template16({ data }: { data: ResumeData }) {
           <p className="text-xs"><span className="text-[#4af626]">$</span> ls skills/</p>
           <div className="pl-4 flex flex-wrap gap-2 mt-2">
             {skills.map((skill) => (
-              <span key={skill.id} className="text-xs text-[#4af626]">{skill.name}.skill</span>
+              <span key={skill.id} className="text-xs text-[#4af626]">{renderBoldText(skill.name)}.skill</span>
             ))}
           </div>
         </div>
@@ -51,14 +52,14 @@ export default function Template16({ data }: { data: ResumeData }) {
           <p className="text-xs"><span className="text-[#4af626]">$</span> cat experience.log</p>
           {experience.map((exp) => (
             <div key={exp.id} className="pl-4 mt-3 mb-4 border-l border-[#333]">
-              <p className="text-xs text-white font-bold">[{exp.from} - {exp.to}] {exp.role}</p>
-              <p className="text-xs text-[#666]">@{exp.company} | {exp.location}</p>
+              <p className="text-xs text-white font-bold">[{exp.from} - {exp.to}] {renderBoldText(exp.role)}</p>
+              <p className="text-xs text-[#666]">@{renderBoldText(exp.company)} | {renderBoldText(exp.location)}</p>
               {exp.projects.map((project) => (
                 <div key={project.id} className="mt-2">
-                  <p className="text-xs text-[#888]">&gt; {project.title}</p>
+                  <p className="text-xs text-[#888]">&gt; {renderBoldText(project.title)}</p>
                   <ul className="text-xs text-[#555] space-y-0.5 mt-1">
                     {project.bullets.map((bullet, idx) => (
-                      <li key={idx}>- {bullet}</li>
+                      <li key={idx}>- {renderBoldText(bullet)}</li>
                     ))}
                   </ul>
                 </div>
@@ -75,8 +76,8 @@ export default function Template16({ data }: { data: ResumeData }) {
             {education.map((edu) => (
               <div key={edu.id} className="pl-4 mt-2">
                 <p className="text-xs text-[#aaa]">{"{"}</p>
-                <p className="text-xs text-[#888] pl-2">"degree": "{edu.degree}"</p>
-                <p className="text-xs text-[#888] pl-2">"school": "{edu.institution}"</p>
+                <p className="text-xs text-[#888] pl-2">"degree": "{renderBoldText(edu.degree)}"</p>
+                <p className="text-xs text-[#888] pl-2">"school": "{renderBoldText(edu.institution)}"</p>
                 <p className="text-xs text-[#888] pl-2">"year": "{edu.year}"</p>
                 <p className="text-xs text-[#aaa]">{"}"}</p>
               </div>
@@ -89,7 +90,7 @@ export default function Template16({ data }: { data: ResumeData }) {
             <p className="text-xs"><span className="text-[#4af626]">$</span> echo $LANGUAGES</p>
             <div className="pl-4 mt-2 text-xs text-[#888]">
               {languages.map((lang) => (
-                <p key={lang.id}>{lang.name}={lang.proficiency}</p>
+                <p key={lang.id}>{renderBoldText(lang.name)}={lang.proficiency}</p>
               ))}
             </div>
           </div>

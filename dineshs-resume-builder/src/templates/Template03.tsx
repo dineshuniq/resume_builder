@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/types/resume";
 import { getSectionTitle } from "@/lib/sectionTitles";
+import { renderBoldText } from "@/lib/richText";
 import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
 
 export default function Template03({ data }: { data: ResumeData }) {
@@ -9,14 +10,14 @@ export default function Template03({ data }: { data: ResumeData }) {
     <div className="w-[210mm] min-h-[297mm] bg-white font-sans text-gray-800">
       {/* Gradient Header */}
       <div className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 p-[15mm] pb-10 text-white">
-        <h1 className="text-4xl font-bold mb-2">{personalInfo.fullName}</h1>
-        <p className="text-lg font-medium opacity-90">{personalInfo.title}</p>
+        <h1 className="text-4xl font-bold mb-2">{renderBoldText(personalInfo.fullName)}</h1>
+        <p className="text-lg font-medium opacity-90">{renderBoldText(personalInfo.title)}</p>
         <div className="flex flex-wrap gap-4 mt-4 text-sm opacity-80">
-          {personalInfo.email && <span className="flex items-center gap-1"><Mail size={14} /> {personalInfo.email}</span>}
-          {personalInfo.phone && <span className="flex items-center gap-1"><Phone size={14} /> {personalInfo.phone}</span>}
-          {personalInfo.location && <span className="flex items-center gap-1"><MapPin size={14} /> {personalInfo.location}</span>}
-          {personalInfo.linkedin && <span className="flex items-center gap-1"><Linkedin size={14} /> {personalInfo.linkedin}</span>}
-          {personalInfo.website && <span className="flex items-center gap-1"><Globe size={14} /> {personalInfo.website}</span>}
+          {personalInfo.email && <span className="flex items-center gap-1"><Mail size={14} /> {renderBoldText(personalInfo.email)}</span>}
+          {personalInfo.phone && <span className="flex items-center gap-1"><Phone size={14} /> {renderBoldText(personalInfo.phone)}</span>}
+          {personalInfo.location && <span className="flex items-center gap-1"><MapPin size={14} /> {renderBoldText(personalInfo.location)}</span>}
+          {personalInfo.linkedin && <span className="flex items-center gap-1"><Linkedin size={14} /> {renderBoldText(personalInfo.linkedin)}</span>}
+          {personalInfo.website && <span className="flex items-center gap-1"><Globe size={14} /> {renderBoldText(personalInfo.website)}</span>}
         </div>
       </div>
 
@@ -24,7 +25,7 @@ export default function Template03({ data }: { data: ResumeData }) {
         {/* Summary */}
         {summary && (
           <div className="mb-8">
-            <p className="text-sm leading-relaxed text-gray-600">{summary}</p>
+            <p className="text-sm leading-relaxed text-gray-600">{renderBoldText(summary)}</p>
           </div>
         )}
 
@@ -38,16 +39,16 @@ export default function Template03({ data }: { data: ResumeData }) {
             {experience.map((exp) => (
               <div key={exp.id} className="mb-6 border-l-4 border-purple-400 pl-4">
                 <div className="flex justify-between items-baseline mb-1">
-                  <h3 className="font-bold text-gray-800">{exp.role}</h3>
+                  <h3 className="font-bold text-gray-800">{renderBoldText(exp.role)}</h3>
                   <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">{exp.from} - {exp.to}</span>
                 </div>
-                <p className="text-sm text-purple-600 mb-2">{exp.company} | {exp.location}</p>
+                <p className="text-sm text-purple-600 mb-2">{renderBoldText(exp.company)} | {renderBoldText(exp.location)}</p>
                 {exp.projects.map((project) => (
                   <div key={project.id} className="mb-3">
-                    <p className="text-sm font-semibold text-gray-700 mb-1">{project.title}</p>
+                    <p className="text-sm font-semibold text-gray-700 mb-1">{renderBoldText(project.title)}</p>
                     <ul className="list-disc list-inside text-xs text-gray-600 space-y-1">
                       {project.bullets.map((bullet, idx) => (
-                        <li key={idx}>{bullet}</li>
+                        <li key={idx}>{renderBoldText(bullet)}</li>
                       ))}
                     </ul>
                   </div>
@@ -67,10 +68,10 @@ export default function Template03({ data }: { data: ResumeData }) {
             {education.map((edu) => (
               <div key={edu.id} className="mb-3 flex justify-between items-baseline">
                 <div>
-                  <h3 className="font-semibold text-gray-800 text-sm">{edu.degree}</h3>
-                  <p className="text-sm text-gray-500">{edu.institution}</p>
+                  <h3 className="font-semibold text-gray-800 text-sm">{renderBoldText(edu.degree)}</h3>
+                  <p className="text-sm text-gray-500">{renderBoldText(edu.institution)}</p>
                 </div>
-                <span className="text-xs text-gray-400">{edu.year} | {edu.score}</span>
+                <span className="text-xs text-gray-400">{edu.year} | {renderBoldText(edu.score)}</span>
               </div>
             ))}
           </div>
@@ -86,7 +87,7 @@ export default function Template03({ data }: { data: ResumeData }) {
               </h2>
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
-                  <span key={skill.id} className="text-xs text-white px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500">{skill.name}</span>
+                  <span key={skill.id} className="text-xs text-white px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500">{renderBoldText(skill.name)}</span>
                 ))}
               </div>
             </div>
@@ -100,7 +101,7 @@ export default function Template03({ data }: { data: ResumeData }) {
                 {getSectionTitle(data, "languages", "Languages")}
               </h2>
               {languages.map((lang) => (
-                <div key={lang.id} className="text-sm text-gray-600 mb-1">{lang.name} - {lang.proficiency}</div>
+                <div key={lang.id} className="text-sm text-gray-600 mb-1">{renderBoldText(lang.name)} - {lang.proficiency}</div>
               ))}
             </div>
           )}
@@ -115,7 +116,7 @@ export default function Template03({ data }: { data: ResumeData }) {
             </h2>
             {certifications.map((cert) => (
               <div key={cert.id} className="text-sm text-gray-600 mb-1">
-                <span className="font-medium text-purple-600">{cert.name}</span> - {cert.organization}, {cert.year}
+                <span className="font-medium text-purple-600">{renderBoldText(cert.name)}</span> - {renderBoldText(cert.organization)}, {cert.year}
               </div>
             ))}
           </div>
