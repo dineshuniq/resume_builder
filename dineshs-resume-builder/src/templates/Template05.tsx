@@ -6,9 +6,12 @@ export default function Template05({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages, certifications } = data;
 
   return (
-    <div className="w-[210mm] min-h-[297mm] flex font-sans text-gray-800">
+    <div
+      className="w-[210mm] min-h-[297mm] flow-root font-sans text-gray-800"
+      style={{ backgroundImage: "linear-gradient(to right, #111827 50%, #f9fafb 50%)" }}
+    >
       {/* Left Column - Dark */}
-      <div className="w-1/2 bg-gray-900 text-white p-[15mm]">
+      <div className="float-left w-1/2 text-white p-[15mm]">
         <div className="mb-10">
           <h1 className="text-3xl font-bold mb-2">{personalInfo.fullName}</h1>
           <p className="text-sm text-gray-400">{personalInfo.title}</p>
@@ -54,7 +57,7 @@ export default function Template05({ data }: { data: ResumeData }) {
       </div>
 
       {/* Right Column - Light */}
-      <div className="w-1/2 bg-gray-50 p-[15mm]">
+      <div className="ml-[50%] p-[15mm]">
         {summary && (
           <div className="mb-8">
             <h2 className="text-xs font-bold uppercase tracking-widest text-gray-800 mb-3">{getSectionTitle(data, "summary", "Summary")}</h2>

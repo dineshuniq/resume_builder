@@ -6,9 +6,12 @@ export default function Template04({ data }: { data: ResumeData }) {
   const { personalInfo, summary, skills, experience, education, languages, certifications } = data;
 
   return (
-    <div className="w-[210mm] min-h-[297mm] flex font-sans text-gray-800">
+    <div
+      className="w-[210mm] min-h-[297mm] flow-root font-sans text-gray-800"
+      style={{ backgroundImage: "linear-gradient(to right, #1e3a5f 70mm, #ffffff 70mm)" }}
+    >
       {/* Navy Sidebar */}
-      <div className="w-[70mm] bg-[#1e3a5f] text-white p-[12mm]">
+      <div className="float-left w-[70mm] text-white p-[12mm]">
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-1 leading-tight">{personalInfo.fullName}</h1>
           <p className="text-sm text-blue-200">{personalInfo.title}</p>
@@ -57,7 +60,7 @@ export default function Template04({ data }: { data: ResumeData }) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-[15mm] bg-white">
+      <div className="ml-[70mm] p-[15mm] bg-white">
         {summary && (
           <div className="mb-8">
             <h2 className="text-sm font-bold uppercase tracking-wider text-[#1e3a5f] mb-3">{getSectionTitle(data, "summary", "Professional Summary")}</h2>

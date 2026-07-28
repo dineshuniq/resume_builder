@@ -157,13 +157,16 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
   if (config.layout === "sidebar") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white text-gray-800`}>
-        <div className="flex min-h-[297mm]">
-          <aside className="w-[58mm] border-r p-[13mm]" style={{ borderColor: `${accent}33`, background: "#f8fafc" }}>
+        <div
+          className="flow-root min-h-[297mm]"
+          style={{ backgroundImage: `linear-gradient(to right, #f8fafc 58mm, ${accent}55 58mm, ${accent}55 calc(58mm + 1px), #ffffff calc(58mm + 1px))` }}
+        >
+          <aside className="float-left w-[58mm] p-[13mm]">
             <h1 className="text-2xl font-black leading-tight">{personalInfo.fullName}</h1>
             <p className="mt-2 text-xs font-bold uppercase tracking-[0.22em]" style={{ color: accent }}>{personalInfo.title}</p>
             <div className="mt-8"><SideMeta data={data} accent={accent} /></div>
           </aside>
-          <main className="flex-1 p-[15mm]">
+          <main className="p-[15mm]" style={{ marginLeft: "58mm" }}>
             <SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Professional Experience")}</SectionTitle>
             <div className="mt-5"><ExperienceList data={data} accent={accent} /></div>
           </main>
@@ -207,9 +210,9 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white p-[13mm] text-gray-800`}>
         <header className="border-b-4 pb-6" style={{ borderColor: accent }}><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p className="mt-1 text-sm uppercase tracking-[0.22em]">{personalInfo.title}</p></header>
-        <div className="grid grid-cols-[48mm_1fr] gap-8 pt-8">
-          <aside className="border-r pr-6" style={{ borderColor: `${accent}55` }}><SideMeta data={data} accent={accent} /></aside>
-          <main><SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-5"><ExperienceList data={data} accent={accent} /></div></main>
+        <div className="flow-root pt-8">
+          <aside className="float-left border-r pr-6" style={{ width: "48mm", borderColor: `${accent}55` }}><SideMeta data={data} accent={accent} /></aside>
+          <main style={{ marginLeft: "calc(48mm + 2rem)" }}><SectionTitle accent={accent}>{getSectionTitle(data, "experience", "Experience")}</SectionTitle><div className="mt-5"><ExperienceList data={data} accent={accent} /></div></main>
         </div>
       </div>
     );
@@ -262,7 +265,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
   if (config.layout === "boldSidebar") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white text-gray-800`}>
-        <div className="flex min-h-[297mm]"><aside className="w-[70mm] p-[14mm] text-white" style={{ background: dark }}><h1 className="text-3xl font-black">{personalInfo.fullName}</h1><p className="mt-3 text-xs uppercase tracking-[0.22em]" style={{ color: accent }}>{personalInfo.title}</p><div className="mt-10"><SideMeta data={data} accent={accent} dark /></div></aside><main className="flex-1 p-[15mm]"><p className="mb-8 text-sm leading-relaxed">{summary}</p><ExperienceList data={data} accent={accent} /></main></div>
+        <div className="flow-root min-h-[297mm]" style={{ backgroundImage: `linear-gradient(to right, ${dark} 70mm, #ffffff 70mm)` }}><aside className="float-left w-[70mm] p-[14mm] text-white"><h1 className="text-3xl font-black">{personalInfo.fullName}</h1><p className="mt-3 text-xs uppercase tracking-[0.22em]" style={{ color: accent }}>{personalInfo.title}</p><div className="mt-10"><SideMeta data={data} accent={accent} dark /></div></aside><main className="p-[15mm]" style={{ marginLeft: "70mm" }}><p className="mb-8 text-sm leading-relaxed">{summary}</p><ExperienceList data={data} accent={accent} /></main></div>
       </div>
     );
   }
@@ -282,7 +285,7 @@ function AdvancedTemplate({ data, config }: { data: ResumeData; config: Template
   if (config.layout === "ribbon") {
     return (
       <div className={`w-[210mm] min-h-[297mm] ${font} bg-white text-gray-800`}>
-        <div className="grid min-h-[297mm] grid-cols-[26mm_1fr]"><aside className="flex items-start justify-center pt-[18mm] text-white" style={{ background: accent }}><p className="origin-center rotate-90 whitespace-nowrap text-xs font-bold uppercase tracking-[0.35em]">Resume</p></aside><main className="p-[15mm]"><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p className="mt-1 text-sm uppercase tracking-[0.2em]">{personalInfo.title}</p><p className="mt-8 text-sm leading-relaxed text-gray-600">{summary}</p><div className="mt-8"><ExperienceList data={data} accent={accent} /></div></main></div>
+        <div className="flow-root min-h-[297mm]" style={{ backgroundImage: `linear-gradient(to right, ${accent} 26mm, #ffffff 26mm)` }}><aside className="float-left flex w-[26mm] items-start justify-center pt-[18mm] text-white"><p className="origin-center rotate-90 whitespace-nowrap text-xs font-bold uppercase tracking-[0.35em]">Resume</p></aside><main className="p-[15mm]" style={{ marginLeft: "26mm" }}><h1 className="text-4xl font-black">{personalInfo.fullName}</h1><p className="mt-1 text-sm uppercase tracking-[0.2em]">{personalInfo.title}</p><p className="mt-8 text-sm leading-relaxed text-gray-600">{summary}</p><div className="mt-8"><ExperienceList data={data} accent={accent} /></div></main></div>
       </div>
     );
   }
