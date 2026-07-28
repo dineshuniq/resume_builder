@@ -220,6 +220,11 @@
   -webkit-box-decoration-break: clone;
 }
 
+.resume-page-flow > div > * {
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
 .resume-page-flow * {
   box-sizing: border-box;
   max-width: 100%;
