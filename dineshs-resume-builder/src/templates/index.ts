@@ -1,9 +1,20 @@
 import type { ComponentType } from "react";
 import type { ResumeData } from "@/types/resume";
+import { atsTemplates, ATSTemplateComponents } from "./ATSTemplates";
 
 export interface TemplateComponent {
   default: ComponentType<{ data: ResumeData }>;
 }
+
+const atsTemplateNames: Record<number, string> = Object.fromEntries(
+  atsTemplates.map((config, index) => [67 + index, config.name])
+);
+
+const atsTemplateComponentMap: Record<number, ComponentType<{ data: ResumeData }>> = Object.fromEntries(
+  ATSTemplateComponents.map((Component, index) => [67 + index, Component])
+);
+
+const atsCategoryNumbers = atsTemplates.map((_, index) => 67 + index);
 
 export const templateNames: Record<number, string> = {
   1: "Pure Minimal",
@@ -72,6 +83,7 @@ export const templateNames: Record<number, string> = {
   64: "Hybrid Infographic",
   65: "T-Shaped Skills Concept",
   66: "Monogram Minimal",
+  ...atsTemplateNames,
 };
 
 export const templateCategories: Record<string, number[]> = {
@@ -81,6 +93,7 @@ export const templateCategories: Record<string, number[]> = {
   "Dark": [2, 12, 16, 25, 37, 60],
   "Minimal": [10, 11, 15, 17, 24, 29, 31, 33, 34, 56, 66],
   "New": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66],
+  "ATS-Compliant": atsCategoryNumbers,
 };
 
 export const totalTemplates = Object.keys(templateNames).length;
@@ -222,6 +235,7 @@ const templateComponents: Record<number, ComponentType<{ data: ResumeData }>> = 
   64: Template64,
   65: Template65,
   66: Template66,
+  ...atsTemplateComponentMap,
 };
 
 export function getTemplateComponent(templateNumber: number): ComponentType<{ data: ResumeData }> {
