@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import FieldHint from "@/components/form/FieldHint";
 
 export default function LanguagesForm() {
   const { resumeData, addLanguage, removeLanguage } = useResumeStore();
@@ -36,6 +37,7 @@ export default function LanguagesForm() {
           <Plus size={14} />
         </Button>
       </div>
+      <FieldHint>Only list languages relevant to the role — padding this section rarely helps and can dilute your keyword-relevant skills above.</FieldHint>
 
       <div className="flex flex-wrap gap-2">
         {resumeData.languages.map((lang) => (

@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import FieldHint from "@/components/form/FieldHint";
 
 export default function ExperienceForm() {
   const { resumeData, addExperience, removeExperience, updateExperience, addProject, removeProject, updateProject } = useResumeStore();
@@ -79,6 +80,7 @@ export default function ExperienceForm() {
                       placeholder="Bullet points (one per line)"
                       className="w-full min-h-[60px] p-2 text-xs rounded-md border border-input bg-background resize-y"
                     />
+                    <FieldHint>Start each line with an action verb and quantify the result (%, $, time, scale) — vague duties get filtered out by both ATS and recruiters.</FieldHint>
                   </div>
                 ))}
                 <Button variant="outline" size="sm" onClick={() => addProject(exp.id, { id: crypto.randomUUID(), title: "", bullets: [""] })} className="text-xs">

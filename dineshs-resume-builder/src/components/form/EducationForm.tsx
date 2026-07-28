@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
+import FieldHint from "@/components/form/FieldHint";
 
 export default function EducationForm() {
   const { resumeData, addEducation, removeEducation, setResumeData } = useResumeStore();
@@ -16,6 +17,7 @@ export default function EducationForm() {
 
   return (
     <div className="space-y-3">
+      <FieldHint>List your most recent or highest degree first. Only include GPA if it's 3.5+ or the employer explicitly asks for it.</FieldHint>
       {resumeData.education.map((edu) => (
         <div key={edu.id} className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end border rounded-lg p-3 bg-gray-50/50">
           <div className="col-span-1 sm:col-span-4 space-y-1">

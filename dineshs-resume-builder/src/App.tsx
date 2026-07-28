@@ -14,7 +14,7 @@ import SectionTitlesForm from "@/components/form/SectionTitlesForm";
 import PagedResumePreview from "@/components/resume/PagedResumePreview";
 import { getSectionTitle } from "@/lib/sectionTitles";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +34,7 @@ import {
   ChevronLeft,
   ChevronRight,
   RotateCcw,
+  Monitor,
 } from "lucide-react";
 
 interface PdfRenderPayload {
@@ -310,11 +311,25 @@ export default function App() {
   const [showTemplateDialog, setShowTemplateDialog] = useState(false);
   const [isLayoutNoticeOpen, setIsLayoutNoticeOpen] = useState(true);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
+  const [showMobileWarning, setShowMobileWarning] = useState(false);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIsLayoutNoticeOpen(false), 2000);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const alreadyAcknowledged = sessionStorage.getItem("mobileWarningAcknowledged") === "true";
+    if (isMobile && !alreadyAcknowledged) {
+      setShowMobileWarning(true);
+    }
+  }, []);
+
+  const acknowledgeMobileWarning = () => {
+    sessionStorage.setItem("mobileWarningAcknowledged", "true");
+    setShowMobileWarning(false);
+  };
 
   const handleDownloadPdf = async () => {
     if (isExportingPdf) return;
@@ -380,6 +395,31 @@ export default function App() {
   return (
     <div className="h-screen flex flex-col bg-gray-100">
       <Analytics />
+
+      <Dialog open={showMobileWarning} onOpenChange={() => {}}>
+        <DialogContent
+          showCloseButton={false}
+          className="max-w-sm"
+          onEscapeKeyDown={(e) => e.preventDefault()}
+          onInteractOutside={(e) => e.preventDefault()}
+        >
+          <DialogHeader>
+            <div className="mx-auto mb-1 flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
+              <Monitor size={20} className="text-amber-600" />
+            </div>
+            <DialogTitle className="text-center">Best experienced on PC or Laptop</DialogTitle>
+            <DialogDescription className="text-center">
+              This resume builder is designed for larger screens — multi-page previews, templates, and editing
+              tools may not display well on mobile. Still want to proceed?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={acknowledgeMobileWarning} className="w-full bg-red-600 hover:bg-red-700">
+              Yes, continue anyway
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {/* Header */}
       <header className="bg-black border-b border-red-900 shadow-sm z-50 shrink-0">
         <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">

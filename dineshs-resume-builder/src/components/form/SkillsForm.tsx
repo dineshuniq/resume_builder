@@ -3,6 +3,7 @@ import { useResumeStore } from "@/store/resumeStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
+import FieldHint from "@/components/form/FieldHint";
 
 export default function SkillsForm() {
   const { resumeData, addSkill, removeSkill } = useResumeStore();
@@ -25,6 +26,7 @@ export default function SkillsForm() {
           <Plus size={14} />
         </Button>
       </div>
+      <FieldHint>List exact keywords from the job description (tools, frameworks, methodologies) — most ATS software ranks resumes by keyword match density.</FieldHint>
 
       <div className="flex flex-wrap gap-2">
         {resumeData.skills.map((skill) => (

@@ -87,13 +87,13 @@ export const defaultSectionTitles: SectionTitles = {
 
 export const defaultResumeData: ResumeData = {
   personalInfo: {
-    fullName: "Rohan Mehta",
+    fullName: "Ajith Kumar",
     title: "Backend Software Developer",
-    email: "rohan.mehta@email.com",
-    phone: "+1 (555) 312-8890",
-    location: "Bengaluru, India",
-    linkedin: "linkedin.com/in/rohanmehta",
-    website: "github.com/rohanmehta",
+    email: "ajith.kumar@email.com",
+    phone: "+91 98765 43210",
+    location: "Chennai, India",
+    linkedin: "linkedin.com/in/ajithkumar",
+    website: "github.com/ajithkumar",
   },
   sectionTitles: defaultSectionTitles,
   summary:

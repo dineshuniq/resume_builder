@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
+import FieldHint from "@/components/form/FieldHint";
 
 export default function CertificationsForm() {
   const { resumeData, addCertification, removeCertification, setResumeData } = useResumeStore();
@@ -27,6 +28,7 @@ export default function CertificationsForm() {
 
   return (
     <div className="space-y-3">
+      <FieldHint>Include the issuing organization and year — recruiters and ATS filters often use certifications to verify compliance or eligibility requirements.</FieldHint>
       {resumeData.certifications.map((cert) => (
         <div key={cert.id} className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end border rounded-lg p-3 bg-gray-50/50">
           <div className="col-span-1 sm:col-span-5 space-y-1">

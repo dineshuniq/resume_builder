@@ -1,6 +1,7 @@
 import { useResumeStore } from "@/store/resumeStore";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import FieldHint from "@/components/form/FieldHint";
 
 export default function PersonalInfoForm() {
   const { resumeData, updatePersonalInfo } = useResumeStore();
@@ -26,6 +27,7 @@ export default function PersonalInfoForm() {
             onChange={(e) => updatePersonalInfo("title", e.target.value)}
             placeholder="Software Engineer"
           />
+          <FieldHint>Mirror the exact job title from the posting — ATS software keyword-matches this field first.</FieldHint>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -38,6 +40,7 @@ export default function PersonalInfoForm() {
             onChange={(e) => updatePersonalInfo("email", e.target.value)}
             placeholder="john@example.com"
           />
+          <FieldHint>Use a professional format (firstname.lastname@...) — recruiters judge credibility here.</FieldHint>
         </div>
         <div className="space-y-2">
           <Label htmlFor="phone">Phone</Label>
@@ -67,6 +70,7 @@ export default function PersonalInfoForm() {
             onChange={(e) => updatePersonalInfo("linkedin", e.target.value)}
             placeholder="linkedin.com/in/johndoe"
           />
+          <FieldHint>An outdated or missing LinkedIn is a common red flag recruiters check for first.</FieldHint>
         </div>
       </div>
       <div className="space-y-2">
@@ -77,6 +81,7 @@ export default function PersonalInfoForm() {
           onChange={(e) => updatePersonalInfo("website", e.target.value)}
           placeholder="johndoe.com"
         />
+        <FieldHint>Optional, but a live portfolio link builds credibility for technical and creative roles.</FieldHint>
       </div>
     </div>
   );
