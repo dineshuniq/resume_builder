@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Radix ScrollArea injects an inline `display:table; min-width:100%` wrapper
+   around its content so it can shrink-to-fit for scrollbar sizing. That lets
+   any single unbroken line of text force the whole panel wider instead of
+   wrapping, so pin it to a normal block that respects the viewport width. */
+[data-radix-scroll-area-viewport] > div {
+  display: block !important;
+  min-width: 0 !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
