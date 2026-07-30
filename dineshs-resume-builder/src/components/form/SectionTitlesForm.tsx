@@ -20,7 +20,7 @@ export default function SectionTitlesForm() {
   const titles = getSectionTitles(resumeData);
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-3 @sm:grid-cols-2">
       {fields.map((field) => (
         <div key={field.key} className="space-y-1">
           <Label className="text-xs">{field.label}</Label>

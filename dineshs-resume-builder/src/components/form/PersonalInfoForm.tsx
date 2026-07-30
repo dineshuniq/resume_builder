@@ -9,7 +9,7 @@ export default function PersonalInfoForm() {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 @sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="fullName">Full Name</Label>
           <BoldableInput
@@ -30,7 +30,7 @@ export default function PersonalInfoForm() {
           <FieldHint>Mirror the exact job title from the posting — ATS software keyword-matches this field first.</FieldHint>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 @sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <BoldableInput
@@ -52,7 +52,7 @@ export default function PersonalInfoForm() {
           />
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 @sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="location">Location</Label>
           <BoldableInput

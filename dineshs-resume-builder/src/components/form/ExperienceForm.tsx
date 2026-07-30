@@ -17,7 +17,7 @@ export default function ExperienceForm() {
   return (
     <div className="space-y-4">
       {resumeData.experience.map((exp) => (
-        <div key={exp.id} className="border rounded-lg p-3 sm:p-4 bg-gray-50/50">
+        <div key={exp.id} className="border rounded-lg p-3 @sm:p-4 bg-gray-50/50">
           <div className="flex items-start gap-2 mb-3">
             <button
               type="button"
@@ -35,8 +35,8 @@ export default function ExperienceForm() {
           </div>
 
           {expandedExp === exp.id && (
-            <div className="space-y-3 pl-0 sm:pl-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-3 pl-0 @sm:pl-6">
+              <div className="grid grid-cols-1 @sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <Label className="text-xs">Role</Label>
                   <BoldableInput value={exp.role} onChange={(e) => updateExperience(exp.id, "role", e.target.value)} className="h-8 text-sm" />
@@ -46,7 +46,7 @@ export default function ExperienceForm() {
                   <BoldableInput value={exp.company} onChange={(e) => updateExperience(exp.id, "company", e.target.value)} className="h-8 text-sm" />
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 @sm:grid-cols-3 gap-3">
                 <div className="space-y-1">
                   <Label className="text-xs">Location</Label>
                   <BoldableInput value={exp.location} onChange={(e) => updateExperience(exp.id, "location", e.target.value)} className="h-8 text-sm" />

@@ -31,16 +31,16 @@ export default function CertificationsForm() {
     <div className="space-y-3">
       <FieldHint>Include the issuing organization and year — recruiters and ATS filters often use certifications to verify compliance or eligibility requirements.</FieldHint>
       {resumeData.certifications.map((cert) => (
-        <div key={cert.id} className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end border rounded-lg p-3 bg-gray-50/50">
-          <div className="col-span-1 sm:col-span-5 space-y-1">
+        <div key={cert.id} className="grid grid-cols-1 @sm:grid-cols-12 gap-2 items-end border rounded-lg p-3 bg-gray-50/50">
+          <div className="col-span-1 @sm:col-span-5 space-y-1">
             <Label className="text-xs">Certification</Label>
             <BoldableInput value={cert.name} onChange={(e) => updateCert(cert.id, "name", e.target.value)} className="h-8 text-sm" />
           </div>
-          <div className="col-span-1 sm:col-span-4 space-y-1">
+          <div className="col-span-1 @sm:col-span-4 space-y-1">
             <Label className="text-xs">Organization</Label>
             <BoldableInput value={cert.organization} onChange={(e) => updateCert(cert.id, "organization", e.target.value)} className="h-8 text-sm" />
           </div>
-          <div className="col-span-1 sm:col-span-2 space-y-1">
+          <div className="col-span-1 @sm:col-span-2 space-y-1">
             <Label className="text-xs">Year</Label>
             <Input value={cert.year} onChange={(e) => updateCert(cert.id, "year", e.target.value)} className="h-8 text-sm" />
           </div>
@@ -53,14 +53,14 @@ export default function CertificationsForm() {
       ))}
 
       <div className="border rounded-lg p-3 bg-gray-50/50">
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end">
-          <div className="col-span-1 sm:col-span-5">
+        <div className="grid grid-cols-1 @sm:grid-cols-12 gap-2 items-end">
+          <div className="col-span-1 @sm:col-span-5">
             <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Certification name" className="h-8 text-sm" />
           </div>
-          <div className="col-span-1 sm:col-span-4">
+          <div className="col-span-1 @sm:col-span-4">
             <Input value={org} onChange={(e) => setOrg(e.target.value)} placeholder="Issuing org" className="h-8 text-sm" />
           </div>
-          <div className="col-span-1 sm:col-span-2">
+          <div className="col-span-1 @sm:col-span-2">
             <Input value={year} onChange={(e) => setYear(e.target.value)} placeholder="Year" className="h-8 text-sm" />
           </div>
           <div className="col-span-1">

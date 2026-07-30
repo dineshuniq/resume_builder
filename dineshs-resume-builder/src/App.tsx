@@ -56,7 +56,7 @@ function FormSection({ title, icon: Icon, children }: { title: string; icon: Rea
         <Icon size={18} className="text-indigo-500" />
         <h3 className="font-semibold text-gray-800">{title}</h3>
       </div>
-      <div className="pl-0 sm:pl-6">{children}</div>
+      <div className="pl-0 @sm:pl-6">{children}</div>
       <Separator className="mt-6" />
     </div>
   );
@@ -445,12 +445,28 @@ export default function App() {
 
           <div className="flex items-center gap-2 ml-auto">
             {/* Template Navigation */}
-            <div className="hidden md:flex items-center gap-1 bg-gray-900 rounded-lg p-1">
-              <Button variant="ghost" size="sm" onClick={() => goToTemplate(-1)} disabled={selectedTemplate <= 1} className="h-8 w-8 p-0 text-white hover:bg-gray-800 hover:text-white">
+            <div className="hidden md:flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => goToTemplate(-1)}
+                disabled={selectedTemplate <= 1}
+                title="Previous template"
+                aria-label="Previous template"
+                className="h-8 w-8 p-0 bg-blue-600 text-white shadow-sm transition-colors duration-200 hover:bg-blue-500 disabled:bg-gray-800 disabled:text-gray-600"
+              >
                 <ChevronLeft size={16} />
               </Button>
-              <span className="text-xs font-medium px-2 text-white">{selectedTemplate}/{totalTemplates}</span>
-              <Button variant="ghost" size="sm" onClick={() => goToTemplate(1)} disabled={selectedTemplate >= totalTemplates} className="h-8 w-8 p-0 text-white hover:bg-gray-800 hover:text-white">
+              <span className="text-xs font-medium px-1 text-white">{selectedTemplate}/{totalTemplates}</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => goToTemplate(1)}
+                disabled={selectedTemplate >= totalTemplates}
+                title="Next template"
+                aria-label="Next template"
+                className="h-8 w-8 p-0 bg-green-600 text-white shadow-sm transition-colors duration-200 hover:bg-green-500 disabled:bg-gray-800 disabled:text-gray-600"
+              >
                 <ChevronRight size={16} />
               </Button>
             </div>
@@ -499,7 +515,13 @@ export default function App() {
         </button>
 
         <div className="md:hidden flex items-center justify-center gap-2 border-t border-red-900 bg-black px-3 py-2">
-          <Button variant="outline" size="sm" onClick={() => goToTemplate(-1)} disabled={selectedTemplate <= 1} className="h-8 w-8 p-0 border-gray-700 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
+          <Button
+            size="sm"
+            onClick={() => goToTemplate(-1)}
+            disabled={selectedTemplate <= 1}
+            aria-label="Previous template"
+            className="h-8 w-8 p-0 bg-blue-600 text-white transition-colors duration-200 hover:bg-blue-500 disabled:bg-gray-800 disabled:text-gray-600"
+          >
             <ChevronLeft size={16} />
           </Button>
           <button
@@ -509,7 +531,13 @@ export default function App() {
           >
             {selectedTemplate}/{totalTemplates} · {templateNames[selectedTemplate]}
           </button>
-          <Button variant="outline" size="sm" onClick={() => goToTemplate(1)} disabled={selectedTemplate >= totalTemplates} className="h-8 w-8 p-0 border-gray-700 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
+          <Button
+            size="sm"
+            onClick={() => goToTemplate(1)}
+            disabled={selectedTemplate >= totalTemplates}
+            aria-label="Next template"
+            className="h-8 w-8 p-0 bg-green-600 text-white transition-colors duration-200 hover:bg-green-500 disabled:bg-gray-800 disabled:text-gray-600"
+          >
             <ChevronRight size={16} />
           </Button>
         </div>
@@ -534,7 +562,7 @@ export default function App() {
       {/* Main Content */}
       <div className="min-h-0 flex-1 flex overflow-hidden">
         {/* Form Panel */}
-        <div className={`${mobileTab === "form" ? "flex" : "hidden"} md:flex min-h-0 w-full md:w-[45%] lg:w-[40%] bg-white border-r flex-col`}>
+        <div className={`${mobileTab === "form" ? "flex" : "hidden"} md:flex min-h-0 w-full md:w-[45%] lg:w-[40%] bg-white border-r flex-col @container`}>
           <ScrollArea className="min-h-0 flex-1">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">

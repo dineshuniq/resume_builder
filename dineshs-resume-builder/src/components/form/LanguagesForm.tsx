@@ -20,10 +20,10 @@ export default function LanguagesForm() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-2">
+      <div className="flex flex-col @sm:flex-row gap-2">
         <BoldableInput value={newLang} onChange={(e) => setNewLang(e.target.value)} placeholder="Language..." className="h-8 text-sm" onKeyDown={(e) => e.key === "Enter" && handleAdd()} />
         <Select value={newProf} onValueChange={setNewProf}>
-          <SelectTrigger className="h-8 text-sm w-full sm:w-[130px]">
+          <SelectTrigger className="h-8 text-sm w-full @sm:w-[130px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -33,7 +33,7 @@ export default function LanguagesForm() {
             <SelectItem value="Basic">Basic</SelectItem>
           </SelectContent>
         </Select>
-        <Button variant="outline" size="sm" onClick={handleAdd} className="h-8 px-3 self-start sm:self-auto">
+        <Button variant="outline" size="sm" onClick={handleAdd} className="h-8 px-3 self-start @sm:self-auto">
           <Plus size={14} />
         </Button>
       </div>
