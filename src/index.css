@@ -248,6 +248,8 @@
 .resume-page-flow :is(h1, h2, h3, h4, h5, h6, p, ul, ol, li) {
   break-inside: avoid;
   page-break-inside: avoid;
+  orphans: 2;
+  widows: 2;
 }
 
 .resume-page-flow :is(h1, h2, h3, h4, h5, h6) {
@@ -262,9 +264,26 @@
   -webkit-box-decoration-break: clone;
 }
 
-.resume-page-flow :is([class*="mb-2"], [class*="mb-3"], [class*="mb-4"], [class*="mb-5"], [class*="mb-6"]) {
+/* Spacing utilities are matched as whole class tokens so that mb-2 does not also
+   catch mb-20/mb-24, which are section-sized wrappers rather than entry groups. */
+.resume-page-flow :is([class~="mb-2"], [class~="mb-3"], [class~="mb-4"], [class~="mb-5"], [class~="mb-6"]) {
   break-inside: avoid;
   page-break-inside: avoid;
+}
+
+/* Escape hatch for blocks that are too tall to be kept whole. Keeping an
+   oversized experience entry or section card unbreakable pushes the entire
+   block to the next sheet and strands most of a page as blank space, so
+   PagedResumePreview measures every group and tags the tall ones to flow. */
+.resume-page-flow .resume-splittable {
+  break-inside: auto !important;
+  page-break-inside: auto !important;
+}
+
+/* A relaxed block may split, but never immediately after its own heading row. */
+.resume-page-flow .resume-splittable > :first-child {
+  break-after: avoid;
+  page-break-after: avoid;
 }
 
 .resume-page-flow :is([class*="flex"], [class*="grid"]) {

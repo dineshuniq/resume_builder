@@ -3,6 +3,12 @@ import type { ResumeData } from "@/types/resume";
 
 const PAGE_GAP_FALLBACK = 24;
 const ATOMIC_SELECTOR = "article,section,div,li,ul,ol,p";
+const GROUP_SELECTOR = "article,section,div,li,ul,ol,p,h1,h2,h3,h4,h5,h6";
+/* A group taller than this share of a sheet cannot be kept whole without
+   stranding a large blank area, so it is allowed to break across pages.
+   Roughly eleven lines of body text: entry and project wrappers above it flow,
+   while bullets, headings and short blocks still stay together. */
+const MAX_ATOMIC_HEIGHT_RATIO = 0.2;
 
 interface PagedResumePreviewProps {
   Template: ComponentType<{ data: ResumeData }>;
@@ -80,6 +86,36 @@ function annotateAtomicBlocks(root: HTMLElement, data: ResumeData) {
   markSmallestBlock(root, languageNames);
 }
 
+function findOversizedGroups(flow: HTMLElement, maxHeight: number) {
+  const elements = Array.from(flow.querySelectorAll<HTMLElement>(GROUP_SELECTOR));
+
+  // Inside a column layout a tall group is split across columns, so its box is
+  // only meaningful once columns are switched off for the measurement.
+  const previousColumnWidth = flow.style.columnWidth;
+  const previousHeight = flow.style.height;
+  flow.style.columnWidth = "auto";
+  flow.style.height = "auto";
+
+  const oversized = new Set<number>();
+  elements.forEach((element, index) => {
+    if (element.getBoundingClientRect().height > maxHeight) {
+      oversized.add(index);
+    }
+  });
+
+  flow.style.columnWidth = previousColumnWidth;
+  flow.style.height = previousHeight;
+
+  return oversized;
+}
+
+function applyOversizedGroups(flow: HTMLElement, oversized: Set<number>) {
+  const elements = Array.from(flow.querySelectorAll<HTMLElement>(GROUP_SELECTOR));
+  elements.forEach((element, index) => {
+    element.classList.toggle("resume-splittable", oversized.has(index));
+  });
+}
+
 function readPageSkin(flow: HTMLElement): PageLayout["pageSkin"] {
   const templateRoot = flow.firstElementChild as HTMLElement | null;
   const computed = templateRoot ? window.getComputedStyle(templateRoot) : null;
@@ -125,6 +161,11 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
 
       const flows = Array.from(shell.querySelectorAll<HTMLElement>(".resume-page-flow"));
       flows.forEach((pageFlow) => annotateAtomicBlocks(pageFlow, data));
+
+      // Every flow renders the same template with the same data, so the groups
+      // that are too tall to stay whole only need measuring once.
+      const oversized = findOversizedGroups(flow, flow.clientHeight * MAX_ATOMIC_HEIGHT_RATIO);
+      flows.forEach((pageFlow) => applyOversizedGroups(pageFlow, oversized));
 
       const rect = flow.getBoundingClientRect();
       const computed = window.getComputedStyle(flow);
