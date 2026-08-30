@@ -1,73 +1,64 @@
-# React + TypeScript + Vite
+# UNIQ Resume Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A browser-based resume builder: fill in a form on the left, see a live A4-paginated preview on the right, pick from 116 templates, and export to PDF or Word.
 
-Currently, two official plugins are available:
+Built with Vite 7, React 19, TypeScript, Tailwind CSS 3.4, Zustand, and shadcn/ui.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting started
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+The dev server runs on [http://localhost:3000](http://localhost:3000).
+
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Start the Vite dev server on port 3000 |
+| `npm run build` | Type-check (`tsc -b`) and build to `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run ESLint |
+
+## Project layout
+
+```
+api/export-pdf.ts        Vercel serverless function that renders the PDF
+src/App.tsx              Root component — header, form panel, preview panel
+src/main.tsx             Entry point
+src/index.css            Global styles, including print/@page rules
+src/components/form/     One form per resume section
+src/components/resume/   PagedResumePreview — splits content across A4 pages
+src/components/ui/       shadcn/ui primitives
+src/store/resumeStore.ts Zustand store, persisted to localStorage
+src/templates/           The 116 resume templates
+src/types/resume.ts      ResumeData shape and default content
+src/lib/                 Section-title resolution, bold-text editing, cn()
+```
+
+## Templates
+
+There are 116 templates, registered in [`src/templates/index.ts`](src/templates/index.ts) and resolved by number via `getTemplateComponent()`. They're organized three ways:
+
+- **1–40** — one file each (`Template01.tsx` … `Template40.tsx`)
+- **41–66** — all exported from `AdvancedTemplates.tsx`
+- **67–116** — generated combinatorially in `ATSTemplates.tsx` from 10 accent colors × 5 heading styles
+
+`templateCategories` in the same file groups them into Professional, Creative, Modern, Dark, Minimal, New, and ATS-Compliant for the gallery filter.
+
+To add a template: create the component, import it in `src/templates/index.ts`, then add an entry to both `templateNames` and `templateComponents` under the next number.
+
+## Export
+
+**PDF** — the client POSTs the resume data and template number to `/api/export-pdf`. That function launches headless Chromium (`puppeteer-core` + `@sparticuz/chromium` on Vercel, a locally installed Chrome or Edge in development), navigates to `/pdf-render`, calls `window.renderResumeForPdf(payload)`, waits for `window.resumePdfReady`, and prints A4 with `preferCSSPageSize`.
+
+`/pdf-render` is not a router route — `App.tsx` checks `window.location.pathname` directly and renders a bare preview. [`vercel.json`](vercel.json) rewrites that path to `/` so the SPA serves it.
+
+**Word** — built entirely client-side in `App.tsx`. It clones the rendered preview, inlines every stylesheet, and downloads the result as a `.doc` blob.
+
+## State
+
+A single Zustand store, persisted to `localStorage` under `resume-builder-storage`. Resume data, the selected template, and expanded sections survive a reload; the mobile form/preview tab does not.
