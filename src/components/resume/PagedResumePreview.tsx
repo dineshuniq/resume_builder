@@ -4,6 +4,23 @@ import type { ResumeData } from "@/types/resume";
 const PAGE_GAP_FALLBACK = 24;
 const ATOMIC_SELECTOR = "article,section,div,li,ul,ol,p";
 const GROUP_SELECTOR = "article,section,div,li,ul,ol,p,h1,h2,h3,h4,h5,h6";
+/* Blocks worth keeping on one sheet: an entry the text scan identified, a card
+   the template drew a border, rounding or shadow around, or a wrapper carrying
+   entry-sized bottom spacing. Whole-token matching keeps mb-2 from also catching
+   mb-20/mb-24. Matching here only nominates a block -- it is kept whole solely
+   if the measure pass then finds it short enough. */
+const KEEP_WHOLE_SELECTOR = [
+  ".resume-atomic-block",
+  '[class*="border-l"]',
+  '[class*="rounded-lg"]',
+  '[class*="shadow"]',
+  '[class*="timeline"]',
+  '[class~="mb-2"]',
+  '[class~="mb-3"]',
+  '[class~="mb-4"]',
+  '[class~="mb-5"]',
+  '[class~="mb-6"]',
+].join(",");
 /* A group taller than this share of a sheet cannot be kept whole without
    stranding a large blank area, so it is allowed to break across pages.
    Roughly eleven lines of body text: entry and project wrappers above it flow,
@@ -86,7 +103,12 @@ function annotateAtomicBlocks(root: HTMLElement, data: ResumeData) {
   markSmallestBlock(root, languageNames);
 }
 
-function findOversizedGroups(flow: HTMLElement, maxHeight: number) {
+interface GroupDecisions {
+  keepWhole: Set<number>;
+  splittable: Set<number>;
+}
+
+function measureGroups(flow: HTMLElement, maxHeight: number): GroupDecisions {
   const elements = Array.from(flow.querySelectorAll<HTMLElement>(GROUP_SELECTOR));
 
   // Inside a column layout a tall group is split across columns, so its box is
@@ -96,23 +118,27 @@ function findOversizedGroups(flow: HTMLElement, maxHeight: number) {
   flow.style.columnWidth = "auto";
   flow.style.height = "auto";
 
-  const oversized = new Set<number>();
+  const keepWhole = new Set<number>();
+  const splittable = new Set<number>();
   elements.forEach((element, index) => {
     if (element.getBoundingClientRect().height > maxHeight) {
-      oversized.add(index);
+      splittable.add(index);
+    } else if (element.matches(KEEP_WHOLE_SELECTOR)) {
+      keepWhole.add(index);
     }
   });
 
   flow.style.columnWidth = previousColumnWidth;
   flow.style.height = previousHeight;
 
-  return oversized;
+  return { keepWhole, splittable };
 }
 
-function applyOversizedGroups(flow: HTMLElement, oversized: Set<number>) {
+function applyGroupDecisions(flow: HTMLElement, decisions: GroupDecisions) {
   const elements = Array.from(flow.querySelectorAll<HTMLElement>(GROUP_SELECTOR));
   elements.forEach((element, index) => {
-    element.classList.toggle("resume-splittable", oversized.has(index));
+    element.classList.toggle("resume-keep-whole", decisions.keepWhole.has(index));
+    element.classList.toggle("resume-splittable", decisions.splittable.has(index));
   });
 }
 
@@ -149,22 +175,23 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
   });
 
   /* A full pass costs ~250ms on a long resume, so it stays off the keystroke
-     path and runs a frame later. Nothing it does may be load-bearing for
-     correctness: the stylesheet keeps section-sized wrappers breakable on its
-     own, and these annotations only refine where the breaks land. */
+     path and runs a frame later. Nothing it does is load-bearing for
+     correctness: grouping is opt-in, so until this lands the content simply
+     flows and fills each sheet. */
   const measureNow = useCallback(() => {
     const shell = shellRef.current;
     const flow = measureRef.current;
 
     if (!shell || !flow) return;
 
+    // Runs first so the blocks it marks can be nominated as groups below.
     const flows = Array.from(shell.querySelectorAll<HTMLElement>(".resume-page-flow"));
     flows.forEach((pageFlow) => annotateAtomicBlocks(pageFlow, data));
 
-    // Every flow renders the same template with the same data, so the groups
-    // that are too tall to stay whole only need measuring once.
-    const oversized = findOversizedGroups(flow, flow.clientHeight * MAX_ATOMIC_HEIGHT_RATIO);
-    flows.forEach((pageFlow) => applyOversizedGroups(pageFlow, oversized));
+    // Every flow renders the same template with the same data, so which groups
+    // fit on a sheet only needs measuring once.
+    const decisions = measureGroups(flow, flow.clientHeight * MAX_ATOMIC_HEIGHT_RATIO);
+    flows.forEach((pageFlow) => applyGroupDecisions(pageFlow, decisions));
 
     const rect = flow.getBoundingClientRect();
     const computed = window.getComputedStyle(flow);
