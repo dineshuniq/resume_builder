@@ -2,6 +2,11 @@ import { type ComponentType, type CSSProperties, type RefObject, useCallback, us
 import type { ResumeData } from "@/types/resume";
 
 const PAGE_GAP_FALLBACK = 24;
+/* scrollWidth is a whole number while a 210mm column is not, so a flow holding
+   exactly N columns can report up to a pixel wider than N columns occupy. That
+   surplus tips the ceiling below into N+1 and appends a blank sheet, which is
+   why a resume ending flush with page one showed an empty page two. */
+const COLUMN_ROUNDING_TOLERANCE = 1;
 const ATOMIC_SELECTOR = "article,section,div,li,ul,ol,p";
 const GROUP_SELECTOR = "article,section,div,li,ul,ol,p,h1,h2,h3,h4,h5,h6";
 /* Blocks worth keeping on one sheet: an entry the text scan identified, a card
@@ -199,8 +204,21 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
     const pageWidth = rect.width;
     const pageHeight = rect.height;
     const pageStep = pageWidth + columnGap;
-    const count = Math.max(1, Math.ceil((flow.scrollWidth + columnGap) / pageStep));
-    const availableWidth = Math.max(280, shell.clientWidth);
+    const count = Math.max(1, Math.ceil((flow.scrollWidth + columnGap - COLUMN_ROUNDING_TOLERANCE) / pageStep));
+
+    /* Measured on the pane rather than the shell: the shell carries a min-width
+       of max(100%, --resume-stage-width), and that variable is this scale times
+       the page width. Reading its own width therefore fed the result back into
+       itself, and once the scale reached 1 nothing could ever bring it back
+       down, so a pane narrower than a sheet overflowed instead of fitting. */
+    const pane = shell.parentElement;
+    const paneStyle = pane && window.getComputedStyle(pane);
+    const paneWidth = pane && paneStyle
+      ? pane.clientWidth -
+        (Number.parseFloat(paneStyle.paddingLeft) || 0) -
+        (Number.parseFloat(paneStyle.paddingRight) || 0)
+      : shell.clientWidth;
+    const availableWidth = Math.max(280, paneWidth);
     const scale = Math.min(1, availableWidth / pageWidth);
     const pageSkin = readPageSkin(flow);
 
@@ -244,6 +262,9 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
 
     if (shell) observer.observe(shell);
     if (flow) observer.observe(flow);
+    // The shell stops narrowing once its min-width takes over, so the pane is
+    // watched too: below that width it is the only one still reporting changes.
+    if (shell?.parentElement) observer.observe(shell.parentElement);
 
     window.addEventListener("resize", recalculate);
 
