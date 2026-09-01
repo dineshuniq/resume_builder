@@ -148,54 +148,69 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
     },
   });
 
+  /* A full pass costs ~250ms on a long resume, so it stays off the keystroke
+     path and runs a frame later. Nothing it does may be load-bearing for
+     correctness: the stylesheet keeps section-sized wrappers breakable on its
+     own, and these annotations only refine where the breaks land. */
+  const measureNow = useCallback(() => {
+    const shell = shellRef.current;
+    const flow = measureRef.current;
+
+    if (!shell || !flow) return;
+
+    const flows = Array.from(shell.querySelectorAll<HTMLElement>(".resume-page-flow"));
+    flows.forEach((pageFlow) => annotateAtomicBlocks(pageFlow, data));
+
+    // Every flow renders the same template with the same data, so the groups
+    // that are too tall to stay whole only need measuring once.
+    const oversized = findOversizedGroups(flow, flow.clientHeight * MAX_ATOMIC_HEIGHT_RATIO);
+    flows.forEach((pageFlow) => applyOversizedGroups(pageFlow, oversized));
+
+    const rect = flow.getBoundingClientRect();
+    const computed = window.getComputedStyle(flow);
+    const columnGap = Number.parseFloat(computed.columnGap) || PAGE_GAP_FALLBACK;
+    const pageWidth = rect.width;
+    const pageHeight = rect.height;
+    const pageStep = pageWidth + columnGap;
+    const count = Math.max(1, Math.ceil((flow.scrollWidth + columnGap) / pageStep));
+    const availableWidth = Math.max(280, shell.clientWidth);
+    const scale = Math.min(1, availableWidth / pageWidth);
+    const pageSkin = readPageSkin(flow);
+
+    setLayout((current) => {
+      const next = { count, pageWidth, pageHeight, pageStep, scale, pageSkin };
+      const changed =
+        current.count !== next.count ||
+        current.pageWidth !== next.pageWidth ||
+        current.pageHeight !== next.pageHeight ||
+        current.pageStep !== next.pageStep ||
+        current.scale !== next.scale ||
+        Object.entries(next.pageSkin).some(([key, value]) => current.pageSkin[key as keyof PageLayout["pageSkin"]] !== value);
+
+      return changed ? next : current;
+    });
+  }, [data]);
+
   const recalculate = useCallback(() => {
     if (frameRef.current !== null) {
       window.cancelAnimationFrame(frameRef.current);
     }
 
     frameRef.current = window.requestAnimationFrame(() => {
-      const shell = shellRef.current;
-      const flow = measureRef.current;
-
-      if (!shell || !flow) return;
-
-      const flows = Array.from(shell.querySelectorAll<HTMLElement>(".resume-page-flow"));
-      flows.forEach((pageFlow) => annotateAtomicBlocks(pageFlow, data));
-
-      // Every flow renders the same template with the same data, so the groups
-      // that are too tall to stay whole only need measuring once.
-      const oversized = findOversizedGroups(flow, flow.clientHeight * MAX_ATOMIC_HEIGHT_RATIO);
-      flows.forEach((pageFlow) => applyOversizedGroups(pageFlow, oversized));
-
-      const rect = flow.getBoundingClientRect();
-      const computed = window.getComputedStyle(flow);
-      const columnGap = Number.parseFloat(computed.columnGap) || PAGE_GAP_FALLBACK;
-      const pageWidth = rect.width;
-      const pageHeight = rect.height;
-      const pageStep = pageWidth + columnGap;
-      const count = Math.max(1, Math.ceil((flow.scrollWidth + columnGap) / pageStep));
-      const availableWidth = Math.max(280, shell.clientWidth);
-      const scale = Math.min(1, availableWidth / pageWidth);
-      const pageSkin = readPageSkin(flow);
-
-      setLayout((current) => {
-        const next = { count, pageWidth, pageHeight, pageStep, scale, pageSkin };
-        const changed =
-          current.count !== next.count ||
-          current.pageWidth !== next.pageWidth ||
-          current.pageHeight !== next.pageHeight ||
-          current.pageStep !== next.pageStep ||
-          current.scale !== next.scale ||
-          Object.entries(next.pageSkin).some(([key, value]) => current.pageSkin[key as keyof PageLayout["pageSkin"]] !== value);
-
-        return changed ? next : current;
-      });
+      frameRef.current = null;
+      measureNow();
     });
-  }, [data]);
+  }, [measureNow]);
 
+  /* layout.count is a dependency because growing the page count mounts fresh
+     flows after the pass above has already run; they would otherwise keep the
+     unannotated markup. The extra pass settles immediately: once the count
+     stops changing setLayout returns the current object and no render follows. */
   useLayoutEffect(() => {
     recalculate();
+  }, [Template, data, recalculate, layout.count]);
 
+  useLayoutEffect(() => {
     const shell = shellRef.current;
     const flow = measureRef.current;
     const observer = new ResizeObserver(recalculate);
@@ -212,7 +227,7 @@ export default function PagedResumePreview({ Template, data, printRef }: PagedRe
       observer.disconnect();
       window.removeEventListener("resize", recalculate);
     };
-  }, [Template, data, recalculate]);
+  }, [recalculate]);
 
   const pages = Array.from({ length: layout.count }, (_, index) => index);
   const stageStyle = {

@@ -265,8 +265,16 @@
 }
 
 /* Spacing utilities are matched as whole class tokens so that mb-2 does not also
-   catch mb-20/mb-24, which are section-sized wrappers rather than entry groups. */
-.resume-page-flow :is([class~="mb-2"], [class~="mb-3"], [class~="mb-4"], [class~="mb-5"], [class~="mb-6"]) {
+   catch mb-20/mb-24, which are section-sized wrappers rather than entry groups.
+   The :not(:has(...)) guard keeps this to leaf-level entry groups: a wrapper that
+   still contains entries of its own is a whole section, and holding one of those
+   together pushes the entire section to the next sheet and strands the page
+   before it. Those containers must stay breakable no matter what, because the
+   JS pass that relaxes oversized blocks runs a frame later than first paint. */
+.resume-page-flow
+  :is([class~="mb-2"], [class~="mb-3"], [class~="mb-4"], [class~="mb-5"], [class~="mb-6"]):not(
+    :has(article, section, [class~="mb-2"], [class~="mb-3"], [class~="mb-4"], [class~="mb-5"], [class~="mb-6"])
+  ) {
   break-inside: avoid;
   page-break-inside: avoid;
 }
